@@ -16,6 +16,7 @@ void main() {
           title: "windx1999",
           home: SplashScreen(),
           theme: ThemeData(
+              
               inputDecorationTheme: TextFormFieldDesign.inputDecorationTheme(),
               fontFamily: 'OpenSans',
               appBarTheme: AppBarTheme(backgroundColor: Colors.transparent),
@@ -53,7 +54,7 @@ class ElevatedTheme {
         ),
       ).copyWith(
         minimumSize: WidgetStateProperty.all(
-            Size(320.w, 48.h)), // Wrap Size with MaterialStateProperty.all
+            Size(375.w, 48.h)), // Wrap Size with MaterialStateProperty.all
       ),
     );
   }

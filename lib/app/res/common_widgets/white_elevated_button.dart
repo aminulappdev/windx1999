@@ -16,7 +16,7 @@ class WhiteElevatedButton extends StatelessWidget {
       onTap: ontap,
       child: Container(
         height: 48.h,
-        width: 320.w,
+        width: 350.w,
         decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(50),

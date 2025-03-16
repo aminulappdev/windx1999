@@ -4,6 +4,13 @@ class AssetsPath {
   static const String onBoarding01 = '$imagePath/onBoarding01.svg';
   static const String onBoarding02 = '$imagePath/onBoarding02.svg';
   static const String onBoarding03 = '$imagePath/onBoarding03.svg';
+  static const String fbLogo = '$imagePath/fbLogo.png';
+  static const String googleLogo = '$imagePath/googleLogoUp.png';
+  static const String forgotPass = '$imagePath/forgot_pass.svg';
+  static const String newPass = '$imagePath/new_pass.svg';
+  static const String emailVer = '$imagePath/email_ver.svg';
+  static const String address = '$imagePath/address.svg';
+  static const String userPrefer = '$imagePath/user_prefer.svg';
   
   
 }
