@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
+import 'package:windx1999/app/modules/common/views/navigation_bar_screen.dart';
 import 'package:windx1999/app/modules/profile/views/wish_list.dart';
 import 'package:windx1999/app/modules/profile/widgets/feature_row.dart';
 import 'package:windx1999/app/res/app_images/assets_path.dart';
@@ -57,7 +58,7 @@ class _UserPreferencesScreenState extends State<UserPreferencesScreen> {
                 heightBox24,
                 ElevatedButton(
                     onPressed: () {
-                      Get.to(WishlistScreen());
+                      Get.to(BottomNavBarScreen());
                     },
                     child: Text('Save Preferences'))
               ],

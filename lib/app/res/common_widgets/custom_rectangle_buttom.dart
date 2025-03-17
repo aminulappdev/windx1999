@@ -11,6 +11,7 @@ class CustomRectangleButton extends StatelessWidget {
     required this.radiusSize,
     required this.text,
     this.fillColor = const Color(0xff6CC7FE),
+     this.textSize = 18,
     this.textColor = const Color.fromARGB(255, 0, 0, 0), required this.ontap,
   });
   final Color fillColor;
@@ -21,6 +22,7 @@ class CustomRectangleButton extends StatelessWidget {
   final String text;
   final Color textColor;
   final VoidCallback ontap;
+  final double textSize;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +39,7 @@ class CustomRectangleButton extends StatelessWidget {
           child: Text(
             text,
             style: TextStyle(
-                fontSize: 18.sp, fontWeight: FontWeight.w600, color: textColor),
+                fontSize: textSize.sp, fontWeight: FontWeight.w600, color: textColor),
           ),
         ),
       ),

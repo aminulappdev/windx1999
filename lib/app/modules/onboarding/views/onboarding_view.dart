@@ -4,6 +4,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:windx1999/app/modules/authentication/views/auth_screen.dart';
+import 'package:windx1999/app/modules/common/views/navigation_bar_screen.dart';
 import 'package:windx1999/app/modules/onboarding/views/page_view.dart';
 import 'package:windx1999/app/res/app_colors/app_colors.dart';
 import 'package:windx1999/app/res/app_images/assets_path.dart';
@@ -113,7 +114,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                 WhiteElevatedButton(
                   name: 'Skip',
                   ontap: () {
-                    Get.to(AuthScreen());
+                    Get.to(BottomNavBarScreen());
                   },
                 ),
                 heightBox50
