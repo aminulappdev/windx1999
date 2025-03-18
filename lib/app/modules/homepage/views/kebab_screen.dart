@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:windx1999/app/modules/homepage/widgets/kebab_details_row.dart';
 import 'package:windx1999/app/res/custom_style/custom_size.dart';
 
 class KebabScreen extends StatefulWidget {
@@ -16,40 +18,49 @@ class _KebabScreenState extends State<KebabScreen> {
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 20, right: 20, left: 20,bottom: 20),
+            padding:
+                 EdgeInsets.only(top: 20.h, right: 20.w, left: 20.w, bottom: 20.h),
             child: Column(
               children: [
                 heightBox20,
-                Row(
-                  children: [
-                    Icon(Icons.bookmark,size: 30,color: Colors.white,),
-                    widthBox14,
-                    Text('Save post',style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.w500),)
-                  ],
+                KebabDetailsRow(
+                  icon: Icons.bookmark,
+                  name: 'Save post',
+                  ontap: () {},
                 ),
-                heightBox12,
-                Row(
-                  children: [
-                    Icon(Icons.bookmark,size: 30,color: Colors.white,),
-                    widthBox14,
-                    Text('Save post',style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.w500),)
-                  ],
+                heightBox20,
+               
+                KebabDetailsRow(
+                  icon: Icons.copy,
+                  name: 'Copy link',
+                  ontap: () {},
                 ),
-                 heightBox12,
-                Row(
-                  children: [
-                    Icon(Icons.bookmark,size: 30,color: Colors.white,),
-                    widthBox14,
-                    Text('Save post',style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.w500),)
-                  ],
+                heightBox20,
+              
+                KebabDetailsRow(
+                  icon: Icons.visibility_off,
+                  name: 'Hide post',
+                  ontap: () {},
                 ),
-                 heightBox12,
-                Row(
-                  children: [
-                    Icon(Icons.bookmark,size: 30,color: Colors.white,),
-                    widthBox14,
-                    Text('Save post',style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.w500),)
-                  ],
+                heightBox20,
+                KebabDetailsRow(
+                  icon: Icons.person_remove,
+                  name: 'Unfollow',
+                  ontap: () {},
+                ),
+                heightBox20,
+               
+                KebabDetailsRow(
+                  icon: Icons.person_off,
+                  name: 'Block',
+                  ontap: () {},
+                ),
+                heightBox20,
+              
+                KebabDetailsRow(
+                  icon: Icons.smart_display_outlined,
+                  name: 'Report profile',
+                  ontap: () {},
                 ),
               ],
             ),
@@ -59,3 +70,4 @@ class _KebabScreenState extends State<KebabScreen> {
     );
   }
 }
+

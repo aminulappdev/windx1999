@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Liner extends StatelessWidget {
+  final String text;
   const Liner({
-    super.key,
+    super.key, required this.text,
   });
 
   @override
@@ -21,7 +22,7 @@ class Liner extends StatelessWidget {
             ),
           ),
           Text(
-            '  Or continue with  ',
+            '  $text  ',
             style: TextStyle(fontSize: 14.sp, color: Colors.white,fontWeight: FontWeight.w500),
           ),
            Expanded(

@@ -9,7 +9,7 @@ import 'package:windx1999/app/modules/authentication/views/sign_up_screen.dart';
 import 'package:windx1999/app/modules/authentication/widgets/auth_footer.dart';
 import 'package:windx1999/app/modules/authentication/widgets/continue_with_button.dart';
 import 'package:windx1999/app/modules/authentication/widgets/forgot_password.dart';
-import 'package:windx1999/app/modules/authentication/widgets/liner_widget.dart';
+import 'package:windx1999/app/res/common_widgets/liner_widget.dart';
 import 'package:windx1999/app/modules/profile/views/profile_setup_screen.dart';
 import 'package:windx1999/app/res/app_images/assets_path.dart';
 import 'package:windx1999/app/res/common_widgets/custom_app_bar.dart';
@@ -116,7 +116,7 @@ class _LogInScreenState extends State<LogInScreen> {
                    Get.to(ProfileSetupScreen());
                 }, child: Text('Log In')),
                 heightBox12,
-                Liner(),
+                Liner(text: 'Or continue with',),
                 heightBox12,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

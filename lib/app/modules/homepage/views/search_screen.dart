@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:windx1999/app/res/app_images/assets_path.dart';
 
 import 'package:windx1999/app/res/common_widgets/custom_rectangle_buttom.dart';
@@ -14,11 +15,10 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-
   bool isNotFound = false;
 
-   @override
-     void initState() {
+  @override
+  void initState() {
     changeStatus();
     super.initState();
   }
@@ -46,15 +46,15 @@ class _SearchScreenState extends State<SearchScreen> {
                   'Recent search history',
                   style: TextStyle(
                       color: Colors.white,
-                      fontSize: 20,
+                      fontSize: 20.sp,
                       fontWeight: FontWeight.w600),
                 ),
                 InkWell(
-                  onTap: () {
-                    
-                  },
-                  
-                  child: Text('Clear all',style: TextStyle(color: Colors.blue),))
+                    onTap: () {},
+                    child: Text(
+                      'Clear all',
+                      style: TextStyle(color: Colors.blue),
+                    ))
               ],
             ),
             heightBox12,
@@ -76,7 +76,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       style: TextStyle(color: Colors.white),
                     ),
                     trailing: SizedBox(
-                      width: 110,
+                      width: 110.w,
                       child: Row(
                         children: [
                           CustomRectangleButton(
@@ -88,22 +88,38 @@ class _SearchScreenState extends State<SearchScreen> {
                               textSize: 12,
                               text: 'Follow',
                               ontap: () {}),
-                              Icon(Icons.more_vert,color: Colors.white,size: 30,)
+                          Icon(
+                            Icons.more_vert,
+                            color: Colors.white,
+                            size: 30,
+                          )
                         ],
                       ),
                     ),
                   );
                 },
               ),
-            ) ,
+            ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                ImageContainer(imagePath: AssetsPath.search, height: 80, width: 95, borderRadius: 10, borderColor: Colors.transparent),
-                Text('No results for”Shimul”',style: TextStyle(fontSize: 20,color: Colors.white),),
+                ImageContainer(
+                    imagePath: AssetsPath.search,
+                    height: 80.h,
+                    width: 95.w,
+                    borderRadius: 10.r,
+                    borderColor: Colors.transparent),
+                Text(
+                  'No results for”Shimul”',
+                  style: TextStyle(fontSize: 20.sp, color: Colors.white),
+                ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Text('We couldn’t find any matching results. Please refine your search orcheck back later.”',style: TextStyle(fontSize: 16,color: Colors.white),textAlign: TextAlign.center,),
+                  padding:  EdgeInsets.symmetric(horizontal: 20.w),
+                  child: Text(
+                    'We couldn’t find any matching results. Please refine your search orcheck back later.”',
+                    style: TextStyle(fontSize: 16.sp, color: Colors.white),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               ],
             )

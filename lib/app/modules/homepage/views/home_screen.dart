@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:windx1999/app/modules/homepage/views/comment_screen.dart';
 import 'package:windx1999/app/modules/homepage/views/kebab_screen.dart';
 import 'package:windx1999/app/modules/homepage/views/not_found_screen.dart';
 import 'package:windx1999/app/modules/homepage/views/notification_screen.dart';
-import 'package:windx1999/app/modules/homepage/views/search_screen.dart';
 import 'package:windx1999/app/modules/homepage/views/share_screen.dart';
 import 'package:windx1999/app/modules/homepage/views/show_wishlist_screen.dart';
 import 'package:windx1999/app/modules/homepage/widgets/post_card.dart';
+import 'package:windx1999/app/modules/token/views/token_bar.dart';
 import 'package:windx1999/app/res/app_images/assets_path.dart';
 import 'package:windx1999/app/res/common_widgets/circle_icon_transparent.dart';
 import 'package:windx1999/app/res/common_widgets/search_bar.dart';
@@ -26,26 +27,31 @@ class _HomeScreenState extends State<HomeScreen> {
     return SafeArea(
       child: Scaffold(
         body: Padding(
-          padding: const EdgeInsets.all(24.0),
+          padding:  EdgeInsets.all(24.0.h),
           child: SingleChildScrollView(
             child: Column(
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    SizedBox(height: 40, width: 196, child: CustomSearchBar()),
+                    SizedBox(height: 40.h, width: 196.w, child: CustomSearchBar()),
                     Container(
-                      height: 40,
-                      width: 80,
+                      height: 40.h,
+                      width: 80.w,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(50),
                           color: Color.fromARGB(116, 255, 255, 255)),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(
-                            Icons.token,
-                            size: 28,
+                          GestureDetector(
+                            onTap: () {
+                              Get.to(TokenBar());
+                            },
+                            child: Icon(
+                              Icons.layers,
+                              size: 28.h,
+                            ),
                           ),
                           Text('25.2k')
                         ],
@@ -55,11 +61,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       icon: Icons.notifications,
                       fillColor: Color.fromARGB(116, 255, 255, 255),
                       iconColor: Colors.white,
-                      iconSize: 30,
+                      iconSize: 30.h,
                       ontap: () {
                         Get.to(NotificationScreen());
                       },
-                      radius: 40,
+                      radius: 40.r,
                     ),
                   ],
                 ),

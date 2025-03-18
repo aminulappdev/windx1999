@@ -58,7 +58,6 @@ class _ShowWishlistScreenState extends State<ShowWishlistScreen> {
                       TextFormField(
                         maxLines: 4,
                         decoration: InputDecoration(
-                          
                           hintText: 'Enter description your product',
                           errorStyle: TextStyle(
                               color: const Color.fromARGB(255, 237, 82, 82)),
@@ -116,16 +115,20 @@ class _ShowWishlistScreenState extends State<ShowWishlistScreen> {
                         },
                       ),
                       heightBox20,
-                       Text(
+                      Text(
                         'Product price',
                         style: TextStyle(fontSize: 16.sp, color: Colors.white),
                       ),
                       heightBox10,
-                      ImageContainer(imagePath: AssetsPath.blackGirl, height: 212, width: MediaQuery.of(context).size.width, borderRadius: 12, borderColor: Colors.transparent)
+                      ImageContainer(
+                          imagePath: AssetsPath.blackGirl,
+                          height: 212.h,
+                          width: MediaQuery.of(context).size.width,
+                          borderRadius: 12,
+                          borderColor: Colors.transparent)
                     ],
                   ),
                 ),
-               
               ],
             ),
           ),

@@ -4,7 +4,8 @@ import 'package:get/get.dart';
 import 'package:windx1999/app/modules/onboarding/views/splash_screen.dart';
 import 'package:windx1999/app/res/app_colors/app_colors.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(
     ScreenUtilInit(
       designSize: const Size(393, 852),
