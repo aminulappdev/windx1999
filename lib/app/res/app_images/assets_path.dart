@@ -13,6 +13,7 @@ class AssetsPath {
   static const String userPrefer = '$imagePath/user_prefer.svg';
   static const String blackGirl = '$imagePath/blackGirl.jpg';
   static const String search = '$imagePath/search.png';
+  static const String reels = '$imagePath/reels.jpg';
   
   
 }

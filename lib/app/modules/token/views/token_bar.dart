@@ -52,7 +52,7 @@ class _TokenBarState extends State<TokenBar> {
                       });
                     },
                     textSize: 16,
-                    fillColor: tokenHistoryPage
+                    borderColor: tokenHistoryPage
                         ? Colors.transparent
                         : Color(0xff6CC7FE),
                   ),
@@ -71,7 +71,7 @@ class _TokenBarState extends State<TokenBar> {
                       });
                     },
                     textSize: 16,
-                    fillColor: tokenHistoryPage
+                    borderColor: tokenHistoryPage
                         ? Color(0xff6CC7FE)
                         : Colors.transparent,
                   ),

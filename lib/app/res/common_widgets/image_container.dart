@@ -8,7 +8,7 @@ class ImageContainer extends StatelessWidget {
     required this.height,
     required this.width,
     required this.borderRadius,
-    required this.borderColor,
+    required this.borderColor,  this.child,
   });
 
   final String? imagePath;
@@ -16,6 +16,7 @@ class ImageContainer extends StatelessWidget {
   final double width;
   final double borderRadius;
   final Color borderColor;
+  final Widget? child;
 
   @override
   Widget build(BuildContext context) {

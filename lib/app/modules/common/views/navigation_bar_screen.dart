@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:windx1999/app/modules/chat/views/chat_list_screen.dart';
 import 'package:windx1999/app/modules/homepage/views/home_screen.dart';
 import 'package:windx1999/app/modules/post/views/post_screen.dart';
+import 'package:windx1999/app/modules/profile/views/profile_screen.dart';
+import 'package:windx1999/app/modules/reels/views/reels_screen.dart';
+import 'package:windx1999/app/res/common_widgets/side_clipper.dart';
 
 
 class BottomNavBarScreen extends StatefulWidget {
@@ -22,8 +25,8 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
        HomeScreen(),
        ChatListScreen(),
        PostScreen(),
-       HomeScreen(),
-       HomeScreen(),
+       ReelsScreen(),
+       ProfileScreen(),
   ];
 
   @override

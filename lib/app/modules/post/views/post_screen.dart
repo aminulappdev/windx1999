@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_navigation/get_navigation.dart';
+import 'package:windx1999/app/modules/post/views/post_audiences.dart';
 import 'package:windx1999/app/res/app_images/assets_path.dart';
 import 'package:windx1999/app/res/common_widgets/custom_app_bar.dart';
-import 'package:windx1999/app/res/common_widgets/drop_down.dart';
 import 'package:windx1999/app/res/common_widgets/straight_liner.dart';
 import 'package:windx1999/app/res/custom_style/custom_size.dart';
 
@@ -22,7 +25,13 @@ class _PostScreenState extends State<PostScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CustomAppBar(title: 'New post'),
+              CustomAppBar(
+                title: 'New post',
+                showButton: true,
+                ontap: () {},
+                color: Colors.white,
+                textColor: Colors.grey,
+              ),
               heightBox20,
               Row(
                 children: [
@@ -41,14 +50,34 @@ class _PostScreenState extends State<PostScreen> {
                             color: Colors.white),
                       ),
                       heightBox4,
-                      DropDownButton(
-                        option: [
-                          {'name': 'Public', 'icon': Icons.public},
-                          {'name': 'Friends', 'icon': Icons.group},
-                          {'name': 'Friends except', 'icon': Icons.public},
-                          {'name': 'Only me', 'icon': Icons.lock},
-                        ],
-                      )
+                      InkWell(
+                        onTap: () {
+                          Get.to(PostAudiencesScreen());
+                        },
+                        child: Container(
+                          height: 24.h,
+                          width: 80.w,
+                          decoration: BoxDecoration(
+                            color: const Color(0xffEBF5FF),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.group, size: 14),
+                              widthBox4,
+                              Text(
+                                'Friends',
+                                style: TextStyle(
+                                  fontSize: 10.sp,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                     ],
                   )
                 ],

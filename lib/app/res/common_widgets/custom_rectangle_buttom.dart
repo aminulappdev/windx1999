@@ -10,11 +10,11 @@ class CustomRectangleButton extends StatelessWidget {
     required this.width,
     required this.radiusSize,
     required this.text,
-    this.fillColor = const Color(0xff6CC7FE),
+    this.borderColor = const Color(0xff6CC7FE),
      this.textSize = 18,
     this.textColor = const Color.fromARGB(255, 0, 0, 0), required this.ontap,
   });
-  final Color fillColor;
+  final Color borderColor;
   final Color bgColor;
   final double height;
   final double width;
@@ -32,7 +32,7 @@ class CustomRectangleButton extends StatelessWidget {
         height: height.h,
         width: width.w,
         decoration: BoxDecoration(
-            border: Border.all(color: fillColor),
+            border: Border.all(color: borderColor),
             borderRadius: BorderRadius.circular(radiusSize),
             color: bgColor),
         child: Center(
