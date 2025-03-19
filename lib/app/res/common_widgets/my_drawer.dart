@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:windx1999/app/modules/profile/views/your_account.dart';
 import 'package:windx1999/app/res/common_widgets/custom_app_bar.dart';
 import 'package:windx1999/app/res/common_widgets/straight_liner.dart';
 import 'package:windx1999/app/res/custom_style/custom_size.dart';
@@ -29,7 +30,25 @@ class MyDrawer extends StatelessWidget {
                   CustomAppBar(title: 'Settings'),
                   heightBox40,
                   costomRow(context, Icons.person, 'Your Account',
-                      Icons.arrow_forward_ios, () {}),
+                      Icons.arrow_forward_ios, () {
+                         showModalBottomSheet(                     
+                      scrollControlDisabledMaxHeightRatio: 0.6,
+                      context: context,
+                      shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.vertical(top: Radius.circular(20)),
+                      ),
+                      backgroundColor: Color(0xffA96CFF),
+                      builder: (context) {
+                        return Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            YourAccount()
+                          ],
+                        );
+                      },
+                    );                     
+                      }),
                   heightBox20,
                   costomRow(context, Icons.bookmark, 'Saved',
                       Icons.arrow_forward_ios, () {}),
