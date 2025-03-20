@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:windx1999/app/modules/homepage/widgets/kebab_details_row.dart';
+import 'package:windx1999/app/modules/homepage/widgets/bottonSheet_details_row.dart';
 import 'package:windx1999/app/res/common_widgets/custom_app_bar.dart';
 import 'package:windx1999/app/res/custom_style/custom_size.dart';
 
@@ -22,21 +22,21 @@ class _ActionScreenState extends State<ActionScreen> {
             children: [
                CustomAppBar(title: 'Aminul'),
                heightBox14,
-               KebabDetailsRow(
+               ButtonSheetDetailsRow(
                   icon: Icons.delete,
                   name: 'Delete',
                   ontap: () {},
                 ),
                 heightBox20,
                
-                KebabDetailsRow(
+                ButtonSheetDetailsRow(
                   icon: Icons.sms,
                   name: 'Report profile',
                   ontap: () {},
                 ),
                 heightBox20,
               
-                KebabDetailsRow(
+                ButtonSheetDetailsRow(
                   icon: Icons.person_off,
                   name: 'Block',
                   ontap: () {},

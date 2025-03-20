@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:windx1999/app/modules/authentication/views/changed_password.dart';
+import 'package:windx1999/app/modules/authentication/views/two_factor_screen.dart';
 import 'package:windx1999/app/res/common_widgets/straight_liner.dart';
 import 'package:windx1999/app/res/custom_style/custom_size.dart';
 
@@ -32,7 +33,11 @@ class _YourAccountState extends State<YourAccount> {
           heightBox20,
           StraightLiner(),
           heightBox20,
-          Text('Two factor authentication',style: TextStyle(color: Colors.white,fontSize: 14),),
+          InkWell(
+             onTap: () {
+              Get.to(TwoFactorScreen());
+            },
+            child: Text('Two factor authentication',style: TextStyle(color: Colors.white,fontSize: 14),)),
           heightBox20,
           StraightLiner(),
           heightBox100

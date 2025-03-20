@@ -3,11 +3,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:windx1999/app/res/common_widgets/straight_liner.dart';
 import 'package:windx1999/app/res/custom_style/custom_size.dart';
 
-class KebabDetailsRow extends StatelessWidget {
+class ButtonSheetDetailsRow extends StatelessWidget {
   final IconData icon;
   final String name;
   final VoidCallback ontap;
-  const KebabDetailsRow({
+  const ButtonSheetDetailsRow({
     super.key,
     required this.icon,
     required this.name,

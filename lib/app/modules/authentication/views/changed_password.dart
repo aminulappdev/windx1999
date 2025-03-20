@@ -140,7 +140,12 @@ class _ChangedPasswordScreenState extends State<ChangedPasswordScreen> {
                   ),
                 ),
                 heightBox24,
-                ElevatedButton(onPressed: () {}, child: Text('Save'))
+                ElevatedButton(
+                    onPressed: () {},
+                    child: Text(
+                      'Change password',
+                      style: TextStyle(color: Colors.white),
+                    ))
               ],
             ),
           ),

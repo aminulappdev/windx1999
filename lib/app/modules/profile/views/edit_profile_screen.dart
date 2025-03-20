@@ -94,28 +94,31 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 ),
               ),
               Positioned(
-                  bottom: 40,
+                  bottom: -40,
                   left: 200,
-                  child: InkWell(
-                    onTap: () {
-                      _imagePickerHelper.showAlertDialog(context,
-                          (File pickedImage) {
-                        setState(() {
-                          image = pickedImage;
+                  child: AbsorbPointer(
+                    absorbing: true,
+                    child: InkWell(
+                      onTap: () {
+                        _imagePickerHelper.showAlertDialog(context,
+                            (File pickedImage) {
+                          setState(() {
+                            image = pickedImage;
+                          });
                         });
-                      });
-                    },
-                    child: Container(
-                      height: 30,
-                      width: 30,
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Colors.white),
-                          shape: BoxShape.circle,
-                          color: const Color.fromARGB(146, 255, 255, 255)),
-                      child: Center(
-                        child: Icon(
-                          Icons.camera,
-                          color: Colors.white,
+                      },
+                      child: Container(
+                        height: 30,
+                        width: 30,
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.white),
+                            shape: BoxShape.circle,
+                            color: const Color.fromARGB(146, 255, 255, 255)),
+                        child: Center(
+                          child: Icon(
+                            Icons.camera,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),

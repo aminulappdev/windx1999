@@ -14,6 +14,8 @@ class AssetsPath {
   static const String blackGirl = '$imagePath/blackGirl.jpg';
   static const String search = '$imagePath/search.png';
   static const String reels = '$imagePath/reels.jpg';
+  static const String twoFactor = '$imagePath/twoFactor.svg';
+  static const String downloadLight= '$imagePath/Download_light.png';
   
   
 }

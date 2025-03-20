@@ -3,10 +3,11 @@ import 'package:curved_labeled_navigation_bar/curved_navigation_bar_item.dart';
 import 'package:flutter/material.dart';
 import 'package:windx1999/app/modules/chat/views/chat_list_screen.dart';
 import 'package:windx1999/app/modules/homepage/views/home_screen.dart';
+import 'package:windx1999/app/modules/others_profile/views/others_profile_screen.dart';
 import 'package:windx1999/app/modules/post/views/post_screen.dart';
 import 'package:windx1999/app/modules/profile/views/profile_screen.dart';
 import 'package:windx1999/app/modules/reels/views/reels_screen.dart';
-import 'package:windx1999/app/res/common_widgets/side_clipper.dart';
+
 
 
 class BottomNavBarScreen extends StatefulWidget {

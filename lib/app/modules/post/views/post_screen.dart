@@ -5,8 +5,8 @@ import 'package:get/get_navigation/get_navigation.dart';
 import 'package:windx1999/app/modules/post/views/post_audiences.dart';
 import 'package:windx1999/app/res/app_images/assets_path.dart';
 import 'package:windx1999/app/res/common_widgets/custom_app_bar.dart';
-import 'package:windx1999/app/res/common_widgets/straight_liner.dart';
 import 'package:windx1999/app/res/custom_style/custom_size.dart';
+import 'package:dotted_border/dotted_border.dart';
 
 class PostScreen extends StatefulWidget {
   const PostScreen({super.key});
@@ -91,45 +91,45 @@ class _PostScreenState extends State<PostScreen> {
                     hintStyle: TextStyle(fontSize: 16, color: Colors.white)),
               ),
               heightBox12,
-              StraightLiner(),
-              heightBox8,
-              InkWell(
-                onTap: () {},
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.photo,
-                      size: 24,
-                      color: Colors.white,
+              heightBox14,
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: DottedBorder(
+                  borderType: BorderType.RRect,
+                  radius: Radius.circular(8),
+                  padding: EdgeInsets.all(12),
+                  color: Colors.white,
+                  strokeWidth: 1,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                    child: SizedBox(
+                      height: 160,
+                      width: MediaQuery.of(context).size.width,
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            InkWell(
+                                onTap: () {},
+                                child: Icon(
+                                  Icons.upload,
+                                  size: 50,
+                                  color: Colors.white,
+                                )),
+                            Text(
+                              'Drop your imager here, or browse jpg, png are allowed',
+                              style:
+                                  TextStyle(fontSize: 10, color: Colors.white),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
-                    widthBox4,
-                    Text(
-                      'Photos/videos',
-                      style: TextStyle(fontSize: 16, color: Colors.white),
-                    )
-                  ],
+                  ),
                 ),
               ),
               heightBox12,
-              StraightLiner(),
-              heightBox8,
-              InkWell(
-                onTap: () {},
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.movie,
-                      size: 24,
-                      color: Colors.white,
-                    ),
-                    widthBox4,
-                    Text(
-                      'Reels',
-                      style: TextStyle(fontSize: 16, color: Colors.white),
-                    )
-                  ],
-                ),
-              )
             ],
           ),
         ),
