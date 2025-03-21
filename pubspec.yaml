@@ -29,6 +29,8 @@ dependencies:
   curved_labeled_navigation_bar: ^2.0.6
   camera: ^0.11.1
   flutter_custom_clippers: ^2.1.0
+  gradient_icon: ^2.0.9
+  device_preview: ^1.2.0
 
 dev_dependencies:
   flutter_test:

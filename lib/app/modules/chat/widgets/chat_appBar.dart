@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:windx1999/app/modules/profile/views/own_profile/others_profile_screen.dart';
 import 'package:windx1999/app/res/custom_style/custom_size.dart';
 
 class CustomChatAppBar extends StatefulWidget {
@@ -43,44 +46,49 @@ class _CustomChatAppBarState extends State<CustomChatAppBar> {
               ),
             ),
             widthBox8,
-            Row(
-              children: [
-                CircleAvatar(
-                  backgroundColor: Colors.transparent,
-                  backgroundImage: AssetImage(widget.imagePath),
-                  radius: 24.r,
-                 
-                ),
-                widthBox5,
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      widget.name,
-                      style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600),
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          widget.activeStatus,
-                          style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w400),
-                        ),
-                        widthBox8,
-                        CircleAvatar(
-                          radius: 4,
-                          backgroundColor: widget.isActive ? Colors.green : Colors.red,
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-              ],
+            InkWell(
+              onTap: () {
+                Get.to(OthersProfileScreen());
+              },
+              child: Row(
+                children: [
+                  CircleAvatar(
+                    backgroundColor: Colors.transparent,
+                    backgroundImage: AssetImage(widget.imagePath),
+                    radius: 24.r,
+                   
+                  ),
+                  widthBox5,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.name,
+                        style: TextStyle(
+                            fontSize: 16.sp,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600),
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            widget.activeStatus,
+                            style: TextStyle(
+                                fontSize: 12.sp,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w400),
+                          ),
+                          widthBox8,
+                          CircleAvatar(
+                            radius: 4,
+                            backgroundColor: widget.isActive ? Colors.green : Colors.red,
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ],
         ),

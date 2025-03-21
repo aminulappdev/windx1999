@@ -27,34 +27,36 @@ class OnboardingPageView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.all(16.r),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [         
-          heightBox100,
-          heightBox24,
-          SvgPicture.asset(imagePath,height: imageHeight,width: imageWidth,),
-          heightBox24,
-          SizedBox(
-            width: 300.w,
-            child: Text(
-                title,
-                style: TextStyle(
-                    fontFamily: 'OpenSans', fontSize: 24.sp,fontWeight: FontWeight.w700,color: Colors.white),
-                textAlign: TextAlign.center,
-              ),
-          ),   
-          heightBox12,
-             SizedBox(
-            width: 320.w,
-            child: Text(
-                subtitle,
-                style: TextStyle(
-                    fontFamily: 'OpenSans', fontSize: 16.sp,fontWeight: FontWeight.w400,color: Colors.white),
-                textAlign: TextAlign.center,
-              ),
-          ),  
-        ],
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [         
+            heightBox100,
+            heightBox24,
+            SvgPicture.asset(imagePath,height: imageHeight,width: imageWidth,),
+            heightBox24,
+            SizedBox(
+              width: 300.w,
+              child: Text(
+                  title,
+                  style: TextStyle(
+                      fontFamily: 'OpenSans', fontSize: 24.sp,fontWeight: FontWeight.w700,color: Colors.white),
+                  textAlign: TextAlign.center,
+                ),
+            ),   
+            heightBox12,
+               SizedBox(
+              width: 320.w,
+              child: Text(
+                  subtitle,
+                  style: TextStyle(
+                      fontFamily: 'OpenSans', fontSize: 16.sp,fontWeight: FontWeight.w400,color: Colors.white),
+                  textAlign: TextAlign.center,
+                ),
+            ),  
+          ],
+        ),
       ),
     );
   }

@@ -24,7 +24,7 @@ class ButtonSheetDetailsRow extends StatelessWidget {
             children: [
               Icon(
                 icon,
-                size: 24,
+                size: 24.h,
                 color: Colors.white,
               ),
               widthBox14,

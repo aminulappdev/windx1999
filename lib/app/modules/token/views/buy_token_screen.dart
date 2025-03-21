@@ -17,7 +17,7 @@ class BuyTokenScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding:  EdgeInsets.all(8.0.h),
       child: InkWell(
         onTap: ontap,
         child: Container(
@@ -33,14 +33,14 @@ class BuyTokenScreen extends StatelessWidget {
             ),
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding:  EdgeInsets.symmetric(horizontal: 20.w),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Row(
                   children: [
                     Icon(
-                      Icons.layers,
+                      Icons.token_rounded,
                       size: 30.h,
                       color: Colors.white,
                     ),

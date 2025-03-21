@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 void showCustomBottomSheet(BuildContext context) {
   showModalBottomSheet(
     context: context,
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
     ),
     backgroundColor: Colors.purple.shade300, // Adjust color to match design
     builder: (context) {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class FilterDropdown extends StatelessWidget {
   final String selectedOption;
@@ -12,7 +13,7 @@ class FilterDropdown extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16.0),
+      padding: EdgeInsets.symmetric(horizontal: 16.0.h),
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.5),
         borderRadius: BorderRadius.circular(8),
@@ -37,7 +38,7 @@ class FilterDropdown extends StatelessWidget {
                           : Icons.video_library,
                   color: Colors.white,
                 ),
-                SizedBox(width: 10),
+                SizedBox(width: 10.w),
                 Text(
                   value,
                   style: TextStyle(color: Colors.white),

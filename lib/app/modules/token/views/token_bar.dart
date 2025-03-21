@@ -5,6 +5,7 @@ import 'package:windx1999/app/modules/token/views/token_details_screen.dart';
 import 'package:windx1999/app/modules/token/widgets/token_bar_header.dart';
 import 'package:windx1999/app/res/app_images/assets_path.dart';
 import 'package:windx1999/app/res/common_widgets/custom_app_bar.dart';
+import 'package:windx1999/app/res/common_widgets/custom_background.dart';
 import 'package:windx1999/app/res/common_widgets/custom_rectangle_buttom.dart';
 import 'package:windx1999/app/res/common_widgets/straight_liner.dart';
 import 'package:windx1999/app/res/custom_style/custom_size.dart';
@@ -20,14 +21,15 @@ class _TokenBarState extends State<TokenBar> {
   bool tokenHistoryPage = true;
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Padding(
+    return Scaffold(
+      body: CustomBackground(
+        child: Padding(
           padding: EdgeInsets.all(16.0.h),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CustomAppBar(title: 'Token details'),
+             heightBox20,
+                  CustomAppBar(title: 'Token details'),
               heightBox50,
               TokenBarHeader(
                 imagePath: AssetsPath.blackGirl,
@@ -81,23 +83,24 @@ class _TokenBarState extends State<TokenBar> {
               tokenHistoryPage ? Container() : StraightLiner(),
               heightBox12,
               Expanded(
-                  child: ListView.builder(
-                itemCount: 3,
-                itemBuilder: (context, index) {
-                  return tokenHistoryPage
-                      ? TokekDetailsScreen(
-                          imagePath: AssetsPath.blackGirl,
-                          title: 'You have Buy tokens',
-                          date: '18/02/2025',
-                          coin: '58.6k',
-                          time: '09:54pm')
-                      : BuyTokenScreen(
-                          token: '100',
-                          price: '\$0.99',
-                          ontap: () {},
-                        );
-                },
-              ))
+                child: ListView.builder(
+                  itemCount: 3,
+                  itemBuilder: (context, index) {
+                    return tokenHistoryPage
+                        ? TokekDetailsScreen(
+                            imagePath: AssetsPath.blackGirl,
+                            title: 'You have Buy tokens',
+                            date: '18/02/2025',
+                            coin: '58.6k',
+                            time: '09:54pm')
+                        : BuyTokenScreen(
+                            token: '100',
+                            price: '\$0.99',
+                            ontap: () {},
+                          );
+                  },
+                ),
+              )
             ],
           ),
         ),

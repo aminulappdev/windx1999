@@ -83,7 +83,7 @@ class PostCardHeader extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(
-                      Icons.note,
+                      Icons.task_outlined,
                       color: Colors.white,
                     ),
                     Text(

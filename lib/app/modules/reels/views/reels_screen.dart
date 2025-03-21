@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:windx1999/app/modules/reels/widgets/icon_with_react.dart';
 import 'package:windx1999/app/modules/reels/widgets/reels_details.dart';
 import 'package:windx1999/app/res/app_images/assets_path.dart';
+import 'package:windx1999/app/res/common_widgets/custom_background.dart';
 import 'package:windx1999/app/res/custom_style/custom_size.dart';
 
 class ReelsScreen extends StatefulWidget {
@@ -19,24 +20,25 @@ class _ReelsScreenState extends State<ReelsScreen> {
     final double width = MediaQuery.of(context).size.width;
     return SafeArea(
       child: Scaffold(
-          body: ListView.builder(
+        body: CustomBackground(
+          child: ListView.builder(
             itemCount: 5,
             itemBuilder: (context, index) {
               return Stack(
                 children: [
                   Container(
-                    height: height-95.h,
+                    height: height - 95.h,
                     width: width,
                     decoration: BoxDecoration(
                         image: DecorationImage(
                             image: AssetImage(AssetsPath.reels),
                             fit: BoxFit.fill)),
                   ),
-          
+
                   /// 📌 Back Button
                   Positioned(
-                    top: 20,
-                    left: 20,
+                    top: 20.h,
+                    left: 20.w,
                     child: Row(
                       children: [
                         InkWell(
@@ -46,7 +48,7 @@ class _ReelsScreenState extends State<ReelsScreen> {
                           child: Icon(
                             Icons.close,
                             color: Colors.white,
-                            size: 26,
+                            size: 26.h,
                           ),
                         ),
                         widthBox5,
@@ -54,13 +56,13 @@ class _ReelsScreenState extends State<ReelsScreen> {
                           'Reel',
                           style: TextStyle(
                               color: Colors.white,
-                              fontSize: 20,
+                              fontSize: 20.h,
                               fontWeight: FontWeight.w600),
                         )
                       ],
                     ),
                   ),
-          
+
                   /// 📌 Camera Switch & Flash Buttons
                   Positioned(
                     bottom: 60.h,
@@ -93,10 +95,10 @@ class _ReelsScreenState extends State<ReelsScreen> {
                       ],
                     ),
                   ),
-          
+
                   Positioned(
-                    bottom: 30,
-                    left: 10,
+                    bottom: 30.h,
+                    left: 10.h,
                     child: ReelsDetails(
                       imagePath: AssetsPath.blackGirl,
                       name: 'Md Saiful',
@@ -109,39 +111,42 @@ class _ReelsScreenState extends State<ReelsScreen> {
                     ),
                   ),
                   Positioned(
-                      bottom: 400,
-                      left: 160,
+                      bottom: 400.h,
+                      left: 160.w,
                       child: InkWell(
                         onTap: () {},
                         child: CircleAvatar(
-                          radius: 28,
+                          radius: 28.r,
                           backgroundColor: Colors.white.withOpacity(0.50),
                           child: Icon(
                             Icons.play_arrow,
                             color: Colors.white,
-                            size: 30,
+                            size: 30.h,
                           ),
                         ),
                       )),
                   Positioned(
-                      bottom: 325,
-                      left: 160,
-                      child: InkWell(
-                        onTap: () {},
-                        child: CircleAvatar(
-                          radius: 28,
-                          backgroundColor: Colors.white.withOpacity(0.50),
-                          child: Icon(
-                            Icons.volume_up,
-                            color: Colors.white,
-                            size: 30,
-                          ),
+                    bottom: 325.h,
+                    left: 160.w,
+                    child: InkWell(
+                      onTap: () {},
+                      child: CircleAvatar(
+                        radius: 28.r,
+                        backgroundColor: Colors.white.withOpacity(0.50),
+                        child: Icon(
+                          Icons.volume_up,
+                          color: Colors.white,
+                          size: 30,
                         ),
-                      ))
+                      ),
+                    ),
+                  )
                 ],
               );
             },
-          )),
+          ),
+        ),
+      ),
     );
   }
 }

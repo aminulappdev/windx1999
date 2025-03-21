@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class DefaultCheker extends StatelessWidget {
   const DefaultCheker({
@@ -28,25 +29,25 @@ class DefaultCheker extends StatelessWidget {
                 child: Container(
                   decoration: BoxDecoration(
                     color: isChecked ? Colors.blue : Colors.transparent,
-                    borderRadius: BorderRadius.circular(4),
+                    borderRadius: BorderRadius.circular(4.r),
                     border: Border.all(
                       color: isChecked ? Colors.blue : Colors.white,
-                      width: 1,
+                      width: 1.w,
                     ),
                   ),
                   padding: EdgeInsets.all(4),
                   child: Icon(
                     isChecked ? Icons.check : null,
                     color: Colors.white,
-                    size: 8,
+                    size: 8.h,
                   ),
                 ),
               ),
-              SizedBox(width: 16),
+              SizedBox(width: 16.h),
               Text(
                 'Set as default audience',
                 style: TextStyle(
-                  fontSize: 12,
+                  fontSize: 12.h,
                   fontWeight: FontWeight.w600,
                   color: Colors.white,
                 ),

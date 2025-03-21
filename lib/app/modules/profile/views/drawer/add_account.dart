@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:windx1999/app/res/common_widgets/custom_rectangle_buttom.dart';
 import 'package:windx1999/app/res/common_widgets/straight_liner.dart';
 import 'package:windx1999/app/res/custom_style/custom_size.dart';
@@ -21,7 +22,7 @@ class _AddAccountState extends State<AddAccount> {
           Center(
               child: Text(
             'Your Account',
-            style: TextStyle(color: Colors.white, fontSize: 16),
+            style: TextStyle(color: Colors.white, fontSize: 16.h),
           )),
           heightBox20,
           StraightLiner(),

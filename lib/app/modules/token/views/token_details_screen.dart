@@ -79,7 +79,7 @@ class TokekDetailsScreen extends StatelessWidget {
                     Row(
                       children: [
                         Icon(
-                          Icons.layers,
+                          Icons.token_rounded,
                           color: Colors.white,
                         ),
                         widthBox8,
@@ -89,10 +89,11 @@ class TokekDetailsScreen extends StatelessWidget {
                         )
                       ],
                     ),
+                    
                     Row(
                       children: [
                         Icon(
-                          Icons.lock_clock,
+                          Icons.schedule,
                           color: Colors.white,
                           size: 18.h,
                         ),

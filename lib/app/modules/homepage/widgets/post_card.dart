@@ -80,7 +80,7 @@ class PostCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 PostCardFoterFeature(
-                  icon: Icons.heart_broken,
+                  icon: Icons.favorite_border,
                   ontap: () {},
                   quantity: react,
                 ),
@@ -97,7 +97,7 @@ class PostCard extends StatelessWidget {
                 GestureDetector(
                   onTap: bookmarkOntap,
                   child: Icon(
-                    Icons.bookmark,
+                    Icons.bookmark_border,
                     color: Colors.white,
                     size: 28.h,
                   ),

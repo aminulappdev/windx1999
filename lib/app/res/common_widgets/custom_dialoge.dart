@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:windx1999/app/res/common_widgets/custom_rectangle_buttom.dart';
 
 class CustomDeleteDialog extends StatelessWidget {
@@ -26,14 +27,14 @@ class CustomDeleteDialog extends StatelessWidget {
       elevation: 0,
       backgroundColor: Colors.transparent,
       child: Container(
-        padding: EdgeInsets.all(20),
+        padding: EdgeInsets.all(20.h),
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [Color(0xffA062FA), Color(0xffA386F0)],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
-          borderRadius: BorderRadius.circular(12.0),
+          borderRadius: BorderRadius.circular(12.0.r),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -41,31 +42,31 @@ class CustomDeleteDialog extends StatelessWidget {
             Icon(
               iconData,
               color: Colors.white,
-              size: 40,
+              size: 40.h,
             ),
-            SizedBox(height: 16),
+            SizedBox(height: 16.h),
             title == ''
                 ? Container()
                 : Text(
                     title,
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 18,
+                      fontSize: 18.sp,
                       fontWeight: FontWeight.normal,
                     ),
                     textAlign: TextAlign.center,
                   ),
-            title == '' ? SizedBox(height: 0) : SizedBox(height: 16),
+            title == '' ? SizedBox(height: 0) : SizedBox(height: 16.h),
             Text(
               subtitle,
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 16,
+                fontSize: 16.sp,
                 fontWeight: FontWeight.normal,
               ),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 20.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:windx1999/app/modules/profile/widgets/profile_dropdown.dart';
 import 'package:windx1999/app/res/app_images/assets_path.dart';
 import 'package:windx1999/app/res/common_widgets/image_container.dart';
@@ -17,7 +18,7 @@ class _PostGalleryState extends State<PostGallery> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 12, left: 12, right: 12),
+      padding:  EdgeInsets.only(top: 12.h, left: 12.w, right: 12.w),
       child: Column(
         children: [
            FilterDropdown(

@@ -8,6 +8,7 @@ class ShareOption extends StatelessWidget {
   final IconData? icon;
   final String? imagePath;
   final String title;
+  final Color titleColor;
   final VoidCallback ontap;
   
   const ShareOption({
@@ -16,7 +17,7 @@ class ShareOption extends StatelessWidget {
     required this.title,
     required this.ontap,
     this.icon,
-    required this.bgColor,
+    required this.bgColor, required this.titleColor,
   });
 
   @override
@@ -35,7 +36,7 @@ class ShareOption extends StatelessWidget {
           heightBox5,
           Text(
             title,
-            style: TextStyle(fontSize: 12.h,fontWeight: FontWeight.w600),
+            style: TextStyle(fontSize: 12.h,fontWeight: FontWeight.w600,color: titleColor),
           )
         ],
       ),

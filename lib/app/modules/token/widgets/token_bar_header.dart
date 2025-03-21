@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:windx1999/app/res/common_widgets/image_container.dart';
 import 'package:windx1999/app/res/custom_style/custom_size.dart';
 
@@ -22,8 +23,8 @@ class TokenBarHeader extends StatelessWidget {
             borderColor: Colors.transparent),
         widthBox12,
         Container(
-          height: 80,
-          width: 250,
+          height: 80.h,
+          width: 250.w,
           decoration: BoxDecoration(
               border: Border.all(color: Colors.white),
               color: Color(0xffFFFFFF).withOpacity(0.50),
@@ -42,7 +43,7 @@ class TokenBarHeader extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(
-                    Icons.layers,
+                    Icons.token_rounded,
                     size: 36,
                   ),
                   widthBox8,

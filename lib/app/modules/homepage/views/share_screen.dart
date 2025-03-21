@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:windx1999/app/modules/common/controllers/theme_controller.dart';
 import 'package:windx1999/app/modules/homepage/widgets/share_option.dart';
 import 'package:windx1999/app/res/app_images/assets_path.dart';
 import 'package:windx1999/app/res/common_widgets/search_bar.dart';
@@ -13,6 +15,8 @@ class ShareScreen extends StatefulWidget {
 }
 
 class _ShareScreenState extends State<ShareScreen> {
+  ThemeController themeController = Get.find<ThemeController>();
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -60,49 +64,60 @@ class _ShareScreenState extends State<ShareScreen> {
               ],
             ),
           ),
-          Container(
-            height: 100,
-            color: Color(0xffFFFFFF).withOpacity(0.42),
-            child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 30.w),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  ShareOption(
-                    bgColor: Color(0xffD1EEFF),
-                    
-                    title: 'Copy link',
-                    ontap: () {},
-                    icon: Icons.copy,
-                  ),
-                  ShareOption(
-                    bgColor: Color(0xffD1EEFF),
-                    
-                    title: 'Add to story',
-                    ontap: () {},
-                    icon: Icons.add_box,
-                  ),
-                  ShareOption(
-                    bgColor: Color(0xffD1EEFF),
-                    imagePath: AssetsPath.fbLogo,
-                    title: 'Whatsapp',
-                    ontap: () {},
-                  ),
-                   ShareOption(
-                    bgColor: Color(0xffD1EEFF),
-                    imagePath: AssetsPath.blackGirl,
-                    title: 'Messenger',
-                    ontap: () {},
-                  ),
-                ],
+          GetBuilder<ThemeController>(builder: (controller) {
+            return Container(
+              height: 100.h,
+              color: controller.isDarkMode == true
+                  ? Color(0xff333333)
+                  : Color(0xffFFFFFF).withOpacity(0.42),
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 30.w),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    ShareOption(
+                      bgColor: Color(0xffD1EEFF),
+                      title: 'Copy link',
+                      ontap: () {},
+                      icon: Icons.copy,
+                      titleColor: controller.isDarkMode == true
+                          ? Colors.white
+                          : Colors.black,
+                    ),
+                    ShareOption(
+                      bgColor: Color(0xffD1EEFF),
+                      title: 'Add to story',
+                      ontap: () {},
+                      icon: Icons.add_box,
+                       titleColor: controller.isDarkMode == true
+                          ? Colors.white
+                          : Colors.black,
+                    ),
+                    ShareOption(
+                      bgColor: Color(0xffD1EEFF),
+                      imagePath: AssetsPath.fbLogo,
+                      title: 'Whatsapp',
+                      ontap: () {},
+                       titleColor: controller.isDarkMode == true
+                          ? Colors.white
+                          : Colors.black,
+                    ),
+                    ShareOption(
+                      bgColor: Color(0xffD1EEFF),
+                      imagePath: AssetsPath.blackGirl,
+                      title: 'Messenger',
+                      ontap: () {},
+                       titleColor: controller.isDarkMode == true
+                          ? Colors.white
+                          : Colors.black,
+                    ),
+                  ],
+                ),
               ),
-            ),
-          )
+            );
+          })
         ],
       ),
     );
   }
 }
-
-
-

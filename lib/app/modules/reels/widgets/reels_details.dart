@@ -89,7 +89,7 @@ class ReelsDetails extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
-                          Icons.note,
+                          Icons.task_outlined,
                           color: Color(0xff6CC7FE),
                         ),
                         Text(
@@ -106,10 +106,10 @@ class ReelsDetails extends StatelessWidget {
         ),
         heightBox8,
         SizedBox(
-          width: 300,
+          width: 300.w,
           child: Text(
             caption,
-            style: TextStyle(fontSize: 14, color: Colors.white),
+            style: TextStyle(fontSize: 14.sp, color: Colors.white),
           ),
         ),
         heightBox8,
@@ -121,10 +121,10 @@ class ReelsDetails extends StatelessWidget {
             ),
             widthBox4,
             SizedBox(
-              width: 300,
+              width: 300.w,
               child: Text(
                 musicName,
-                style: TextStyle(fontSize: 14, color: Colors.white),
+                style: TextStyle(fontSize: 14.sp, color: Colors.white),
               ),
             )
           ],

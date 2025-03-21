@@ -43,8 +43,8 @@ class CustomAppBar extends StatelessWidget {
             ? InkWell(
                 onTap: ontap,
                 child: Container(
-                  height: 32,
-                  width: 60,
+                  height: 32.h,
+                  width: 60.w,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8), color: color),
                   child: Center(
