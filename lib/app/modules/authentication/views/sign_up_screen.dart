@@ -40,7 +40,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   CustomAppBar(title: 'Create Account'),
                   heightBox40,
                   SvgPicture.asset(
-                    AssetsPath.mainLogo,
+                    AssetsPath.updateMainLogo,
                     height: 120.h,
                     width: 155.w,
                   ),

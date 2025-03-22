@@ -4,7 +4,6 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:windx1999/app/modules/authentication/widgets/condition_checkbox.dart';
 import 'package:windx1999/app/modules/profile/views/set_up/profile_setup_screen.dart';
-import 'package:windx1999/app/res/app_colors/app_colors.dart';
 import 'package:windx1999/app/res/common_widgets/custom_app_bar.dart';
 import 'package:windx1999/app/res/common_widgets/custom_background.dart';
 import 'package:windx1999/app/res/common_widgets/custom_rectangle_buttom.dart';

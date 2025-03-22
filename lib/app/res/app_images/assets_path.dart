@@ -1,6 +1,7 @@
 class AssetsPath {
   static const String imagePath = 'assets/images'; 
   static const String mainLogo = '$imagePath/main_logo.svg';
+  static const String updateMainLogo = '$imagePath/update_mainLogo.svg';
   static const String onBoarding01 = '$imagePath/onBoarding01.svg';
   static const String onBoarding02 = '$imagePath/onBoarding02.svg';
   static const String onBoarding03 = '$imagePath/onBoarding03.svg';
@@ -16,6 +17,10 @@ class AssetsPath {
   static const String reels = '$imagePath/reels.jpg';
   static const String twoFactor = '$imagePath/twoFactor.svg';
   static const String downloadLight= '$imagePath/Download_light.png';
+
+  // Video
+  static const String video= '$imagePath/video.mp4';
+
   
   
 }

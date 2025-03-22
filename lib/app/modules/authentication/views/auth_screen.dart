@@ -53,12 +53,12 @@ class _AuthScreenState extends State<AuthScreen> {
                   ),
                   heightBox40,
                   SvgPicture.asset(
-                    AssetsPath.mainLogo,
-                    height: 236.h,
-                    width: 179.w,
+                    AssetsPath.updateMainLogo,
+                    height: 256.h,
+                    width: 199.w,
                     fit: BoxFit.fill,
                   ),
-                  heightBox50,
+                  heightBox20,
                   ElevatedButton(
                       onPressed: () {
                         Get.to(LogInScreen());

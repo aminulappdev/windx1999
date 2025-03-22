@@ -20,6 +20,7 @@ class PostCard extends StatelessWidget {
   final String share;
   final VoidCallback shareOntap;
   final VoidCallback bookmarkOntap;
+  final Color bgColor;
 
   const PostCard({
     super.key,
@@ -36,7 +37,7 @@ class PostCard extends StatelessWidget {
     required this.commentOnTap,
     required this.share,
     required this.shareOntap,
-    required this.bookmarkOntap,
+    required this.bookmarkOntap, required this.bgColor,
   });
 
   @override
@@ -45,7 +46,7 @@ class PostCard extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        color: Color(0xffAF7CF8),
+        color:  bgColor,
       ),
       child: Padding(
         padding: EdgeInsets.all(8.0.h),

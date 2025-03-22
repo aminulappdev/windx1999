@@ -32,7 +32,7 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(   
       body:  CustomBackground(
         child: Center(
-          child: SvgPicture.asset(AssetsPath.mainLogo,height: 294.h,width: 223.w,fit: BoxFit.fill,)
+          child: SvgPicture.asset(AssetsPath.updateMainLogo,height: 324.h,width: 253.w,fit: BoxFit.fill,)
         ),
       ),
     );

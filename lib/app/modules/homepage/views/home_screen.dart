@@ -55,7 +55,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         SizedBox(
                             height: 40.h,
                             width: 196.w,
-                            child: CustomSearchBar()),
+                            child: CustomSearchBar(
+                            
+                            )),
                         Container(
                           height: 40.h,
                           width: 80.w,
@@ -71,10 +73,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                 },
                                 child: Icon(
                                   Icons.token_rounded,
-                                  size: 28.h,
+                                  size: 26.h,
+                                  color:  controller.isDarkMode == true ? Color.fromARGB(255, 255, 255, 255) : Color.fromARGB(255, 0, 0, 0),
                                 ),
                               ),
-                              Text('25.2k')
+                              Text('25.2k',style: TextStyle(color: controller.isDarkMode == true ? Color.fromARGB(255, 255, 255, 255) : Color.fromARGB(255, 0, 0, 0), ),)
                             ],
                           ),
                         ),
@@ -92,6 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     heightBox12,
                     PostCard(
+                      bgColor: controller.isDarkMode == true ? Color(0xff545458) : Color(0xffAF7CF8),
                       name: 'Aminul Islam',
                       profilePath: AssetsPath.blackGirl,
                       activeStatus: '20m ago',
@@ -154,6 +158,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     heightBox12,
                     PostCard(
+                        bgColor: controller.isDarkMode == true ? Color(0xff545458) : Color(0xffAF7CF8),
                       name: 'Mansura',
                       profilePath: AssetsPath.blackGirl,
                       activeStatus: '20m ago',

@@ -39,13 +39,13 @@ class _LogInScreenState extends State<LogInScreen> {
                 children: [
                  heightBox20,
                   CustomAppBar(title: 'Log in'),
-                  heightBox40,
+                  heightBox20,
                   SvgPicture.asset(
-                    AssetsPath.mainLogo,
-                    height: 120.h,
-                    width: 155.w,
+                    AssetsPath.updateMainLogo,
+                    height: 160.h,
+                    width: 195.w,
                   ),
-                  heightBox16,
+                  heightBox8,
                   Form(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
