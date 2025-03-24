@@ -20,117 +20,119 @@ class _CommentScreenState extends State<CommentScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: CustomBackground(
-          child: SizedBox(
-            height: MediaQuery.of(context).size.height,
-            child: Padding(
-              padding: EdgeInsets.all(0.0),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.all(20.0.h),
-                    child: Column(
-                      children: [
-                       heightBox20,
-                  CustomAppBar(title: 'Comments'),
-                        heightBox40,
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+      body: CustomBackground(
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height,
+          child: Padding(
+            padding: EdgeInsets.all(0.0),
+            child: Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(20.0.h),
+                  child: Column(
+                    children: [
+                      heightBox20,
+                      CustomAppBar(title: 'Comments'),
+                      heightBox40,
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CircleAvatar(
+                            backgroundImage: AssetImage(AssetsPath.blackGirl),
+                          ),
+                          widthBox8,
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Aminul',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 18.sp),
+                              ),
+                              Text(
+                                'Massalah sundor hoiche',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              Text(
+                                'Reply..',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              heightBox14,
+                              CommentSection(
+                                imagePath: AssetsPath.blackGirl,
+                                name: 'Aminul',
+                                comment: 'Massalah sundor hoiche',
+                                replyOntap: () {},
+                              )
+                            ],
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: SizedBox.shrink(),
+                ),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: GetBuilder<ThemeController>(builder: (controller) {
+                    return Container(
+                      decoration: BoxDecoration(
+                        color: controller.isDarkMode == true
+                            ? Color(0xff333333)
+                            : Color(0xffFFFFFF).withOpacity(0.32),
+                      ),
+                      height: 82.h,
+                      width: MediaQuery.of(context).size.width,
+                      child: Padding(
+                        padding: EdgeInsets.all(8.0.h),
+                        child: Row(
                           children: [
                             CircleAvatar(
+                              radius: 18.r,
                               backgroundImage: AssetImage(AssetsPath.blackGirl),
                             ),
-                            widthBox8,
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Aminul',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 18.sp),
-                                ),
-                                Text(
-                                  'Massalah sundor hoiche',
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                                Text(
-                                  'Reply..',
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                                heightBox14,
-                                CommentSection(
-                                  imagePath: AssetsPath.blackGirl,
-                                  name: 'Aminul',
-                                  comment: 'Massalah sundor hoiche',
-                                  replyOntap: () {},
-                                )
-                              ],
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    child: SizedBox.shrink(),
-                  ),
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: GetBuilder<ThemeController>(builder: (controller) {
-                      return Container(
-                        decoration: BoxDecoration(
-                          color: controller.isDarkMode == true
-                              ? Color(0xff333333)
-                              : Color(0xffFFFFFF).withOpacity(0.32),
-                        ),
-                        height: 82.h,
-                        width: MediaQuery.of(context).size.width,
-                        child: Padding(
-                          padding: EdgeInsets.all(8.0.h),
-                          child: Row(
-                            children: [
-                              CircleAvatar(
-                                radius: 18.r,
-                                backgroundImage:
-                                    AssetImage(AssetsPath.blackGirl),
-                              ),
-                              SizedBox(
-                                width: 300.w,
-                                child: TextFormField(
-                                  decoration: InputDecoration(
-                                      hintStyle: TextStyle(
-                                          color: controller.isDarkMode == true
-                                              ? Colors.white
-                                              : Colors.black),
-                                      fillColor: Colors.transparent,
-                                      hintText: 'Writes a comment',
-                                      suffixIcon: Icon(
-                                        Icons.attach_file,
+                            SizedBox(
+                              width: 300.w,
+                              child: TextFormField(
+                                style: TextStyle(
+                                    color: controller.isDarkMode == true
+                                        ? Colors.white
+                                        : Colors.black),
+                                decoration: InputDecoration(
+                                    hintStyle: TextStyle(
                                         color: controller.isDarkMode == true
                                             ? Colors.white
-                                            : Colors.black,
-                                      ),
-                                      contentPadding: EdgeInsets.all(10.h)),
-                                ),
+                                            : Colors.black),
+                                    fillColor: Colors.transparent,
+                                    hintText: 'Writes a comment',
+                                    suffixIcon: Icon(
+                                      Icons.attach_file,
+                                      color: controller.isDarkMode == true
+                                          ? Colors.white
+                                          : Colors.black,
+                                    ),
+                                    contentPadding: EdgeInsets.all(10.h)),
                               ),
-                              Icon(
-                                Icons.send,
-                                color: controller.isDarkMode == true
-                                    ? Colors.white
-                                    : Colors.black,
-                              ),
-                            ],
-                          ),
+                            ),
+                            Icon(
+                              Icons.send,
+                              color: controller.isDarkMode == true
+                                  ? Colors.white
+                                  : Colors.black,
+                            ),
+                          ],
                         ),
-                      );
-                    }),
-                  ),
-                ],
-              ),
+                      ),
+                    );
+                  }),
+                ),
+              ],
             ),
           ),
         ),
-      
+      ),
     );
   }
 }

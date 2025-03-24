@@ -95,7 +95,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                         heightBox10,
                         TextFormField(
                           decoration: InputDecoration(
-                            hintText: 'Md Aminul Islam',
+                            hintText: 'Enter your name',
                             errorStyle: TextStyle(
                                 color: const Color.fromARGB(255, 237, 82, 82)),
                           ),
@@ -110,7 +110,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                         ),
                         heightBox20,
                         Text(
-                          'Username',
+                          'Enter your username',
                           style: TextStyle(fontSize: 16.sp, color: Colors.white),
                         ),
                         heightBox10,
@@ -138,7 +138,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                         TextFormField(
                           decoration: InputDecoration(
                             hintText:
-                                'Im Aminul. I have 2+ years of experience specializing in App development',
+                                'Enter your bio',
                             errorStyle: TextStyle(
                                 color: const Color.fromARGB(255, 237, 82, 82)),
                           ),

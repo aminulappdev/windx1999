@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/get_navigation.dart';
 import 'package:windx1999/app/modules/common/controllers/theme_controller.dart';
 import 'package:windx1999/app/modules/common/views/navigation_bar_screen.dart';
 import 'package:windx1999/app/modules/profile/widgets/feature_row.dart';

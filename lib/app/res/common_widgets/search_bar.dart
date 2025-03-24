@@ -5,10 +5,8 @@ import 'package:windx1999/app/modules/common/controllers/theme_controller.dart';
 
 // ignore: must_be_immutable
 class CustomSearchBar extends StatelessWidget {
-  
   CustomSearchBar({
     super.key,
-    
   });
 
   ThemeController themeController = Get.find<ThemeController>();
@@ -16,6 +14,8 @@ class CustomSearchBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<ThemeController>(builder: (controller) {
       return TextFormField(
+        style: TextStyle(
+            color: controller.isDarkMode == true ? Colors.white : Colors.black),
         decoration: InputDecoration(
           prefixIcon: Icon(
             Icons.search,

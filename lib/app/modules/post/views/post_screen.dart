@@ -100,6 +100,7 @@ class _PostScreenState extends State<PostScreen> {
                 ),
                 heightBox20,
                 TextFormField(
+                  style: TextStyle(color: Colors.white),
                   maxLines: 4,
                   decoration: InputDecoration(
                       fillColor: const Color.fromARGB(166, 255, 255, 255),
@@ -165,13 +166,12 @@ class _PostScreenState extends State<PostScreen> {
                                   borderRadius: BorderRadius.circular(
                                       10), // Border radius
                                   border: Border.all(
-                                    color: Colors.white, 
-                                    width: 1, 
+                                    color: Colors.white,
+                                    width: 1,
                                   ),
                                 ),
                                 child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(
-                                      10),
+                                  borderRadius: BorderRadius.circular(10),
                                   child: Image.file(
                                     _selectedImages[index],
                                     width: 100.w,

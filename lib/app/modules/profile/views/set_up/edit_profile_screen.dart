@@ -188,7 +188,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           TextFormField(
                             decoration: InputDecoration(
                               hintText:
-                                  'Im Aminul. I have 2+ years of experience specializing in App development',
+                                  'Enter your bio',
                               errorStyle: TextStyle(
                                   color: const Color.fromARGB(255, 237, 82, 82)),
                             ),

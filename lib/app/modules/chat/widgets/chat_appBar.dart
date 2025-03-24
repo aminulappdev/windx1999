@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:windx1999/app/modules/profile/views/own_profile/others_profile_screen.dart';
 import 'package:windx1999/app/res/custom_style/custom_size.dart';
 
