@@ -8,6 +8,7 @@ import 'package:windx1999/app/modules/homepage/views/notification_screen.dart';
 import 'package:windx1999/app/modules/homepage/views/share_screen.dart';
 import 'package:windx1999/app/modules/homepage/views/show_wishlist_screen.dart';
 import 'package:windx1999/app/modules/homepage/widgets/post_card.dart';
+import 'package:windx1999/app/modules/profile/views/own_profile/others_profile_screen.dart';
 import 'package:windx1999/app/modules/token/views/token_bar.dart';
 import 'package:windx1999/app/res/app_images/assets_path.dart';
 import 'package:windx1999/app/res/common_widgets/circle_icon_transparent.dart';
@@ -44,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
         return Scaffold(      
           body: CustomBackground(
             child: Padding(
-              padding: EdgeInsets.all(24.0.h),
+              padding: EdgeInsets.symmetric(horizontal: 18.0.h,vertical: 20),
               child: SingleChildScrollView(
                 child: Column(
                   children: [
@@ -101,7 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       activeStatus: '20m ago',
                       addFriendOnTap: () {},
                       wishListOnTap: () {
-                        Get.to(ShowWishlistScreen());
+                        Get.to(OthersProfileScreen());
                       },
                       moreVertOntap: () {
                         showModalBottomSheet(
