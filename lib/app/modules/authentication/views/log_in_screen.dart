@@ -4,12 +4,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
+import 'package:windx1999/app/modules/authentication/controllers/log_in_controller.dart';
 import 'package:windx1999/app/modules/authentication/views/forgot_password_screen.dart';
 import 'package:windx1999/app/modules/authentication/views/sign_up_screen.dart';
 import 'package:windx1999/app/modules/authentication/widgets/auth_footer.dart';
 import 'package:windx1999/app/modules/authentication/widgets/continue_with_button.dart';
 import 'package:windx1999/app/modules/authentication/widgets/forgot_password.dart';
+import 'package:windx1999/app/modules/common/views/navigation_bar_screen.dart';
 import 'package:windx1999/app/res/common_widgets/custom_background.dart';
+import 'package:windx1999/app/res/common_widgets/custom_snackbar.dart';
 import 'package:windx1999/app/res/common_widgets/liner_widget.dart';
 import 'package:windx1999/app/modules/profile/views/set_up/profile_setup_screen.dart';
 import 'package:windx1999/app/res/app_images/assets_path.dart';
@@ -24,6 +27,11 @@ class LogInScreen extends StatefulWidget {
 }
 
 class _LogInScreenState extends State<LogInScreen> {
+  final TextEditingController emailCtrl = TextEditingController();
+  final TextEditingController passCtrl = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final LogInController logInController = LogInController();
+
   bool _obscureText = true;
 
   @override
@@ -46,6 +54,7 @@ class _LogInScreenState extends State<LogInScreen> {
                 ),
                 heightBox8,
                 Form(
+                  key: _formKey,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -55,6 +64,7 @@ class _LogInScreenState extends State<LogInScreen> {
                       ),
                       heightBox10,
                       TextFormField(
+                        controller: emailCtrl,
                         decoration: InputDecoration(
                           hintText: 'Enter your email',
                           errorStyle: TextStyle(
@@ -79,6 +89,7 @@ class _LogInScreenState extends State<LogInScreen> {
                       ),
                       heightBox10,
                       TextFormField(
+                        controller: passCtrl,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         validator: (String? value) {
                           if (value!.isEmpty) {
@@ -116,7 +127,7 @@ class _LogInScreenState extends State<LogInScreen> {
                 heightBox12,
                 ElevatedButton(
                     onPressed: () {
-                      Get.to(ProfileSetupScreen());
+                      loginBTN(emailCtrl.text, passCtrl.text);
                     },
                     child: Text('Log In')),
                 heightBox12,
@@ -150,5 +161,22 @@ class _LogInScreenState extends State<LogInScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> loginBTN(String email, String password) async {
+    final bool isSuccess = await logInController.loginUser(email, password);
+
+    if (isSuccess) {
+      if (mounted) {
+        showSnackBarMessage(context, 'Login successfully done');
+        Get.offAll(BottomNavBarScreen());
+      }
+
+    } else {
+      if (mounted) {
+        showSnackBarMessage(
+            context, logInController.errorMessage ?? 'Login failed', true);
+      }
+    }
   }
 }

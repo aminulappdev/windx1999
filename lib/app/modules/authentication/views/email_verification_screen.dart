@@ -8,6 +8,7 @@ import 'package:get/get_navigation/get_navigation.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:windx1999/app/modules/authentication/controllers/create_user_controller.dart';
 import 'package:windx1999/app/modules/authentication/controllers/otp_verify_controller.dart';
+import 'package:windx1999/app/modules/authentication/views/log_in_screen.dart';
 import 'package:windx1999/app/modules/authentication/widgets/resend_code.dart';
 import 'package:windx1999/app/res/app_images/assets_path.dart';
 import 'package:windx1999/app/res/common_widgets/custom_app_bar.dart';
@@ -16,7 +17,8 @@ import 'package:windx1999/app/res/common_widgets/custom_snackbar.dart';
 import 'package:windx1999/app/res/custom_style/custom_size.dart';
 
 class EmailVerificationScreen extends StatefulWidget {
-  const EmailVerificationScreen({super.key});
+  final String accessToken;
+  const EmailVerificationScreen({super.key, required this.accessToken});
 
   @override
   State<EmailVerificationScreen> createState() =>
@@ -107,14 +109,14 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
   }
 
   Future<void> otpBTN(String otp) async {
-    var token = createUserController.userData?.otpToken?.token ?? 'Empty token';
+    var token = widget.accessToken;
     print('OTP Button token : $token');
     final bool isSuccess = await otpVerifyController.otpVerify(otp, token);
 
     if (isSuccess) {
       if (mounted) {
         showSnackBarMessage(context, 'Register successfully done');
-        Get.to(EmailVerificationScreen());
+        Get.to(LogInScreen());
       }
     } else {
       if (mounted) {

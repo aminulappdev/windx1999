@@ -127,7 +127,8 @@ class NetworkCaller {
       };
 
       if (accesToken != null) {
-        headers['Authorization'] = accesToken;
+        // headers['Authorization'] = accesToken;
+        headers['token'] = accesToken;
       }
 
       _logRequest(url, headers, body);

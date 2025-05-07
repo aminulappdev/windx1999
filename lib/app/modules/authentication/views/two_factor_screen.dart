@@ -134,7 +134,7 @@ class _TwoFactorScreenState extends State<TwoFactorScreen> {
                   heightBox24,
                   ElevatedButton(
                       onPressed: () {
-                        Get.to(EmailVerificationScreen());
+                        Get.to(EmailVerificationScreen(accessToken: '',));
                       },
                       child: Text(
                         'Continue',

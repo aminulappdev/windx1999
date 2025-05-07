@@ -138,8 +138,12 @@ class _GDPRConsentScreenState extends State<GDPRConsentScreen> {
 
     if (isSuccess) {
       if (mounted) {
+        var token = createUserController.userData?.otpToken?.token;
+        print('Otp token F:  $token');
         showSnackBarMessage(context, 'Register successfully done');
-        Get.to(EmailVerificationScreen());
+        Get.to(EmailVerificationScreen(
+          accessToken: token ?? 'Empty token',
+        ));
       }
     } else {
       if (mounted) {

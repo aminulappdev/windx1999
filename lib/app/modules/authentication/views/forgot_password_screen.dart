@@ -73,7 +73,7 @@ class _ForgotpasswordScreenState extends State<ForgotpasswordScreen> {
                   ),
                   heightBox24,
                   ElevatedButton(onPressed: () {
-                    Get.to(EmailVerificationScreen());
+                    Get.to(EmailVerificationScreen(accessToken: '',));
                   }, child: Text('Next'))
                 ],
               ),

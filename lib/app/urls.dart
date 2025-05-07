@@ -4,8 +4,9 @@ class Urls {
   static const String socketUrl = 'http://192.168.10.144:4001/';
   static const String createUserUrl = '$_baseUrl/users/create';
   static const String otpVerifyUrl = '$_baseUrl/otp/verify-otp';
+  static const String loginUrl = '$_baseUrl/auth/login';
   
-  
+   
 
 
   // static String allProductUrl(

@@ -5,7 +5,7 @@ class StorageUtil {
 
   static Future<void> saveData(String key, dynamic value) async {
     await box.write(key, value);
-  }
+  } 
 
   static dynamic getData(String key) {
     return box.read(key);
@@ -15,4 +15,3 @@ class StorageUtil {
     await box.remove(key);
   }
 }
- 

@@ -16,7 +16,7 @@ class OtpVerifyController extends GetxController {
   String? get otpToken => _otpToken;
 
   // Setter for otpToken
-  set otpToken(String? value) {
+  set otpToken(String? value) { 
     _otpToken = value;
     update();
   }
