@@ -11,7 +11,8 @@ import 'package:windx1999/app/res/custom_style/custom_size.dart';
 
 
 class ProfileSetupScreen extends StatefulWidget {
-  const ProfileSetupScreen({super.key});
+  final String userId;
+  const ProfileSetupScreen({super.key, required this.userId});
 
   @override
   State<ProfileSetupScreen> createState() => _ProfileSetupScreenState();
@@ -22,6 +23,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
   File? image;
 
   final ImagePickerHelper _imagePickerHelper = ImagePickerHelper();
+  
 
   @override
   Widget build(BuildContext context) {
@@ -206,4 +208,6 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
       
     );
   }
+
+   
 }

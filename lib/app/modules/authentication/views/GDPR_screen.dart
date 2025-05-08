@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:windx1999/app/modules/authentication/controllers/create_user_controller.dart';
 import 'package:windx1999/app/modules/authentication/views/email_verification_screen.dart';
-import 'package:windx1999/app/modules/authentication/views/two_factor_screen.dart';
 import 'package:windx1999/app/modules/authentication/widgets/condition_checkbox.dart';
 import 'package:windx1999/app/res/common_widgets/custom_app_bar.dart';
 import 'package:windx1999/app/res/common_widgets/custom_background.dart';
@@ -91,38 +89,39 @@ class _GDPRConsentScreenState extends State<GDPRConsentScreen> {
                   },
                 ),
                 heightBox14,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CustomRectangleButton(
-                      text: 'Decline',
-                      height: 48,
-                      width: 152,
-                      bgColor: Colors.transparent,
-                      radiusSize: 50,
-                      textColor: Colors.white,
-                      ontap: () {},
-                    ),
-                    widthBox40,
-                    CustomRectangleButton(
-                      text: 'Accept',
-                      height: 48,
-                      width: 152,
-                      bgColor: Color(0xff6CC7FE),
-                      radiusSize: 50,
-                      ontap: () {
-                        print('Register information ........................');
-                        print(widget.firstName);
-                        signUpnBTN(
-                            widget.firstName,
-                            widget.lastName,
-                            widget.email,
-                            widget.password,
-                            widget.confirmPassword);
-                      },
-                    ),
-                  ],
-                ),
+                if (isChecked01 == true &&
+                    isChecked02 == true &&
+                    isChecked03) ...{
+                  CustomRectangleButton(
+                    text: 'Accept',
+                    height: 48,
+                    width: MediaQuery.of(context).size.width,
+                    bgColor: Color(0xff6CC7FE),
+                    radiusSize: 50,
+                    ontap: () {
+                      print('Register information ........................');
+                      print(widget.firstName);
+                      signUpnBTN(
+                          widget.firstName,
+                          widget.lastName,
+                          widget.email,
+                          widget.password,
+                          widget.confirmPassword);
+                    },
+                  ),
+                } else ...{
+                  CustomRectangleButton(
+                    text: 'Accept',
+                    height: 48,
+                    width: MediaQuery.of(context).size.width,
+                    bgColor: Color.fromARGB(178, 108, 198, 254),
+                    radiusSize: 50,
+                    ontap: () {
+                      print('Register information ........................');
+                      print(widget.firstName);
+                    },
+                  ),
+                }
               ],
             ),
           ),

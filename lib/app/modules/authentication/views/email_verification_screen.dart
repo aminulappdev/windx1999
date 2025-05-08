@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/get_navigation.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:windx1999/app/modules/authentication/controllers/create_user_controller.dart';
 import 'package:windx1999/app/modules/authentication/controllers/otp_verify_controller.dart';
 import 'package:windx1999/app/modules/authentication/views/log_in_screen.dart';
 import 'package:windx1999/app/modules/authentication/widgets/resend_code.dart';
+import 'package:windx1999/app/modules/profile/views/set_up/profile_setup_screen.dart';
 import 'package:windx1999/app/res/app_images/assets_path.dart';
 import 'package:windx1999/app/res/common_widgets/custom_app_bar.dart';
 import 'package:windx1999/app/res/common_widgets/custom_background.dart';
@@ -116,7 +114,11 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
     if (isSuccess) {
       if (mounted) {
         showSnackBarMessage(context, 'Register successfully done');
-        Get.to(LogInScreen());
+        var userId = otpVerifyController.otpData?.user?.id;
+        // print('user id : $userId');
+        Get.to(ProfileSetupScreen(
+          userId: userId ?? 'Empty',
+        ));
       }
     } else {
       if (mounted) {

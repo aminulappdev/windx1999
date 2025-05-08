@@ -2,19 +2,18 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/get_navigation.dart';
+import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:windx1999/app/modules/authentication/controllers/log_in_controller.dart';
+import 'package:windx1999/app/modules/authentication/controllers/resend_otp_controller.dart';
+import 'package:windx1999/app/modules/authentication/views/email_verification_screen.dart';
 import 'package:windx1999/app/modules/authentication/views/forgot_password_screen.dart';
 import 'package:windx1999/app/modules/authentication/views/sign_up_screen.dart';
 import 'package:windx1999/app/modules/authentication/widgets/auth_footer.dart';
-import 'package:windx1999/app/modules/authentication/widgets/continue_with_button.dart';
 import 'package:windx1999/app/modules/authentication/widgets/forgot_password.dart';
 import 'package:windx1999/app/modules/common/views/navigation_bar_screen.dart';
 import 'package:windx1999/app/res/common_widgets/custom_background.dart';
 import 'package:windx1999/app/res/common_widgets/custom_snackbar.dart';
-import 'package:windx1999/app/res/common_widgets/liner_widget.dart';
-import 'package:windx1999/app/modules/profile/views/set_up/profile_setup_screen.dart';
 import 'package:windx1999/app/res/app_images/assets_path.dart';
 import 'package:windx1999/app/res/common_widgets/custom_app_bar.dart';
 import 'package:windx1999/app/res/custom_style/custom_size.dart';
@@ -30,9 +29,11 @@ class _LogInScreenState extends State<LogInScreen> {
   final TextEditingController emailCtrl = TextEditingController();
   final TextEditingController passCtrl = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final LogInController logInController = LogInController();
+  final LogInController logInController = Get.find<LogInController>();
+  final ResendOtpController resendOtpController = ResendOtpController();
 
   bool _obscureText = true;
+  bool isChecked = false;
 
   @override
   Widget build(BuildContext context) {
@@ -121,34 +122,42 @@ class _LogInScreenState extends State<LogInScreen> {
                   ),
                 ),
                 heightBox12,
-                ForgotPasswordRow(ontap: () {
-                  Get.to(ForgotpasswordScreen());
-                }),
-                heightBox12,
-                ElevatedButton(
-                    onPressed: () {
-                      loginBTN(emailCtrl.text, passCtrl.text);
-                    },
-                    child: Text('Log In')),
-                heightBox12,
-                Liner(
-                  text: 'Or continue with',
+                ForgotPasswordRow(
+                  isChecked: isChecked,
+                  onCheckedChanged: (val) {
+                    setState(() {
+                      isChecked = val;
+                    });
+                  },
+                  ontap: () {
+                    Get.to(ForgotpasswordScreen());
+                  },
                 ),
                 heightBox12,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ContinueElevatedButton(
-                      ontap: () {},
-                      logoPath: AssetsPath.googleLogo,
+                isChecked == true
+                    ? ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blue,
+                        ),
+                        onPressed: () {
+                          loginBTN(emailCtrl.text, passCtrl.text);
+                        },
+                        child: Text('Log In'),
+                      )
+                    : Opacity(
+                      opacity: 0.3,
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blue,
+                          ),
+                          onPressed: () {},
+                          child: Text('Log In',style: TextStyle(color: Colors.grey),),
+                        ),
                     ),
-                    widthBox8,
-                  ],
-                ),
                 heightBox20,
                 AuthenticationFooterSection(
                   fTextName: 'Don’t have an account? ',
-                  fTextColor: Color.fromARGB(255, 255, 255, 255),
+                  fTextColor: Colors.white,
                   sTextName: 'Sign up',
                   sTextColor: Color(0xff6CC7FE),
                   ontap: () {
@@ -166,13 +175,21 @@ class _LogInScreenState extends State<LogInScreen> {
   Future<void> loginBTN(String email, String password) async {
     final bool isSuccess = await logInController.loginUser(email, password);
 
-    if (isSuccess) {
+    if(logInController.errorMessage?.contains('not') == true){
+         print('User not verified otp');
+          final bool isSuccess = await resendOtpController.resendOtp(email,);
+          var token = resendOtpController.resendOtpData?.token ?? 'Empty';
+          print('ResendOtp : $token');
+          Get.to(EmailVerificationScreen(accessToken: token,));
+    }
+    else if (isSuccess) {
+      print('User verified');
       if (mounted) {
         showSnackBarMessage(context, 'Login successfully done');
         Get.offAll(BottomNavBarScreen());
       }
-
     } else {
+      print('User not verified');     
       if (mounted) {
         showSnackBarMessage(
             context, logInController.errorMessage ?? 'Login failed', true);

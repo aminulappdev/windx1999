@@ -6,9 +6,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:windx1999/app/modules/authentication/views/GDPR_screen.dart';
 import 'package:windx1999/app/modules/authentication/widgets/auth_footer.dart';
-import 'package:windx1999/app/modules/authentication/widgets/continue_with_button.dart';
 import 'package:windx1999/app/res/common_widgets/custom_background.dart';
-import 'package:windx1999/app/res/common_widgets/liner_widget.dart';
 import 'package:windx1999/app/res/app_images/assets_path.dart';
 import 'package:windx1999/app/res/common_widgets/custom_app_bar.dart';
 import 'package:windx1999/app/res/custom_style/custom_size.dart';
@@ -234,20 +232,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ));
                     },
                     child: Text('Sign Up')),
-                heightBox12,
-                Liner(
-                  text: 'Or continue with',
-                ),
-                heightBox12,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ContinueElevatedButton(
-                      logoPath: AssetsPath.googleLogo,
-                      ontap: () {},
-                    ),
-                  ],
-                ),
                 heightBox20,
                 AuthenticationFooterSection(
                   fTextName: 'Don’t have an account? ',
