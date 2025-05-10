@@ -6,6 +6,8 @@ import 'package:windx1999/app/modules/authentication/controllers/otp_verify_cont
 import 'package:windx1999/app/modules/authentication/controllers/resend_otp_controller.dart';
 import 'package:windx1999/app/modules/authentication/controllers/reset_password_controller.dart';
 import 'package:windx1999/app/modules/common/controllers/theme_controller.dart';
+import 'package:windx1999/app/modules/profile/controllers/profile_setup_controller.dart';
+import 'package:windx1999/app/modules/profile/controllers/setup_address_controller.dart';
 import 'package:windx1999/app/services/network_caller/network_caller.dart';
 
 
@@ -20,6 +22,8 @@ class ControllerBinder extends Bindings {
     Get.put(ForgotEmailController());
     Get.put(ResetPasswordController());
     Get.put(ResendOtpController());
+    Get.put(SetupAddressController());
+    Get.put(SetupProfileController());
    
   }
  

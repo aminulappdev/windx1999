@@ -4,11 +4,9 @@ import 'package:get/get.dart';
 import 'package:windx1999/app/modules/authentication/controllers/otp_verify_controller.dart';
 import 'package:windx1999/app/modules/authentication/model/login_model.dart';
 import 'package:windx1999/app/modules/authentication/model/resend_otp_response_modek.dart';
-import 'package:windx1999/app/res/app_const/access_token.dart';
 import 'package:windx1999/app/services/network_caller/network_caller.dart';
 import 'package:windx1999/app/services/network_caller/network_response.dart';
 import 'package:windx1999/app/urls.dart';
-import 'package:windx1999/get_storage.dart';
 
 class ResendOtpController extends GetxController {
   final OtpVerifyController otpVerifyController = OtpVerifyController();

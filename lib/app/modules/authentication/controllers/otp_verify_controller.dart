@@ -4,7 +4,7 @@ import 'package:windx1999/app/modules/authentication/model/otp_response_mode.dar
 import 'package:windx1999/app/services/network_caller/network_caller.dart';
 import 'package:windx1999/app/services/network_caller/network_response.dart';
 import 'package:windx1999/app/urls.dart';
-
+import 'package:windx1999/get_storage.dart';
 
 class OtpVerifyController extends GetxController {
   bool _inProgress = false;
@@ -20,16 +20,15 @@ class OtpVerifyController extends GetxController {
   OtpData? get otpData => otpResponseModel?.data;
 
   // Setter for otpToken
-  set otpToken(String? value) { 
+  set otpToken(String? value) {
     _otpToken = value;
-    
+
     update();
   }
 
   Future<bool> otpVerify(String otpNumber, String otpTokenUser) async {
     print('Token is main : $otpTokenUser');
-    
-    
+
     bool isSuccess = false;
 
     _inProgress = true;
@@ -44,11 +43,16 @@ class OtpVerifyController extends GetxController {
         .postRequestWithToken(Urls.otpVerifyUrl, requestBody,
             accesToken: otpTokenUser); // Replace your api url
 
-
     if (response.isSuccess) {
       // Accessing the otpToken from the response data safely
 
+      
       otpResponseModel = OtpResponseModel.fromJson(response.responseData);
+      print('Otp response model : ${response.responseData}');
+      print('Token is : ${response.responseData['data']['token']}');
+      var token = response.responseData['data']['token'];
+      box.write('user-access-token', token);
+      print('Local Token is : ${box.read('user-access-token')}');
       _errorMessage = null;
       isSuccess = true;
     } else {

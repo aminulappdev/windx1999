@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:windx1999/app/modules/authentication/controllers/create_user_controller.dart';
 import 'package:windx1999/app/modules/authentication/controllers/otp_verify_controller.dart';
-import 'package:windx1999/app/modules/authentication/views/log_in_screen.dart';
 import 'package:windx1999/app/modules/authentication/widgets/resend_code.dart';
 import 'package:windx1999/app/modules/profile/views/set_up/profile_setup_screen.dart';
 import 'package:windx1999/app/res/app_images/assets_path.dart';

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:get/get.dart';
 import 'package:windx1999/app/services/network_caller/network_caller.dart';
 import 'package:windx1999/app/services/network_caller/network_response.dart';
@@ -61,7 +63,7 @@ class GetController extends GetxController {
 
     final NetworkResponse response = await Get.find<NetworkCaller>()
         .getRequest(Urls.createUserUrl, // Replace api url
-            accesToken: StorageUtil.getData('user-login-access-token'));
+            accesToken: box.read('user-login-access-token'));
 
     if (response.isSuccess) {
       _errorMessage = null;
@@ -117,7 +119,7 @@ class GetControllerWithPegination extends GetxController {
     final NetworkResponse response = await Get.find<NetworkCaller>()
         .getRequest(Urls.createUserUrl, // replace your api url
             queryParams: queryparam,
-            accesToken: StorageUtil.getData('user-login-access-token'));
+            accesToken: box.read('user-login-access-token'));
 
     if (response.isSuccess) {
       _errorMessage = null;
@@ -139,6 +141,112 @@ class GetControllerWithPegination extends GetxController {
     return isSuccess;
   }
 }
+
+// Post controller with Form data .............................................
+// ............................................................................
+
+/*
+
+class PostControllerWithFormData extends GetxController {
+  bool _inProgress = false;
+  bool get inProgress => _inProgress;
+
+  String? _errorMessage;
+  String? get errorMessage => _errorMessage;
+
+  String? _accessToken;
+  String? get accessToken => _accessToken;
+
+  String? addressFiled;
+
+
+  /// 🔁 Update Profile Function
+  Future<bool> updateProfile() async {
+  
+    bool isSuccess = false;
+    _inProgress = true;
+    update();
+
+    try {
+      String? token = box.read('user-login-access-token');
+      if (token == null || token.isEmpty) {
+        _errorMessage = "User not authenticated";
+        _inProgress = false;
+        update();
+        return false;
+      }
+
+      var uri = Uri.parse(Urls.updateProfileUrl);
+      var request = http.MultipartRequest('PUT', uri);
+
+      // ✅ Only Authorization header
+      request.headers['Authorization'] = token;
+
+      // ✅ Set 'data' field with JSON-encoded string
+      Map<String, dynamic> jsonFields = {
+        "name": isNameUpdate == true ? name : profileController.profileData?.name ?? name,
+        "contractNo": number,
+      };
+
+      if (address != null && address.isNotEmpty) {
+        if(addressIndex == 'Home'){
+              jsonFields['homeAddress'] = address;
+        }
+        else if(addressIndex == 'Office'){
+           jsonFields['officeAddress'] = address;
+        }
+        else if(addressIndex == 'Delivery'){
+           jsonFields['deliveryAddress'] = address;
+        }
+       
+      }
+      
+
+      request.fields['data'] = jsonEncode(jsonFields);
+
+      // ✅ Add image if available
+      if (image != null) {
+        print('Image ache ekhane ................................');
+        print(image);
+        String imagePath = image.path;
+        String? mimeType = lookupMimeType(imagePath) ?? 'image/jpeg';
+ 
+        request.files.add(
+          await http.MultipartFile.fromPath(
+            'image', // 🔑 Backend should expect this key
+            imagePath,
+            contentType: MediaType.parse(mimeType),
+          ),
+        );
+      }
+
+      // 📡 Send request
+      var streamedResponse = await request.send();
+      var responseBody = await streamedResponse.stream.bytesToString();
+
+      print('📥 Server Response:');
+      print(responseBody);
+
+      var decodedResponse = jsonDecode(responseBody);
+
+      if (streamedResponse.statusCode == 200) {
+        _errorMessage = null;
+        isSuccess = true;
+      } else {
+        _errorMessage = decodedResponse['message'] ?? "Failed to update profile";
+      }
+    } catch (e) {
+      _errorMessage = "Error updating profile: $e";
+    } finally {
+      _inProgress = false;
+      update();
+    }
+
+    return isSuccess;
+  }
+}
+
+*/
 
 // Scroll controller ..........................................................
 // ............................................................................

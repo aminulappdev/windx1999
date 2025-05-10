@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:windx1999/app/modules/authentication/controllers/log_in_controller.dart';
 import 'package:windx1999/app/modules/authentication/controllers/resend_otp_controller.dart';
 import 'package:windx1999/app/modules/authentication/views/email_verification_screen.dart';
@@ -177,6 +176,7 @@ class _LogInScreenState extends State<LogInScreen> {
 
     if(logInController.errorMessage?.contains('not') == true){
          print('User not verified otp');
+          // ignore: unused_local_variable
           final bool isSuccess = await resendOtpController.resendOtp(email,);
           var token = resendOtpController.resendOtpData?.token ?? 'Empty';
           print('ResendOtp : $token');

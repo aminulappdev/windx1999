@@ -76,7 +76,7 @@ class NetworkCaller {
       }
 
       if (accesToken != null) {
-        headers['Authorization'] = accesToken;
+        headers['Authorization'] = 'Berarer $accesToken';
       }
 
       _logRequest(url, headers, body);
@@ -127,7 +127,7 @@ class NetworkCaller {
       };
 
       if (accesToken != null) {
-        headers['Authorization'] = accesToken;
+        headers['Authorization'] = 'Berarer $accesToken';
       }
 
       _logRequest(url, headers, body);
