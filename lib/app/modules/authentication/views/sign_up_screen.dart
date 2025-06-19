@@ -22,8 +22,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool _obscureText = true;
   bool _obscureConfirmText = true;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController firstNameCtrl = TextEditingController();
-  final TextEditingController lastNameCtrl = TextEditingController();
+  final TextEditingController nameCtrl = TextEditingController();
   final TextEditingController emailCtrl = TextEditingController();
   final TextEditingController passwordCtrl = TextEditingController();
   final TextEditingController confirmPasswordCtrl = TextEditingController();
@@ -52,74 +51,32 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(
-                            width: 170.w,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'First name',
-                                  style: TextStyle(
-                                      fontSize: 16, color: Colors.white),
-                                ),
-                                heightBox10,
-                                TextFormField(
-                                  controller: firstNameCtrl,
-                                  decoration: InputDecoration(
-                                    hintText: 'First name',
-                                    errorStyle: TextStyle(
-                                        color: const Color.fromARGB(
-                                            255, 237, 82, 82)),
-                                  ),
-                                  autovalidateMode:
-                                      AutovalidateMode.onUserInteraction,
-                                  validator: (String? value) {
-                                    if (value!.isEmpty) {
-                                      return 'Enter first name';
-                                    }
-
-                                    return null;
-                                  },
-                                ),
-                              ],
-                            ),
+                          Text(
+                            'Full name',
+                            style: TextStyle(fontSize: 16, color: Colors.white),
                           ),
-                          SizedBox(
-                            width: 170.w,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Last name',
-                                  style: TextStyle(
-                                      fontSize: 16.sp, color: Colors.white),
-                                ),
-                                heightBox10,
-                                TextFormField(
-                                  controller: lastNameCtrl,
-                                  decoration: InputDecoration(
-                                    hintText: 'Last name',
-                                    errorStyle: TextStyle(
-                                        color: const Color.fromARGB(
-                                            255, 237, 82, 82)),
-                                  ),
-                                  autovalidateMode:
-                                      AutovalidateMode.onUserInteraction,
-                                  keyboardType: TextInputType.emailAddress,
-                                  validator: (String? value) {
-                                    if (value!.isEmpty) {
-                                      return 'Enter last name';
-                                    }
-
-                                    return null;
-                                  },
-                                ),
-                              ],
+                          heightBox10,
+                          TextFormField(
+                            controller: nameCtrl,
+                            decoration: InputDecoration(
+                              hintText: 'full name',
+                              errorStyle: TextStyle(
+                                  color:
+                                      const Color.fromARGB(255, 237, 82, 82)),
                             ),
-                          )
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            validator: (String? value) {
+                              if (value!.isEmpty) {
+                                return 'Enter first name';
+                              }
+
+                              return null;
+                            },
+                          ),
                         ],
                       ),
                       heightBox24,
@@ -224,8 +181,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ElevatedButton(
                     onPressed: () {
                       Get.to(GDPRConsentScreen(
-                        firstName: firstNameCtrl.text,
-                        lastName: lastNameCtrl.text,
+                        name: nameCtrl.text,                    
                         email: emailCtrl.text,
                         password: passwordCtrl.text,
                         confirmPassword: confirmPasswordCtrl.text,

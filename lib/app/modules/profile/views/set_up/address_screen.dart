@@ -5,7 +5,6 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:windx1999/app/modules/profile/controllers/setup_address_controller.dart';
 import 'package:windx1999/app/modules/profile/views/set_up/user_prefer_screen.dart';
-import 'package:windx1999/app/modules/wishlist/views/wish_list.dart';
 import 'package:windx1999/app/res/app_images/assets_path.dart';
 import 'package:windx1999/app/res/common_widgets/custom_app_bar.dart';
 import 'package:windx1999/app/res/common_widgets/custom_background.dart';
@@ -177,7 +176,7 @@ class _AddressScreenState extends State<AddressScreen> {
                                   ),
                                   autovalidateMode:
                                       AutovalidateMode.onUserInteraction,
-                                  keyboardType: TextInputType.emailAddress,
+                                  keyboardType: TextInputType.number,
                                   validator: (String? value) {
                                     if (value!.isEmpty) {
                                       return 'Enter zip code';

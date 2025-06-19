@@ -1,13 +1,13 @@
 // ignore_for_file: avoid_print
-
 import 'package:get/get.dart';
 import 'package:windx1999/app/modules/authentication/controllers/otp_verify_controller.dart';
-import 'package:windx1999/app/modules/authentication/model/create_user_model.dart';
+import 'package:windx1999/app/modules/profile/model/profile_details_model.dart';
 import 'package:windx1999/app/services/network_caller/network_caller.dart';
 import 'package:windx1999/app/services/network_caller/network_response.dart';
 import 'package:windx1999/app/urls.dart';
+import 'package:windx1999/get_storage.dart';
 
-class CreateUserController extends GetxController {
+class ProfileController extends GetxController {
   final OtpVerifyController otpVerifyController = OtpVerifyController();
   bool _inProgress = false;
   bool get inProgress => _inProgress;
@@ -15,32 +15,28 @@ class CreateUserController extends GetxController {
   String? _errorMessage;
   String? get errorMessage => _errorMessage;
 
-  CreateUserModel? createUserModel;
-  CreateUserItemModel? get userData => createUserModel?.data;
+  ProfileDetailsModel? profileDetailsModel;
+  ProfileData? get profileData => profileDetailsModel?.data;
 
   String? _otpToken;
   String? get otpToken => _otpToken;
 
-  Future<bool> createUser(String name, String email,
-      String password, String cPassword) async {
+  Future<bool> getMyProfile() async {
     bool isSuccess = false;
 
     _inProgress = true;
 
     update();
 
-    Map<String, dynamic> requestBody = {
-      "name": name,
-      "email": email,
-      "password": password, 
-    }; // Replace your body data
-
-    final NetworkResponse response = await Get.find<NetworkCaller>()
-        .postRequest(Urls.createUserUrl, requestBody); // Replace your api url
+    final NetworkResponse response = await Get.find<NetworkCaller>().getRequest(
+        Urls.getMyProfleUrl,
+        accesToken: StorageUtil.getData(StorageUtil.userAccessToken));
 
     if (response.isSuccess) {
-      createUserModel = CreateUserModel.fromJson(response.responseData);
-
+      profileDetailsModel = ProfileDetailsModel.fromJson(response.responseData);
+      var userId = response.responseData['data']['_id'];
+      StorageUtil.saveData('user-id', userId);
+      print('User id is : $userId');
       _errorMessage = null;
       isSuccess = true;
     } else {

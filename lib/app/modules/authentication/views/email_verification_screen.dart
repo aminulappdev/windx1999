@@ -103,7 +103,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
         ),
       ),
     );
-  }
+  } 
 
   Future<void> otpBTN(String otp) async {
     var token = widget.accessToken;

@@ -44,9 +44,10 @@ class LogInController extends GetxController {
       loginResponseModel = LoginResponseModel.fromJson(response.responseData);
       var token = loginData?.accessToken ?? 'No access data';
 
-      box.write('user-access-token', token);
+      StorageUtil.saveData('user-access-token', token);
+
+      print('User id is : ${StorageUtil.getData('user-id')}');
       print('My access token is : $token');
-      print('Access token local data: ${AccessToken.userAccessToken}');
 
       _errorMessage = null;
       isSuccess = true;

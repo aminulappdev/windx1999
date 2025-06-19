@@ -31,11 +31,12 @@ class SetupAddressController extends GetxController {
     }; // Rplace your body data
 
     print(
-        'SetupAddressController er moddhe access token : ${box.read('user-access-token')}');
-    final NetworkResponse response = await Get.find<NetworkCaller>()
-        .patchRequest(Urls.userUpdateProfileUrl,
-            accesToken: box.read('user-access-token'),
-            body: requestBody); // Replace your api url
+        'SetupAddressController er moddhe access token : ${StorageUtil.getData(StorageUtil.userAccessToken)}');
+    final NetworkResponse response = await Get.find<NetworkCaller>().putRequest(
+      Urls.userUpdateProfileUrl,
+      requestBody,
+      accesToken: StorageUtil.getData(StorageUtil.userAccessToken),
+    ); // Replace your api url
 
     if (response.isSuccess) {
       _errorMessage = null;

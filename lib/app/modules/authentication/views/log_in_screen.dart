@@ -11,6 +11,7 @@ import 'package:windx1999/app/modules/authentication/views/sign_up_screen.dart';
 import 'package:windx1999/app/modules/authentication/widgets/auth_footer.dart';
 import 'package:windx1999/app/modules/authentication/widgets/forgot_password.dart';
 import 'package:windx1999/app/modules/common/views/navigation_bar_screen.dart';
+import 'package:windx1999/app/modules/profile/controllers/profile_controller.dart';
 import 'package:windx1999/app/res/common_widgets/custom_background.dart';
 import 'package:windx1999/app/res/common_widgets/custom_snackbar.dart';
 import 'package:windx1999/app/res/app_images/assets_path.dart';
@@ -30,6 +31,7 @@ class _LogInScreenState extends State<LogInScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final LogInController logInController = Get.find<LogInController>();
   final ResendOtpController resendOtpController = ResendOtpController();
+  final ProfileController profileController = Get.find<ProfileController>();
 
   bool _obscureText = true;
   bool isChecked = false;
@@ -144,15 +146,18 @@ class _LogInScreenState extends State<LogInScreen> {
                         child: Text('Log In'),
                       )
                     : Opacity(
-                      opacity: 0.3,
-                      child: ElevatedButton(
+                        opacity: 0.3,
+                        child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.blue,
                           ),
                           onPressed: () {},
-                          child: Text('Log In',style: TextStyle(color: Colors.grey),),
+                          child: Text(
+                            'Log In',
+                            style: TextStyle(color: Colors.grey),
+                          ),
                         ),
-                    ),
+                      ),
                 heightBox20,
                 AuthenticationFooterSection(
                   fTextName: 'Don’t have an account? ',
@@ -174,22 +179,26 @@ class _LogInScreenState extends State<LogInScreen> {
   Future<void> loginBTN(String email, String password) async {
     final bool isSuccess = await logInController.loginUser(email, password);
 
-    if(logInController.errorMessage?.contains('not') == true){
-         print('User not verified otp');
-          // ignore: unused_local_variable
-          final bool isSuccess = await resendOtpController.resendOtp(email,);
-          var token = resendOtpController.resendOtpData?.token ?? 'Empty';
-          print('ResendOtp : $token');
-          Get.to(EmailVerificationScreen(accessToken: token,));
-    }
-    else if (isSuccess) {
+    if (logInController.errorMessage?.contains('not') == true) {
+      print('User not verified otp');
+      // ignore: unused_local_variable
+      final bool isSuccess = await resendOtpController.resendOtp(
+        email,
+      );
+      var token = resendOtpController.resendOtpData?.token ?? 'Empty';
+      print('ResendOtp : $token');
+      Get.to(EmailVerificationScreen(
+        accessToken: token,
+      ));
+    } else if (isSuccess) {
+      profileController.getMyProfile();
       print('User verified');
       if (mounted) {
         showSnackBarMessage(context, 'Login successfully done');
         Get.offAll(BottomNavBarScreen());
       }
     } else {
-      print('User not verified');     
+      print('User not verified');
       if (mounted) {
         showSnackBarMessage(
             context, logInController.errorMessage ?? 'Login failed', true);

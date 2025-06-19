@@ -46,13 +46,14 @@ class OtpVerifyController extends GetxController {
     if (response.isSuccess) {
       // Accessing the otpToken from the response data safely
 
-      
       otpResponseModel = OtpResponseModel.fromJson(response.responseData);
       print('Otp response model : ${response.responseData}');
       print('Token is : ${response.responseData['data']['token']}');
       var token = response.responseData['data']['token'];
-      box.write('user-access-token', token);
-      print('Local Token is : ${box.read('user-access-token')}');
+      StorageUtil.saveData('user-access-token', token);
+
+      print(
+          'Local Token is : ${StorageUtil.getData(StorageUtil.userAccessToken)}');
       _errorMessage = null;
       isSuccess = true;
     } else {

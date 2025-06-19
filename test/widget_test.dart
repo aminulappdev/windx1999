@@ -63,7 +63,7 @@ class GetController extends GetxController {
 
     final NetworkResponse response = await Get.find<NetworkCaller>()
         .getRequest(Urls.createUserUrl, // Replace api url
-            accesToken: box.read('user-login-access-token'));
+            accesToken: StorageUtil.getData(StorageUtil.userAccessToken));
 
     if (response.isSuccess) {
       _errorMessage = null;
@@ -119,7 +119,7 @@ class GetControllerWithPegination extends GetxController {
     final NetworkResponse response = await Get.find<NetworkCaller>()
         .getRequest(Urls.createUserUrl, // replace your api url
             queryParams: queryparam,
-            accesToken: box.read('user-login-access-token'));
+            accesToken: StorageUtil.getData(StorageUtil.userAccessToken));
 
     if (response.isSuccess) {
       _errorMessage = null;

@@ -20,7 +20,7 @@ class BuyTokenScreen extends StatelessWidget {
       padding:  EdgeInsets.all(8.0.h),
       child: InkWell(
         onTap: ontap,
-        child: Container(
+        child: Container( 
           height: 60.h,
           width: width,
           decoration: BoxDecoration(

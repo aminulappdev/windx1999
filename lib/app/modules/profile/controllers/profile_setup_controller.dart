@@ -25,7 +25,7 @@ class SetupProfileController extends GetxController {
     update();
 
     try {
-      String? token = box.read('user-access-token');
+      String? token = StorageUtil.getData(StorageUtil.userAccessToken);
       if (token == null || token.isEmpty) {
         _errorMessage = "User not authenticated";
         _inProgress = false;
@@ -34,10 +34,10 @@ class SetupProfileController extends GetxController {
       }
 
       var uri = Uri.parse(Urls.userUpdateProfileUrl);
-      var request = http.MultipartRequest('PATCH', uri);
+      var request = http.MultipartRequest('PUT', uri);
 
       // ✅ Only Authorization header
-      request.headers['Authorization'] = 'Bearer $token';
+      request.headers['Authorization'] = token;
 
       // ✅ Set 'data' field with JSON-encoded stringr
       Map<String, dynamic> jsonFields = {
@@ -46,6 +46,8 @@ class SetupProfileController extends GetxController {
         "gender": gender,
         "bio": bio,
       };
+
+      {}
 
       request.fields['data'] = jsonEncode(jsonFields);
 

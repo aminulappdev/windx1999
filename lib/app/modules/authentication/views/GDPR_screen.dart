@@ -13,13 +13,12 @@ import 'package:windx1999/app/res/custom_style/custom_size.dart';
 class GDPRConsentScreen extends StatefulWidget {
   const GDPRConsentScreen(
       {super.key,
-      required this.firstName,
-      required this.lastName,
       required this.email,
       required this.password,
-      required this.confirmPassword});
-  final String firstName;
-  final String lastName;
+      required this.confirmPassword,
+      required this.name});
+  final String name;
+
   final String email;
   final String password;
   final String confirmPassword;
@@ -100,10 +99,10 @@ class _GDPRConsentScreenState extends State<GDPRConsentScreen> {
                     radiusSize: 50,
                     ontap: () {
                       print('Register information ........................');
-                      print(widget.firstName);
+                      print(widget.name);
                       signUpnBTN(
-                          widget.firstName,
-                          widget.lastName,
+                          widget.name,
+                       
                           widget.email,
                           widget.password,
                           widget.confirmPassword);
@@ -118,7 +117,7 @@ class _GDPRConsentScreenState extends State<GDPRConsentScreen> {
                     radiusSize: 50,
                     ontap: () {
                       print('Register information ........................');
-                      print(widget.firstName);
+                      print(widget.name);
                     },
                   ),
                 }
@@ -130,10 +129,10 @@ class _GDPRConsentScreenState extends State<GDPRConsentScreen> {
     );
   }
 
-  Future<void> signUpnBTN(String fName, String lName, String email,
+  Future<void> signUpnBTN(String name, String email,
       String password, String cPassword) async {
-    final bool isSuccess = await createUserController.createUser(
-        fName, lName, email, password, cPassword);
+    final bool isSuccess = await createUserController.createUser(name,
+          email, password, cPassword);
 
     if (isSuccess) {
       if (mounted) {
