@@ -17,6 +17,7 @@ class AssetsPath {
   static const String reels = '$imagePath/reels.jpg';
   static const String twoFactor = '$imagePath/twoFactor.svg';
   static const String downloadLight= '$imagePath/Download_light.png';
+  static const String payment= '$imagePath/payment.png';
 
   // Video
   static const String video= '$imagePath/video.mp4';

@@ -12,11 +12,19 @@ class Urls {
   static const String allPackageUrl = '$_baseUrl/packages';
   static const String getMyProfleUrl = '$_baseUrl/users/my-profile';
   static const String orderUrl = '$_baseUrl/orders';
+  static const String paymentCheckoutUrl = '$_baseUrl/payments/checkout';
 
   static String updateUserByUrl(
     String id,
   ) {
     return '$_baseUrl/users/update/$id';
   }
+   
+   static String confirmedPaymentUrlsById(
+    String id,
+  ) {
+    return '$_baseUrl/payments/reference/$id';
+  }
+
 }
  

@@ -1,20 +1,25 @@
 import 'package:get/get.dart';
+import 'package:windx1999/app/modules/payment/model/payment_model.dart';
 import 'package:windx1999/app/services/network_caller/network_caller.dart';
 import 'package:windx1999/app/services/network_caller/network_response.dart';
 import 'package:windx1999/app/urls.dart';
 import 'package:windx1999/get_storage.dart';
 
-class OrderController extends GetxController {
+class PaymentController extends GetxController {
   bool _inProgress = false;
   bool get inProgress => _inProgress;
 
   String? _errorMessage;
   String? get errorMessage => _errorMessage;
 
-  String? _orderId;
-  String? get orderId => _orderId;
+  String? _accessToken;
+  String? get accessToken => _accessToken;
 
-  Future<bool> order({required String packageId}) async {
+  PaymentModel? paymentModel;
+  PaymentModel? get paymentData => paymentModel;
+
+  Future<bool> getPayment(
+      String userId, String refereneId) async {
     bool isSuccess = false;
 
     _inProgress = true;
@@ -22,17 +27,16 @@ class OrderController extends GetxController {
     update();
 
     Map<String, dynamic> requestBody = {
-      "user": StorageUtil.getData(StorageUtil.userId),
-      "package": packageId
+      "modelType": 'Order',
+      "account": userId,
+      "reference": refereneId
     };
 
     final NetworkResponse response = await Get.find<NetworkCaller>()
-        .postRequest(Urls.orderUrl, requestBody,
-            accesToken: StorageUtil.getData(StorageUtil.userAccessToken));
+        .postRequest(Urls.paymentCheckoutUrl, requestBody,accesToken: StorageUtil.getData(StorageUtil.userAccessToken));
 
     if (response.isSuccess) {
-      print(response.responseData);
-      _orderId = response.responseData['data']['_id'];   
+      paymentModel = PaymentModel.fromJson(response.responseData);
       _errorMessage = null;
       isSuccess = true;
     } else {

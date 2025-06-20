@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:windx1999/app/modules/payment/controllers/payment_services.dart';
 import 'package:windx1999/app/modules/token/controllers/all_package_controller.dart';
 import 'package:windx1999/app/modules/token/controllers/order_controller.dart';
 import 'package:windx1999/app/modules/token/views/buy_token_screen.dart';
@@ -13,6 +14,7 @@ import 'package:windx1999/app/res/common_widgets/custom_rectangle_buttom.dart';
 import 'package:windx1999/app/res/common_widgets/custom_snackbar.dart';
 import 'package:windx1999/app/res/common_widgets/straight_liner.dart';
 import 'package:windx1999/app/res/custom_style/custom_size.dart';
+import 'package:windx1999/get_storage.dart';
 
 class TokenBar extends StatefulWidget {
   const TokenBar({super.key});
@@ -23,6 +25,7 @@ class TokenBar extends StatefulWidget {
 
 AllPackageController allPackageController = Get.put(AllPackageController());
 final OrderController orderController = Get.put(OrderController());
+final PaymentService paymentService = PaymentService();
 
 class _TokenBarState extends State<TokenBar> {
   bool tokenHistoryPage = true;
@@ -150,7 +153,12 @@ class _TokenBarState extends State<TokenBar> {
 
     if (isSuccess) {
       if (mounted) {
-        showSnackBarMessage(context, 'Successfully done');
+        print('Order id controller: ${orderController.orderId}');     
+        paymentService.payment(
+          context,
+          StorageUtil.getData(StorageUtil.userId),
+          orderController.orderId ?? 'empty',
+        );
       }
     } else {
       if (mounted) {
