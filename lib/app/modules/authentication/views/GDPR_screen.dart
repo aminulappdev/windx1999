@@ -116,6 +116,7 @@ class _GDPRConsentScreenState extends State<GDPRConsentScreen> {
                     bgColor: Color.fromARGB(178, 108, 198, 254),
                     radiusSize: 50,
                     ontap: () {
+                     
                       print('Register information ........................');
                       print(widget.name);
                     },

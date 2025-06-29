@@ -6,6 +6,7 @@ import 'package:windx1999/app/res/common_widgets/image_container.dart';
 import 'package:windx1999/app/res/custom_style/custom_size.dart';
 
 class PostCard extends StatelessWidget {
+  final bool iSVisibleWishlist;
   final String profilePath;
   final String name;
   final String activeStatus;
@@ -37,7 +38,7 @@ class PostCard extends StatelessWidget {
     required this.commentOnTap,
     required this.share,
     required this.shareOntap,
-    required this.bookmarkOntap, required this.bgColor,
+    required this.bookmarkOntap, required this.bgColor, required this.iSVisibleWishlist,
   });
 
   @override
@@ -53,6 +54,7 @@ class PostCard extends StatelessWidget {
         child: Column(
           children: [
             PostCardHeader(
+                isShowWishlist: iSVisibleWishlist,
                 profilePath: profilePath,
                 name: name,
                 addFriendOnTap: addFriendOnTap,

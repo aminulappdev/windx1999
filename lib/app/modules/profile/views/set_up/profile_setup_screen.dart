@@ -223,7 +223,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
     if (_formKey.currentState!.validate()) {
       final bool isSuccess = await setupProfileController.updateProfile(
           nameCtrl.text,
-          usernameCtrl.text,
+          usernameCtrl.text, 
           bioCtrl.text,
           selectedGender ?? 'male',
           image);

@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:windx1999/app/modules/profile/controllers/profile_controller.dart';
 import 'package:windx1999/app/services/network_caller/network_caller.dart';
 import 'package:windx1999/app/services/network_caller/network_response.dart';
 import 'package:windx1999/app/urls.dart';
@@ -14,15 +15,19 @@ class OrderController extends GetxController {
   String? _orderId;
   String? get orderId => _orderId;
 
+  ProfileController profileController = Get.put(ProfileController());
+
   Future<bool> order({required String packageId}) async {
+    await profileController.getMyProfile();
     bool isSuccess = false;
 
     _inProgress = true;
 
     update();
-
+    
+    print('User id is : ${profileController.profileData?.id}');
     Map<String, dynamic> requestBody = {
-      "user": StorageUtil.getData(StorageUtil.userId),
+      "user": profileController.profileData?.id ?? 'empty id',
       "package": packageId
     };
 

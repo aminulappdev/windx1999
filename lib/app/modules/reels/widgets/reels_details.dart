@@ -37,7 +37,7 @@ class ReelsDetails extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     radius: 22.r,
-                    backgroundImage: AssetImage(imagePath),
+                    backgroundImage: NetworkImage(imagePath),
                   ),
                   widthBox5,
                   Column(

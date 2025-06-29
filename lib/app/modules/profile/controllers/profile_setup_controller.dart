@@ -18,8 +18,9 @@ class SetupProfileController extends GetxController {
   String? get accessToken => _accessToken;
 
   /// 🔁 Update Profile Function
-  Future<bool> updateProfile(String name, String username, String bio,
-      String gender, File? image) async {
+  Future<bool> updateProfile(
+      String name, String username, String bio, String gender, File? image,
+      {File? banner}) async {
     bool isSuccess = false;
     _inProgress = true;
     update();
@@ -39,15 +40,13 @@ class SetupProfileController extends GetxController {
       // ✅ Only Authorization header
       request.headers['Authorization'] = token;
 
-      // ✅ Set 'data' field with JSON-encoded stringr
+      // ✅ Set 'data' field with JSON-encoded string
       Map<String, dynamic> jsonFields = {
         "name": name,
         "username": username,
         "gender": gender,
         "bio": bio,
       };
-
-      {}
 
       request.fields['data'] = jsonEncode(jsonFields);
 
@@ -62,6 +61,22 @@ class SetupProfileController extends GetxController {
           await http.MultipartFile.fromPath(
             'image', // 🔑 Backend should expect this key
             imagePath,
+            contentType: MediaType.parse(mimeType),
+          ),
+        );
+      }
+
+      // ✅ Add banner if available
+      if (banner != null) {
+        print('Banner ache ekhane ................................');
+        print(banner);
+        String bannerPath = banner.path;
+        String? mimeType = lookupMimeType(bannerPath) ?? 'image/jpeg';
+
+        request.files.add(
+          await http.MultipartFile.fromPath(
+            'banner', // 🔑 Backend should expect this key
+            bannerPath,
             contentType: MediaType.parse(mimeType),
           ),
         );

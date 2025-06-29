@@ -11,8 +11,10 @@ class PostCardHeader extends StatelessWidget {
     required this.activeStatus,
     required this.wishListOnTap,
     required this.moreVertOntap,
+    required this.isShowWishlist,
   });
 
+  final bool isShowWishlist;
   final String profilePath;
   final String name;
   final VoidCallback addFriendOnTap;
@@ -33,7 +35,7 @@ class PostCardHeader extends StatelessWidget {
               children: [
                 CircleAvatar(
                   radius: 22.r,
-                  backgroundImage: AssetImage(profilePath),
+                  backgroundImage: NetworkImage(profilePath),
                 ),
                 widthBox5,
                 Column(
@@ -63,7 +65,7 @@ class PostCardHeader extends StatelessWidget {
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [        
+          children: [
             GestureDetector(
                 onTap: addFriendOnTap,
                 child: Icon(
@@ -71,30 +73,32 @@ class PostCardHeader extends StatelessWidget {
                   color: Colors.white,
                   size: 30.h,
                 )),
-                widthBox5,
-            Container(
-              height: 35.h,
-              width: 100.w,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: Color(0xff6CC7FE)),
-              child: GestureDetector(
-                onTap: wishListOnTap,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.task_outlined,
-                      color: Colors.white,
+            widthBox5,
+            isShowWishlist == true
+                ? Container(
+                    height: 35.h,
+                    width: 100.w,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        color: Color(0xff6CC7FE)),
+                    child: GestureDetector(
+                      onTap: wishListOnTap,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.task_outlined,
+                            color: Colors.white,
+                          ),
+                          Text(
+                            'Wishlist',
+                            style: TextStyle(color: Colors.white),
+                          )
+                        ],
+                      ),
                     ),
-                    Text(
-                      'Wishlist',
-                      style: TextStyle(color: Colors.white),
-                    )
-                  ],
-                ),
-              ),
-            ),
+                  )
+                : Container(),
             GestureDetector(
               onTap: moreVertOntap,
               child: Icon(
