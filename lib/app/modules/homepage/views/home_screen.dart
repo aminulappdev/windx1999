@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:windx1999/app/modules/common/controllers/theme_controller.dart';
+import 'package:windx1999/app/modules/homepage/controller/follow_request_controller.dart';
 import 'package:windx1999/app/modules/homepage/views/comment_screen.dart';
 import 'package:windx1999/app/modules/homepage/views/botton_sheet_screen.dart';
 import 'package:windx1999/app/modules/homepage/views/notification_screen.dart';
@@ -14,6 +15,7 @@ import 'package:windx1999/app/modules/token/views/token_bar.dart';
 import 'package:windx1999/app/res/app_images/assets_path.dart';
 import 'package:windx1999/app/res/common_widgets/circle_icon_transparent.dart';
 import 'package:windx1999/app/res/common_widgets/custom_background.dart';
+import 'package:windx1999/app/res/common_widgets/custom_snackbar.dart';
 import 'package:windx1999/app/res/common_widgets/search_bar.dart';
 import 'package:windx1999/app/res/custom_style/custom_size.dart';
 
@@ -28,19 +30,8 @@ class _HomeScreenState extends State<HomeScreen> {
   ThemeController themeController = Get.find<ThemeController>();
   AllPostController allPostController = Get.put(AllPostController());
   ProfileController profileController = Get.put(ProfileController());
-
-  List<Map<String, dynamic>> postCardKebabIconDetailsList = [
-    {'icon': Icons.bookmark, 'name': 'Save post', 'ontap': () {}},
-    {'icon': Icons.copy, 'name': 'Copy link', 'ontap': () {}},
-    {'icon': Icons.visibility_off, 'name': 'Hide post', 'ontap': () {}},
-    {'icon': Icons.person_remove, 'name': 'unfollow', 'ontap': () {}},
-    {'icon': Icons.person_off, 'name': 'Block', 'ontap': () {}},
-    {
-      'icon': Icons.smart_display_outlined,
-      'name': 'Report profile',
-      'ontap': () {}
-    },
-  ];
+  final FollowRequestController followRequestController =
+      FollowRequestController();
 
   @override
   void initState() {
@@ -73,10 +64,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       child:
                           GetBuilder<ProfileController>(builder: (pController) {
                         if (pController.inProgress) {
-                          return Center(child: SizedBox(
-                            height: 20,
-                            width: 20,
-                            child: CircularProgressIndicator()));
+                          return Center(
+                              child: SizedBox(
+                                  height: 20,
+                                  width: 20,
+                                  child: CircularProgressIndicator()));
                         }
                         return InkWell(
                           onTap: () {
@@ -144,7 +136,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                   .allPostData![index].author?.photoUrl ??
                               'https://fastly.picsum.photos/id/1/200/300.jpg?hmac=jH5bDkLr6Tgy3oAg5khKCHeunZMHq0ehBZr6vGifPLY',
                           activeStatus: '20m ago',
-                          addFriendOnTap: () {},
+                          addFriendOnTap: () {
+                            // Implement add friend logic here (e.g., API call)
+                          },
                           wishListOnTap: () {
                             Get.to(ShowWishlistScreen());
                           },
@@ -162,8 +156,68 @@ class _HomeScreenState extends State<HomeScreen> {
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     ButtonSheetDetailsScreen(
-                                      buttonSheetDetailsList:
-                                          postCardKebabIconDetailsList,
+                                      buttonSheetDetailsList: [
+                                        {
+                                          'icon': Icons.bookmark,
+                                          'name': 'Save post',
+                                          'ontap': () {
+                                            // Implement save post logic here
+                                            print(
+                                                'Save post tapped for post $index');
+                                          }
+                                        },
+                                        {
+                                          'icon': Icons.copy,
+                                          'name': 'Copy link',
+                                          'ontap': () {
+                                            // Implement copy link logic here
+                                            print(
+                                                'Copy link tapped for post $index');
+                                          }
+                                        },
+                                        {
+                                          'icon': Icons.visibility_off,
+                                          'name': 'Hide post',
+                                          'ontap': () {
+                                            // Implement hide post logic here
+                                            print(
+                                                'Hide post tapped for post $index');
+                                          }
+                                        },
+                                        {
+                                          'icon': Icons.person_remove,
+                                          'name': 'Follow',
+                                          'ontap': () {
+                                            // Implement unfollow logic here (e.g., API call)
+                                            print(
+                                                'Unfollow tapped for post $index');
+                                            // Example: allPostController.unfollowUser(controller.allPostData![index].author?.id);
+                                            followRequest(controller
+                                                    .allPostData![index]
+                                                    .author
+                                                    ?.id ??
+                                                'empty');
+                                          }
+                                        },
+                                        {
+                                          'icon': Icons.person_off,
+                                          'name': 'Block',
+                                          'ontap': () {
+                                            // Implement block logic here
+                                            print(
+                                                'Block tapped for post $index');
+                                          }
+                                        },
+                                        {
+                                          'icon': Icons.smart_display_outlined,
+                                          'name': 'Report profile',
+                                          'ontap': () {
+                                            // Implement report profile logic here
+                                            print(
+                                                'Report profile tapped for post $index');
+                                          }
+                                        },
+                                      ],
                                     )
                                   ],
                                 );
@@ -202,7 +256,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             );
                           },
                           imagePath: AssetsPath.blackGirl,
-                          bookmarkOntap: () {},
+                          bookmarkOntap: () {
+                            // Implement bookmark logic here
+                          },
                           commentOnTap: () {
                             Get.to(CommentScreen());
                           },
@@ -217,6 +273,21 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       );
     });
+  }
+
+  Future<void> followRequest(String frindId) async {
+    final bool isSuccess = await followRequestController.followRequest(frindId);
+
+    if (isSuccess) {
+      if (mounted) {
+        showSnackBarMessage(context, 'Follow successfully done');
+      }
+    } else {
+      if (mounted) {
+        showSnackBarMessage(
+            context, followRequestController.errorMessage ?? 'failed', true);
+      }
+    }
   }
 
   @override

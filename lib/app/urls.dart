@@ -9,7 +9,8 @@ class Urls {
   static const String forgotEmailUrl = '$_baseUrl/auth/forgot-password';
   static const String resetPasswordUrl = '$_baseUrl/auth/reset-password';
   static const String resendOtpUrl = '$_baseUrl/otp/resend-otp';
-  static const String userUpdateProfileUrl = '$_baseUrl/users/update-my-profile';
+  static const String userUpdateProfileUrl =
+      '$_baseUrl/users/update-my-profile';
   static const String allPackageUrl = '$_baseUrl/packages';
   static const String getMyProfleUrl = '$_baseUrl/users/my-profile';
   static const String orderUrl = '$_baseUrl/orders';
@@ -23,12 +24,22 @@ class Urls {
   ) {
     return '$_baseUrl/users/update/$id';
   }
-   
-   static String confirmedPaymentUrlsById(
+
+  static String confirmedPaymentUrlsById(
     String id,
   ) {
     return '$_baseUrl/payments/reference/$id';
   }
 
+  static String followRequestById(
+    String id,
+  ) {
+    return '$_baseUrl/connection/follow/$id';
+  }
+
+  static String unfollowRequestById(
+    String id,
+  ) {
+    return '$_baseUrl/connection/unfollow/$id';
+  }
 }
- 
