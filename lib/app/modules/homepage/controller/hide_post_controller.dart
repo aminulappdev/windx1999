@@ -4,7 +4,7 @@ import 'package:windx1999/app/modules/authentication/controllers/otp_verify_cont
 import 'package:windx1999/app/services/network_caller/network_caller.dart';
 import 'package:windx1999/app/services/network_caller/network_response.dart';
 import 'package:windx1999/app/urls.dart';
-import 'package:windx1999/get_storage.dart'; 
+import 'package:windx1999/get_storage.dart';
 
 class FollowRequestController extends GetxController {
   final OtpVerifyController otpVerifyController = OtpVerifyController();

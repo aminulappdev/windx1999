@@ -36,6 +36,7 @@ class AllPostItemModel {
         required this.v,
         required this.hideBy,
         required this.isLiked,
+        required this.isFollowing,
         required this.isVisible,
         required this.isHide,
         required this.isWatchLater,
@@ -60,6 +61,7 @@ class AllPostItemModel {
     final int? v;
     final List<String> hideBy;
     final bool? isLiked;
+    late final bool? isFollowing;
     final bool? isVisible;
     final bool? isHide;
     final bool? isWatchLater;
@@ -85,6 +87,7 @@ class AllPostItemModel {
             v: json["__v"],
             hideBy: json["hideBy"] == null ? [] : List<String>.from(json["hideBy"]!.map((x) => x)),
             isLiked: json["isLiked"],
+            isFollowing: json["isFollowing"],
             isVisible: json["isVisible"],
             isHide: json["isHide"],
             isWatchLater: json["isWatchLater"],

@@ -6,7 +6,7 @@ import 'package:windx1999/app/services/network_caller/network_response.dart';
 import 'package:windx1999/app/urls.dart';
 import 'package:windx1999/get_storage.dart'; 
 
-class FollowRequestController extends GetxController {
+class UnFollowRequestController extends GetxController {
   final OtpVerifyController otpVerifyController = OtpVerifyController();
   bool _inProgress = false;
   bool get inProgress => _inProgress;
@@ -17,7 +17,7 @@ class FollowRequestController extends GetxController {
   String? _otpToken;
   String? get otpToken => _otpToken;
 
-  Future<bool> followRequest(String friendId) async {
+  Future<bool> unfollowRequest(String friendId) async {
     bool isSuccess = false;
 
     _inProgress = true;
@@ -27,7 +27,7 @@ class FollowRequestController extends GetxController {
     Map<String, dynamic> requestBody = {}; // Replace your body data
 
     final NetworkResponse response = await Get.find<NetworkCaller>()
-        .postRequest(Urls.followRequestById(friendId), requestBody,
+        .postRequest(Urls.unfollowRequestById(friendId), requestBody,
             accesToken: StorageUtil.getData(StorageUtil.userAccessToken));
 
     if (response.isSuccess) {

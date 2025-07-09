@@ -66,13 +66,13 @@ class PostCardHeader extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            GestureDetector(
-                onTap: addFriendOnTap,
-                child: Icon(
-                  Icons.person_add,
-                  color: Colors.white,
-                  size: 30.h,
-                )),
+            // GestureDetector(
+            //     onTap: addFriendOnTap,
+            //     child: Icon(
+            //       Icons.person_add,
+            //       color: Colors.white,
+            //       size: 30.h,
+            //     )),
             widthBox5,
             isShowWishlist == true
                 ? Container(
