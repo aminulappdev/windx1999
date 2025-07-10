@@ -25,8 +25,15 @@ class EmailVerificationScreen extends StatefulWidget {
 class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
   final TextEditingController otpCtrl = TextEditingController();
   final OtpVerifyController otpVerifyController = OtpVerifyController();
-  final CreateUserController createUserController =
-      Get.find<CreateUserController>();
+  final CreateUserController createUserController = Get.find<CreateUserController>();
+
+  @override
+  void initState() {
+    super.initState();
+    // ডিবাগ: স্ক্রিন লোড হওয়ার সময় ডাটা চেক
+    print('Initial userData: ${createUserController.userData}');
+    print('Initial otpToken: ${createUserController.otpToken}');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,8 +74,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                               borderWidth: 0.2,
                               shape: PinCodeFieldShape.box,
                               borderRadius: BorderRadius.circular(12.r),
-                              inactiveColor: const Color.fromARGB(218, 222, 220,
-                                  220), // Border color when not filled
+                              inactiveColor: const Color.fromARGB(218, 222, 220, 220),
                               fieldHeight: 50.h,
                               fieldWidth: 50.h,
                               activeFillColor: Colors.white,
@@ -88,15 +94,21 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                   fTextName: 'Don’t received code! ',
                   fTextColor: Colors.white,
                   sTextName: 'Resend code?',
-                  sTextColor: Color(0xff6CC7FE),
+                  sTextColor: const Color(0xff6CC7FE),
                   ontap: () {},
                 ),
                 heightBox24,
-                ElevatedButton(
-                    onPressed: () {
-                      otpBTN(otpCtrl.text);
-                    },
-                    child: Text('Confirm'))
+                GetBuilder<CreateUserController>(
+                  builder: (controller) {
+                    var token = controller.userData?.otpToken?.token ?? 'Empty token';
+                    return ElevatedButton(
+                      onPressed: () {
+                        otpBTN(otpCtrl.text, token);
+                      },
+                      child: const Text('Confirm'),
+                    );
+                  },
+                ),
               ],
             ),
           ),
@@ -105,12 +117,21 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
     );
   } 
 
+<<<<<<< Updated upstream
   Future<void> otpBTN(String otp) async {
     var token = widget.accessToken;
     print('OTP Button token : $token');
+=======
+  Future<void> otpBTN(String otp, String token) async {
+    print('OTP Button token: $token'); // ডিবাগ
+    if (token == 'Empty token') {
+      print('Controller data: ${createUserController.createUserModel}');
+      print('User data: ${createUserController.userData}');
+    }
+>>>>>>> Stashed changes
     final bool isSuccess = await otpVerifyController.otpVerify(otp, token);
-
     if (isSuccess) {
+<<<<<<< Updated upstream
       if (mounted) {
         showSnackBarMessage(context, 'Register successfully done');
         var userId = otpVerifyController.otpData?.user?.id;
@@ -119,11 +140,14 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
           userId: userId ?? 'Empty',
         ));
       }
+=======
+      showSnackBarMessage(context, 'Register successfully done');
+      // নেভিগেশন: আপনার অ্যাপের হোম রাউটে
+      // Get.offAllNamed('/home'); // আপনার রাউট অনুযায়ী পরিবর্তন করুন
+>>>>>>> Stashed changes
     } else {
-      if (mounted) {
-        showSnackBarMessage(
-            context, otpVerifyController.errorMessage ?? 'Login failed', true);
-      }
+      showSnackBarMessage(
+          context, otpVerifyController.errorMessage ?? 'Verification failed', true);
     }
   }
 }

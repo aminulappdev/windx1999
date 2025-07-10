@@ -1,4 +1,5 @@
 class Urls {
+<<<<<<< Updated upstream
   static const String _baseUrl = 'http://10.10.10.16:5011/api/v1';
   // static const String _baseUrl = 'http://192.168.10.144:5010/api/v1';
   static const String socketUrl = 'http://172.252.13.74:4010/';
@@ -39,6 +40,16 @@ class Urls {
     return '$_baseUrl/connection/follow/$id';
   }
 
+=======
+  static const String _baseUrl = 'http://172.252.13.74:8000/api/v1';
+  // static const String _baseUrl = 'http://192.168.10.160:8000/api/v1';
+  static const String socketUrl = 'http://192.168.10.144:4001/';
+  static const String createUserUrl = '$_baseUrl/users/create';
+  static const String otpVerifyUrl = '$_baseUrl/otp/verify-otp';
+  
+  
+ 
+>>>>>>> Stashed changes
 
   static String unfollowRequestById(
     String id,

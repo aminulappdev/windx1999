@@ -26,20 +26,29 @@ class CreateUserController extends GetxController {
     bool isSuccess = false;
 
     _inProgress = true;
-
     update();
 
     Map<String, dynamic> requestBody = {
       "name": name,
       "email": email,
+<<<<<<< Updated upstream
       "password": password, 
     }; // Replace your body data
+=======
+      "password": password,
+    };
+>>>>>>> Stashed changes
 
     final NetworkResponse response = await Get.find<NetworkCaller>()
-        .postRequest(Urls.createUserUrl, requestBody); // Replace your api url
+        .postRequest(Urls.createUserUrl, requestBody);
 
     if (response.isSuccess) {
       createUserModel = CreateUserModel.fromJson(response.responseData);
+<<<<<<< Updated upstream
+=======
+      _otpToken = createUserModel?.data?.otpToken?.token;
+      print('Otp token from model: ${createUserModel?.data?.otpToken?.token}');
+>>>>>>> Stashed changes
 
       _errorMessage = null;
       isSuccess = true;
