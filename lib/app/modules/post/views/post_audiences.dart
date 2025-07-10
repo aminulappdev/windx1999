@@ -79,18 +79,18 @@ class _PostAudiencesScreenState extends State<PostAudiencesScreen> {
                   },
                 ),
                 StraightLiner(),
-                PrivacyOption(
-                  icon: Icons.group,
-                  value: 'Friends except.',
-                  description: "Don’t show to same friends",
-                  groupValue: selectedOption,
-                  onChanged: (value) {
-                    setState(() {
-                      selectedOption = value;
-                    });
-                  },
-                  hasArrow: true,
-                ),
+                // PrivacyOption(
+                //   icon: Icons.group,
+                //   value: 'Friends except.',
+                //   description: "Don’t show to same friends",
+                //   groupValue: selectedOption,
+                //   onChanged: (value) {
+                //     setState(() {
+                //       selectedOption = value;
+                //     });
+                //   },
+                //   hasArrow: true,
+                // ),
                 StraightLiner(),
                 PrivacyOption(
                   icon: Icons.lock,

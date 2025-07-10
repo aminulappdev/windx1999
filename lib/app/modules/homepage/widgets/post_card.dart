@@ -80,7 +80,7 @@ class PostCard extends StatelessWidget {
                 : Container(),
             heightBox8,
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 PostCardFoterFeature(
                   icon: Icons.favorite_border,
@@ -92,11 +92,11 @@ class PostCard extends StatelessWidget {
                   ontap: commentOnTap,
                   quantity: comment,
                 ),
-                PostCardFoterFeature(
-                  icon: Icons.share,
-                  ontap: shareOntap,
-                  quantity: share,
-                ),
+                // PostCardFoterFeature(
+                //   icon: Icons.share,
+                //   ontap: shareOntap,
+                //   quantity: share,
+                // ),
                 GestureDetector(
                   onTap: bookmarkOntap,
                   child: Icon(

@@ -5,73 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:windx1999/app/modules/post/views/post_audiences.dart';
+import 'package:windx1999/app/modules/post/widgets/post_dropdown_widget.dart';
 import 'package:windx1999/app/res/app_images/assets_path.dart';
 import 'package:windx1999/app/res/common_widgets/custom_app_bar.dart';
 import 'package:windx1999/app/res/common_widgets/custom_background.dart';
 import 'package:windx1999/app/res/custom_style/custom_size.dart';
 
-class CustomDropdown extends StatefulWidget {
-  final List<String> items;
-  final String hintText;
-  final Function(String?) onChanged;
-  final String? initialValue;
 
-  const CustomDropdown({
-    super.key,
-    required this.items,
-    required this.hintText,
-    required this.onChanged,
-    this.initialValue,
-  });
-
-  @override
-  // ignore: library_private_types_in_public_api
-  _CustomDropdownState createState() => _CustomDropdownState();
-}
-
-class _CustomDropdownState extends State<CustomDropdown> {
-  String? selectedValue;
-
-  @override
-  void initState() {
-    super.initState();
-    selectedValue = widget.initialValue ?? widget.items.first;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 6.0),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8.0),
-        color: Colors.white.withOpacity(0.2),
-      ),
-      child: DropdownButton<String>(
-        hint:
-            Text(widget.hintText, style: const TextStyle(color: Colors.white)),
-        value: selectedValue,
-        icon: const Icon(Icons.arrow_drop_down, color: Colors.white),
-        iconSize: 24,
-        elevation: 16,
-        style: const TextStyle(color: Colors.white, fontSize: 16),
-        dropdownColor: Color(0xffA96CFF),
-        underline: const SizedBox(),
-        onChanged: (String? newValue) {
-          setState(() {
-            selectedValue = newValue;
-          });
-          widget.onChanged(newValue);
-        },
-        items: widget.items.map<DropdownMenuItem<String>>((String value) {
-          return DropdownMenuItem<String>(
-            value: value,
-            child: Text(value, style: const TextStyle(color: Colors.white)),
-          );
-        }).toList(),
-      ),
-    );
-  }
-}
 
 class PostScreen extends StatefulWidget {
   const PostScreen({super.key});
@@ -104,32 +44,14 @@ class _PostScreenState extends State<PostScreen> {
   void _onPostTypeChanged(String? value) {
     setState(() {
       _selectedPostType = value;
+       print('SelectedType: $_selectedPostType');
     });
     if (value != null) {
       print('Selected post type: $value');
-      // Add your logic here based on the selected post type
+     
     }
   }
 
-  // // Method to handle posting
-  // void _post() {
-  //   if (_selectedPostType == null || _statusController.text.isEmpty) {
-  //     Get.snackbar('Error', 'Please select a post type and enter a status');
-  //     return;
-  //   }
-  //   // Simulate posting with selected post type, status, and files
-  //   print('Posting with type: $_selectedPostType');
-  //   print('Status: ${_statusController.text}');
-  //   print('Files: ${_selectedFiles.length}');
-  //   // Add your post logic here (e.g., API call)
-  //   Get.snackbar('Success', 'Post created with type: $_selectedPostType');
-  //   // Clear fields after posting
-  //   setState(() {
-  //     _selectedPostType = null;
-  //     _statusController.clear();
-  //     _selectedFiles.clear();
-  //   });
-  // }
 
   @override
   void dispose() {
@@ -214,7 +136,7 @@ class _PostScreenState extends State<PostScreen> {
                         'Feed',
                       ],
                       hintText: 'Select post type',
-                      initialValue: 'Reels',
+                      initialValue: 'Feed',
                       onChanged: _onPostTypeChanged,
                     ),
                   ],

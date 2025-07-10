@@ -3,6 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:windx1999/app/modules/common/controllers/theme_controller.dart';
 import 'package:windx1999/app/modules/homepage/controller/follow_request_controller.dart';
+import 'package:windx1999/app/modules/homepage/controller/hide_post_controller.dart';
+import 'package:windx1999/app/modules/homepage/controller/save_post_controller.dart';
 import 'package:windx1999/app/modules/homepage/controller/unFollow_request_controller.dart';
 import 'package:windx1999/app/modules/homepage/views/comment_screen.dart';
 import 'package:windx1999/app/modules/homepage/views/botton_sheet_screen.dart';
@@ -32,6 +34,8 @@ class _HomeScreenState extends State<HomeScreen> {
   AllPostController allPostController = Get.put(AllPostController());
   ProfileController profileController = Get.put(ProfileController());
 
+  final HidePostController hidePostController = HidePostController();
+  final SavePostController savePostController = SavePostController();
   final FollowRequestController followRequestController =
       FollowRequestController();
   final UnFollowRequestController unFollowRequestController =
@@ -128,111 +132,135 @@ class _HomeScreenState extends State<HomeScreen> {
                       itemCount: allPostController.allPostData?.length ?? 0,
                       itemBuilder: (context, index) {
                         final post = allPostController.allPostData![index];
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 4),
-                          child: PostCard(
-                            iSVisibleWishlist: post.contentType == 'wishlist',
-                            bgColor: Color(0xffAF7CF8),
-                            name: post.author?.name ?? 'name',
-                            profilePath: post.author?.photoUrl ??
-                                'https://fastly.picsum.photos/id/1/200/300.jpg',
-                            activeStatus: '20m ago',
-                            addFriendOnTap: () {},
-                            wishListOnTap: () {
-                              Get.to(ShowWishlistScreen());
-                            },
-                            moreVertOntap: () {
-                              showModalBottomSheet(
-                                scrollControlDisabledMaxHeightRatio: 0.6,
-                                context: context,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.vertical(
-                                      top: Radius.circular(20)),
-                                ),
-                                backgroundColor: Color(0xffA96CFF),
-                                builder: (context) {
-                                  return Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      ButtonSheetDetailsScreen(
-                                        buttonSheetDetailsList: [
-                                          {
-                                            'icon': Icons.bookmark,
-                                            'name': 'Save post',
-                                            'ontap': () {}
-                                          },
-                                          {
-                                            'icon': Icons.visibility_off,
-                                            'name': 'Hide post',
-                                            'ontap': () {}
-                                          },
+                        print(post.isHide);
+                        // if (allPostController.allPostData?[index].isHide ==
+                        //     false) {
+                        return post.isHide == false
+                            ? Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 4),
+                                child: PostCard(
+                                  iSVisibleWishlist:
+                                      post.contentType == 'wishlist',
+                                  bgColor: Color(0xffAF7CF8),
+                                  name: post.author?.name ?? 'name',
+                                  profilePath: post.author?.photoUrl ??
+                                      'https://fastly.picsum.photos/id/1/200/300.jpg',
+                                  activeStatus: '20m ago',
+                                  addFriendOnTap: () {},
+                                  wishListOnTap: () {
+                                    Get.to(ShowWishlistScreen());
+                                  },
+                                  moreVertOntap: () {
+                                    showModalBottomSheet(
+                                      scrollControlDisabledMaxHeightRatio: 0.6,
+                                      context: context,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.vertical(
+                                            top: Radius.circular(20)),
+                                      ),
+                                      backgroundColor: Color(0xffA96CFF),
+                                      builder: (context) {
+                                        return Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            ButtonSheetDetailsScreen(
+                                              buttonSheetDetailsList: [
+                                                {
+                                                  'icon': Icons.bookmark,
+                                                  'name': 'Save post',
+                                                  'ontap': () {
+                                                    savePost(
+                                                        post.author?.id ?? '',
+                                                        post.contentType ?? '',
+                                                        post.id ?? '');
+                                                  }
+                                                },
+                                                {
+                                                  'icon': Icons.visibility_off,
+                                                  'name': 'Hide post',
+                                                  'ontap': () {
+                                                    hidePost(post.id ?? '',
+                                                        post.contentType ?? '');
+                                                  }
+                                                },
 
-                                          /// ✅ Updated: Follow/Unfollow Button Action
-                                          {
-                                            'icon': post.isFollowing == true
-                                                ? Icons.person_remove
-                                                : Icons.person_add,
-                                            'name': post.isFollowing == true
-                                                ? 'Unfollow'
-                                                : 'Follow',
-                                            'ontap': () {
-                                              if (post.isFollowing == true) {
-                                                unFollowRequest(
-                                                    post.author?.id ?? '');
-                                              } else {
-                                                followRequest(
-                                                    post.author?.id ?? '');
-                                              }
-                                            }
-                                          },
+                                                /// ✅ Updated: Follow/Unfollow Button Action
+                                                {
+                                                  'icon':
+                                                      post.isFollowing == true
+                                                          ? Icons.person_remove
+                                                          : Icons.person_add,
+                                                  'name':
+                                                      post.isFollowing == true
+                                                          ? 'Unfollow'
+                                                          : 'Follow',
+                                                  'ontap': () {
+                                                    if (post.isFollowing ==
+                                                        true) {
+                                                      unFollowRequest(
+                                                          post.author?.id ??
+                                                              '');
+                                                    } else {
+                                                      followRequest(
+                                                          post.author?.id ??
+                                                              '');
+                                                    }
+                                                  }
+                                                },
 
-                                          {
-                                            'icon': Icons.person_off,
-                                            'name': 'Block',
-                                            'ontap': () {}
-                                          },
-                                          {
-                                            'icon':
-                                                Icons.smart_display_outlined,
-                                            'name': 'Report profile',
-                                            'ontap': () {}
-                                          },
-                                        ],
-                                      )
-                                    ],
-                                  );
-                                },
-                              );
-                            },
-                            text: post.description ?? '',
-                            comment:
-                                post.contentMeta?.comment.toString() ?? '0',
-                            react: post.contentMeta?.like.toString() ?? '0',
-                            share: post.contentMeta?.share.toString() ?? '0',
-                            shareOntap: () {
-                              showModalBottomSheet(
-                                scrollControlDisabledMaxHeightRatio: 0.6,
-                                context: context,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.vertical(
-                                      top: Radius.circular(20)),
+                                                {
+                                                  'icon': Icons.person_off,
+                                                  'name': 'Block',
+                                                  'ontap': () {}
+                                                },
+                                                {
+                                                  'icon': Icons
+                                                      .smart_display_outlined,
+                                                  'name': 'Report profile',
+                                                  'ontap': () {}
+                                                },
+                                              ],
+                                            )
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  },
+                                  text: post.description ?? '',
+                                  comment:
+                                      post.contentMeta?.comment.toString() ??
+                                          '0',
+                                  react:
+                                      post.contentMeta?.like.toString() ?? '0',
+                                  share:
+                                      post.contentMeta?.share.toString() ?? '0',
+                                  shareOntap: () {
+                                    showModalBottomSheet(
+                                      scrollControlDisabledMaxHeightRatio: 0.6,
+                                      context: context,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.vertical(
+                                            top: Radius.circular(20)),
+                                      ),
+                                      backgroundColor: Color(0xffA96CFF),
+                                      builder: (context) {
+                                        return Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [ShareScreen()],
+                                        );
+                                      },
+                                    );
+                                  },
+                                  imagePath: AssetsPath.blackGirl,
+                                  bookmarkOntap: () {},
+                                  commentOnTap: () {
+                                    Get.to(CommentScreen());
+                                  },
                                 ),
-                                backgroundColor: Color(0xffA96CFF),
-                                builder: (context) {
-                                  return Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [ShareScreen()],
-                                  );
-                                },
-                              );
-                            },
-                            imagePath: AssetsPath.blackGirl,
-                            bookmarkOntap: () {},
-                            commentOnTap: () {
-                              Get.to(CommentScreen());
-                            },
-                          ),
-                        );
+                              )
+                            : Container();
+                        // }
                       },
                     );
                   }),
@@ -275,6 +303,38 @@ class _HomeScreenState extends State<HomeScreen> {
       if (mounted) {
         showSnackBarMessage(
             context, unFollowRequestController.errorMessage ?? 'failed', true);
+      }
+    }
+  }
+
+  Future<void> hidePost(String postId, String modelType) async {
+    final bool isSuccess = await hidePostController.hidePost(postId, modelType);
+    if (isSuccess) {
+      allPostController.getAllPost();
+      if (mounted) {
+        showSnackBarMessage(context, 'Hide successfully done');
+      }
+    } else {
+      if (mounted) {
+        showSnackBarMessage(
+            context, hidePostController.errorMessage ?? 'failed', true);
+      }
+    }
+  }
+
+  Future<void> savePost(
+      String userId, String modelType, String contentId) async {
+    final bool isSuccess =
+        await savePostController.savePostF(userId, modelType, contentId);
+    if (isSuccess) {
+      allPostController.getAllPost();
+      if (mounted) {
+        showSnackBarMessage(context, 'Hide successfully done');
+      }
+    } else {
+      if (mounted) {
+        showSnackBarMessage(
+            context, savePostController.errorMessage ?? 'failed', true);
       }
     }
   }

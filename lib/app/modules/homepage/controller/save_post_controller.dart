@@ -6,7 +6,7 @@ import 'package:windx1999/app/services/network_caller/network_response.dart';
 import 'package:windx1999/app/urls.dart';
 import 'package:windx1999/get_storage.dart';
 
-class HidePostController extends GetxController {
+class SavePostController extends GetxController {
   final OtpVerifyController otpVerifyController = OtpVerifyController();
   bool _inProgress = false;
   bool get inProgress => _inProgress;
@@ -17,7 +17,8 @@ class HidePostController extends GetxController {
   String? _otpToken;
   String? get otpToken => _otpToken;
 
-  Future<bool> hidePost(String postId, String modelType) async {
+  Future<bool> savePostF(
+      String userId, String modelType, String contentId) async {
     bool isSuccess = false;
 
     _inProgress = true;
@@ -30,13 +31,13 @@ class HidePostController extends GetxController {
             ? 'Wishlist'
             : 'Feed';
     Map<String, dynamic> requestBody = {
-      "post": postId,
-      "modelType": upadatedModelType // here modelType: Reels | Wishlist | Feed
-    }; // Replace your body data
+      "user": "68514596201244ee7aeb5047",
+      "modelType": upadatedModelType,
+      "content": contentId
+    };
 
     final NetworkResponse response = await Get.find<NetworkCaller>()
-        .patchRequest(Urls.hidePostUrl,
-            body: requestBody,
+        .postRequest(Urls.savePostUrl, requestBody,
             accesToken: StorageUtil.getData(StorageUtil.userAccessToken));
 
     if (response.isSuccess) {

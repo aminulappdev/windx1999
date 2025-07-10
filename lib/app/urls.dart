@@ -18,6 +18,8 @@ class Urls {
   static const String allPostUrl = '$_baseUrl/feeds/public';
   static const String myOrderUrl = '$_baseUrl/orders/my-order';
   static const String allReelsUrl = '$_baseUrl/reels';
+  static const String hidePostUrl = '$_baseUrl/feeds/hide-post';
+  static const String savePostUrl = '$_baseUrl/watch-later';
 
   static String updateUserByUrl(
     String id,
@@ -37,11 +39,12 @@ class Urls {
     return '$_baseUrl/connection/follow/$id';
   }
 
-  
 
   static String unfollowRequestById(
     String id,
   ) {
     return '$_baseUrl/connection/unfollow/$id';
   }
+
+ 
 }
