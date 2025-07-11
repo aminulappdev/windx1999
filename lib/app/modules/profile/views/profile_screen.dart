@@ -11,6 +11,7 @@ import 'package:windx1999/app/modules/profile/views/post_gallery.dart';
 import 'package:windx1999/app/modules/profile/views/profile_product.dart';
 import 'package:windx1999/app/modules/profile/widgets/profile_bar_icon.dart';
 import 'package:windx1999/app/modules/profile/widgets/quantity_details_widget.dart';
+import 'package:windx1999/app/modules/wishlist/controller/all_wishlist_controller.dart';
 import 'package:windx1999/app/res/app_images/assets_path.dart';
 import 'package:windx1999/app/modules/profile/views/drawer/my_drawer.dart';
 import 'package:windx1999/app/res/common_widgets/circle_aveture_icon.dart';
@@ -28,6 +29,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final ProfileController profileController = Get.put(ProfileController());
+  
   bool showProductList = true;
 
   @override

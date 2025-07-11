@@ -16,12 +16,13 @@ class FilePickerBrowse extends StatelessWidget {
     return GestureDetector(
       onTap: ontap,
       child: Container(
-          width: 155.w,
-          height: 180.h,
+          width: 300.w,
+          height: 280.h,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
               color: Colors.white),
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -38,12 +39,7 @@ class FilePickerBrowse extends StatelessWidget {
                 style: TextStyle(
                     fontSize: 14.sp, color: Colors.grey),
               ),
-              heightBox4,
-              Text(
-                'Browse',
-                style: TextStyle(
-                    fontSize: 16.sp, color: Color(0xff6CC7FE)),
-              ),
+             
             ],
           )),
     );

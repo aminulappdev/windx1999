@@ -70,7 +70,7 @@ class AllPostController extends GetxController {
 
   ProfileDetailsModel? profileDetailsModel;
   ProfileData? get profileData => profileDetailsModel?.data;
-
+ 
   AllPostModel? allPostModel;
   List<AllPostItemModel>? get allPostData => allPostModel?.data;
 

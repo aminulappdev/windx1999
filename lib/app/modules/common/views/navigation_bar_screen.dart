@@ -12,7 +12,7 @@ import 'package:windx1999/app/modules/reels/views/reels_screen.dart';
 
 class BottomNavBarScreen extends StatefulWidget {
   const BottomNavBarScreen({super.key});
-
+ 
   @override
   // ignore: library_private_types_in_public_api
   _BottomNavBarScreenState createState() => _BottomNavBarScreenState();
@@ -25,7 +25,7 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
   List<Widget> screen = [
     HomeScreen(),
     ChatListScreen(),
-    PostScreen(),
+    PostScreen(audienceType: 'public',),
     ReelsScreen(),
     ProfileScreen(),
   ];

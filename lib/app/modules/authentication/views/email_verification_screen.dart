@@ -117,21 +117,17 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
     );
   } 
 
-<<<<<<< Updated upstream
-  Future<void> otpBTN(String otp) async {
-    var token = widget.accessToken;
-    print('OTP Button token : $token');
-=======
+
   Future<void> otpBTN(String otp, String token) async {
     print('OTP Button token: $token'); // ডিবাগ
     if (token == 'Empty token') {
       print('Controller data: ${createUserController.createUserModel}');
       print('User data: ${createUserController.userData}');
     }
->>>>>>> Stashed changes
+
     final bool isSuccess = await otpVerifyController.otpVerify(otp, token);
     if (isSuccess) {
-<<<<<<< Updated upstream
+
       if (mounted) {
         showSnackBarMessage(context, 'Register successfully done');
         var userId = otpVerifyController.otpData?.user?.id;
@@ -140,11 +136,11 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
           userId: userId ?? 'Empty',
         ));
       }
-=======
+
       showSnackBarMessage(context, 'Register successfully done');
       // নেভিগেশন: আপনার অ্যাপের হোম রাউটে
       // Get.offAllNamed('/home'); // আপনার রাউট অনুযায়ী পরিবর্তন করুন
->>>>>>> Stashed changes
+
     } else {
       showSnackBarMessage(
           context, otpVerifyController.errorMessage ?? 'Verification failed', true);

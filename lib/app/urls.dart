@@ -1,6 +1,5 @@
 class Urls {
-<<<<<<< Updated upstream
-  static const String _baseUrl = 'http://10.10.10.16:5011/api/v1';
+  static const String _baseUrl = 'http://172.252.13.74:5010/api/v1';
   // static const String _baseUrl = 'http://192.168.10.144:5010/api/v1';
   static const String socketUrl = 'http://172.252.13.74:4010/';
   // static const String socketUrl = 'http://192.168.10.144:4001/';
@@ -21,6 +20,10 @@ class Urls {
   static const String allReelsUrl = '$_baseUrl/reels';
   static const String hidePostUrl = '$_baseUrl/feeds/hide-post';
   static const String savePostUrl = '$_baseUrl/watch-later';
+  static const String addChatUrl = '$_baseUrl/chats';
+  static const String feedPostUrl = '$_baseUrl/feeds';
+  static const String reelsPostUrl = '$_baseUrl/reels';
+  static const String createWishListUrl = '$_baseUrl/wishlists';
 
   static String updateUserByUrl(
     String id,
@@ -40,21 +43,23 @@ class Urls {
     return '$_baseUrl/connection/follow/$id';
   }
 
-=======
-  static const String _baseUrl = 'http://172.252.13.74:8000/api/v1';
-  // static const String _baseUrl = 'http://192.168.10.160:8000/api/v1';
-  static const String socketUrl = 'http://192.168.10.144:4001/';
-  static const String createUserUrl = '$_baseUrl/users/create';
-  static const String otpVerifyUrl = '$_baseUrl/otp/verify-otp';
-  
-  
- 
->>>>>>> Stashed changes
 
   static String unfollowRequestById(
     String id,
   ) {
     return '$_baseUrl/connection/unfollow/$id';
+  }
+
+   static String reactById(
+    String id,
+  ) {
+    return '$_baseUrl/content-meta/like/$id';
+  }
+
+  static String disReactById(
+    String id,
+  ) {
+    return '$_baseUrl/content-meta/unlike/$id';
   }
 
  

@@ -19,7 +19,7 @@ class PostCard extends StatelessWidget {
   final String comment;
   final VoidCallback commentOnTap;
   final String share;
-  final VoidCallback shareOntap;
+  final VoidCallback reactOntap;
   final VoidCallback bookmarkOntap;
   final Color bgColor;
 
@@ -37,7 +37,7 @@ class PostCard extends StatelessWidget {
     required this.comment,
     required this.commentOnTap,
     required this.share,
-    required this.shareOntap,
+    required this.reactOntap,
     required this.bookmarkOntap, required this.bgColor, required this.iSVisibleWishlist,
   });
 
@@ -84,7 +84,7 @@ class PostCard extends StatelessWidget {
               children: [
                 PostCardFoterFeature(
                   icon: Icons.favorite_border,
-                  ontap: () {},
+                  ontap: reactOntap,
                   quantity: react,
                 ),
                 PostCardFoterFeature(

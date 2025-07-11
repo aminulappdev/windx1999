@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:windx1999/app/modules/chat/controllers/add_chat_controller.dart';
 import 'package:windx1999/app/modules/common/controllers/theme_controller.dart';
+import 'package:windx1999/app/modules/homepage/controller/dis_react_controller.dart';
 import 'package:windx1999/app/modules/homepage/controller/follow_request_controller.dart';
 import 'package:windx1999/app/modules/homepage/controller/hide_post_controller.dart';
+import 'package:windx1999/app/modules/homepage/controller/react_controller.dart';
 import 'package:windx1999/app/modules/homepage/controller/save_post_controller.dart';
 import 'package:windx1999/app/modules/homepage/controller/unFollow_request_controller.dart';
 import 'package:windx1999/app/modules/homepage/views/comment_screen.dart';
 import 'package:windx1999/app/modules/homepage/views/botton_sheet_screen.dart';
 import 'package:windx1999/app/modules/homepage/views/notification_screen.dart';
-import 'package:windx1999/app/modules/homepage/views/share_screen.dart';
 import 'package:windx1999/app/modules/homepage/views/show_wishlist_screen.dart';
 import 'package:windx1999/app/modules/homepage/widgets/post_card.dart';
 import 'package:windx1999/app/modules/post/controller/all_post_controller.dart';
@@ -21,6 +23,7 @@ import 'package:windx1999/app/res/common_widgets/custom_background.dart';
 import 'package:windx1999/app/res/common_widgets/custom_snackbar.dart';
 import 'package:windx1999/app/res/common_widgets/search_bar.dart';
 import 'package:windx1999/app/res/custom_style/custom_size.dart';
+import 'package:windx1999/get_storage.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -33,6 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
   ThemeController themeController = Get.find<ThemeController>();
   AllPostController allPostController = Get.put(AllPostController());
   ProfileController profileController = Get.put(ProfileController());
+  AddChatController addChatController = Get.put(AddChatController());
 
   final HidePostController hidePostController = HidePostController();
   final SavePostController savePostController = SavePostController();
@@ -40,6 +44,9 @@ class _HomeScreenState extends State<HomeScreen> {
       FollowRequestController();
   final UnFollowRequestController unFollowRequestController =
       UnFollowRequestController();
+  final ReactPostController reactPostController = ReactPostController();
+  final DisReactPostController disReactPostController =
+      DisReactPostController();
 
   @override
   void initState() {
@@ -140,6 +147,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 4),
                                 child: PostCard(
+                                  reactOntap: () {
+                                    post.isLiked == true
+                                        ? disReactPost(post.contentMeta!.id!)
+                                        : reactPost(post.contentMeta!.id!);
+                                  },
                                   iSVisibleWishlist:
                                       post.contentType == 'wishlist',
                                   bgColor: Color(0xffAF7CF8),
@@ -235,23 +247,24 @@ class _HomeScreenState extends State<HomeScreen> {
                                       post.contentMeta?.like.toString() ?? '0',
                                   share:
                                       post.contentMeta?.share.toString() ?? '0',
-                                  shareOntap: () {
-                                    showModalBottomSheet(
-                                      scrollControlDisabledMaxHeightRatio: 0.6,
-                                      context: context,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.vertical(
-                                            top: Radius.circular(20)),
-                                      ),
-                                      backgroundColor: Color(0xffA96CFF),
-                                      builder: (context) {
-                                        return Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [ShareScreen()],
-                                        );
-                                      },
-                                    );
-                                  },
+                                  // shareOntap: () {
+                                  //   showModalBottomSheet(
+                                  //     scrollControlDisabledMaxHeightRatio: 0.6,
+                                  //     context: context,
+                                  //     shape: RoundedRectangleBorder(
+                                  //       borderRadius: BorderRadius.vertical(
+                                  //           top: Radius.circular(20)),
+                                  //     ),
+                                  //     backgroundColor: Color(0xffA96CFF),
+                                  //     builder: (context) {
+                                  //       return Column(
+                                  //         mainAxisSize: MainAxisSize.min,
+                                  //         children: [ShareScreen()],
+                                  //       );
+                                  //     },
+                                  //   );
+                                  // },
+                                  
                                   imagePath: AssetsPath.blackGirl,
                                   bookmarkOntap: () {},
                                   commentOnTap: () {
@@ -273,12 +286,13 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  /// ✅ Updated: Follow request and local list update
   Future<void> followRequest(String frindId) async {
     final bool isSuccess = await followRequestController.followRequest(frindId);
     if (isSuccess) {
       allPostController.getAllPost();
       // allPostController.updateFollowStatus(frindId, true); // ✅ UI updated
+      addChatTherapist(
+          userId: StorageUtil.getData(StorageUtil.userId), friendId: frindId);
       if (mounted) {
         showSnackBarMessage(context, 'Follow successfully done');
       }
@@ -290,7 +304,6 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  /// ✅ Updated: Unfollow request and local list update
   Future<void> unFollowRequest(String frindId) async {
     final bool isSuccess =
         await unFollowRequestController.unfollowRequest(frindId);
@@ -337,6 +350,64 @@ class _HomeScreenState extends State<HomeScreen> {
             context, savePostController.errorMessage ?? 'failed', true);
       }
     }
+  }
+
+  Future<void> reactPost(String postId) async {
+    final bool isSuccess = await reactPostController.reactPost(postId);
+    if (isSuccess) {
+      allPostController.getAllPost();
+      if (mounted) {
+        showSnackBarMessage(context, 'React successfully done');
+      }
+    } else {
+      if (mounted) {
+        showSnackBarMessage(
+            context, savePostController.errorMessage ?? 'failed', true);
+      }
+    }
+  }
+
+  Future<void> disReactPost(String postId) async {
+    final bool isSuccess = await disReactPostController.disReactPost(postId);
+    if (isSuccess) {
+      allPostController.getAllPost();
+      if (mounted) {
+        showSnackBarMessage(context, 'Dis React successfully done');
+      }
+    } else {
+      if (mounted) {
+        showSnackBarMessage(
+            context, savePostController.errorMessage ?? 'failed', true);
+      }
+    }
+  }
+
+  Future<void> addChatTherapist(
+      {required String userId, required String friendId}) async {
+    final bool isSuccess = await addChatController.addChat(userId, friendId);
+
+    if (isSuccess) {
+      if (mounted) {
+        showSnackBarMessage(context, 'Added new chat');
+        print(
+            'Chat create hoye geche .............................................');
+        print('FriendId id :  $friendId');
+        print(
+            'Chat create hoye geche .............................................');
+      } else {
+        if (mounted) {
+          showSnackBarMessage(context, addChatController.errorMessage!, true);
+        }
+      }
+    } else {
+      if (mounted) {
+        // print('Error show ----------------------------------');
+        showSnackBarMessage(
+            context, addChatController.errorMessage ?? 'Ekhanei problem', true);
+      }
+    }
+
+    // Navigator.pushNamed(context, MainButtonNavbarScreen.routeName);
   }
 
   @override
