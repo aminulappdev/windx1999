@@ -58,194 +58,200 @@ class _OthersProfileScreenState extends State<OthersProfileScreen> {
 
     return SafeArea(
       child: Scaffold(
-          body: CustomBackground(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    Container(
-                      height: 200.h,
-                      width: width,
+        body: CustomBackground(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  Container(
+                    height: 200.h,
+                    width: width,
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage(AssetsPath.blackGirl),
+                            fit: BoxFit.fill)),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 12.w, vertical: 30.h),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          CircleAvetareIconWidget(
+                            iconData: Icons.arrow_back,
+                            bgColor: Color.fromARGB(133, 255, 255, 255),
+                            iconColor: Colors.white,
+                            ontap: () {
+                              Get.back();
+                            },
+                          ),
+                          CircleAvetareIconWidget(
+                            iconData: Icons.more_vert,
+                            bgColor: Color.fromARGB(133, 255, 255, 255),
+                            iconColor: Colors.white,
+                            ontap: () {
+                              showModalBottomSheet(
+                                scrollControlDisabledMaxHeightRatio: 0.6,
+                                context: context,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.vertical(
+                                      top: Radius.circular(20)),
+                                ),
+                                backgroundColor: Color(0xffA96CFF),
+                                builder: (context) {
+                                  return Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      ButtonSheetDetailsScreen(
+                                        buttonSheetDetailsList:
+                                            othersProfileBottomBarList,
+                                      )
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    bottom: -40.h,
+                    left: 150.h,
+                    child: Container(
+                      height: 80.h,
+                      width: 80.w,
                       decoration: BoxDecoration(
+                          border: Border.all(color: Colors.white),
                           image: DecorationImage(
                               image: AssetImage(AssetsPath.blackGirl),
-                              fit: BoxFit.fill)),
-                      child: Padding(
-                         padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 30.h),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            CircleAvetareIconWidget(
-                              iconData: Icons.arrow_back,
-                              bgColor: Color.fromARGB(133, 255, 255, 255),
-                              iconColor: Colors.white,
-                              ontap: () {
-                                Get.back();
-                              },
-                            ),
-                            CircleAvetareIconWidget(
-                              iconData: Icons.more_vert,
-                              bgColor: Color.fromARGB(133, 255, 255, 255),
-                              iconColor: Colors.white,
-                              ontap: () {
-                                showModalBottomSheet(
-                                  scrollControlDisabledMaxHeightRatio: 0.6,
-                                  context: context,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.vertical(
-                                        top: Radius.circular(20)),
-                                  ),
-                                  backgroundColor: Color(0xffA96CFF),
-                                  builder: (context) {
-                                    return Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        ButtonSheetDetailsScreen(
-                                          buttonSheetDetailsList:
-                                              othersProfileBottomBarList,
-                                        )
-                                      ],
-                                    );
-                                  },
-                                );
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
+                              fit: BoxFit.fill),
+                          shape: BoxShape.circle,
+                          color: Colors.white),
                     ),
-                    Positioned(
-                      bottom: -40.h,
-                      left: 150.h,
-                      child: Container(
-                        height: 80.h,
-                        width: 80.w,
-                        decoration: BoxDecoration(
-                            border: Border.all(color: Colors.white),
-                            image: DecorationImage(
-                                image: AssetImage(AssetsPath.blackGirl),
-                                fit: BoxFit.fill),
-                            shape: BoxShape.circle,
-                            color: Colors.white),
-                      ),
-                    )
-                  ],
-                ),
-                heightBox8,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    QuantityDetailsWidget(
-                      quantity: '17.4k',
-                      title: 'Followers',
-                      titleSize: 14,
-                      quantitySize: 16,
-                      ontap: () {
-                        Get.to(FollowersScreen());
-                      },
-                    ),
-                    QuantityDetailsWidget(
-                      quantity: '17.5k',
-                      title: 'Following',
-                      titleSize: 14,
-                      quantitySize: 16,
-                      ontap: () {
-                        Get.to(FollowingScreen());
-                      },
-                    ),
-                  ],
-                ),
-                heightBox8,
-                StraightLiner(),
-                heightBox16,
-                Text(
-                  'Md Aminul Islam',
-                  style: TextStyle(
-                      fontSize: 18.h,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white),
-                ),
-                heightBox8,
-                SizedBox(
-                  width: 300.w,
-                  child: Text(
-                    'Im Nammi Fatema. I have 2+ years of experience specializing in UI/UX design ',
-                    style: TextStyle(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.white),
-                    textAlign: TextAlign.center,
+                  )
+                ],
+              ),
+              heightBox8,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  QuantityDetailsWidget(
+                    quantity: '17.4k',
+                    title: 'Followers',
+                    titleSize: 14,
+                    quantitySize: 16,
+                    ontap: () {
+                      Get.to(FollowersScreen());
+                    },
                   ),
+                  QuantityDetailsWidget(
+                    quantity: '17.5k',
+                    title: 'Following',
+                    titleSize: 14,
+                    quantitySize: 16,
+                    ontap: () {
+                      Get.to(FollowingScreen());
+                    },
+                  ),
+                ],
+              ),
+              heightBox8,
+              StraightLiner(),
+              heightBox16,
+              Text(
+                'Md Aminul Islam',
+                style: TextStyle(
+                    fontSize: 18.h,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white),
+              ),
+              heightBox8,
+              SizedBox(
+                width: 300.w,
+                child: Text(
+                  'Im Nammi Fatema. I have 2+ years of experience specializing in UI/UX design ',
+                  style: TextStyle(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.white),
+                  textAlign: TextAlign.center,
                 ),
-                heightBox12,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    RectangleButtonWithIcon(
-                      height: 38,
-                      width: 170,
-                      iconData: Icons.person_add,
-                      iconSize: 24,
-                      iconColor: Colors.white,
-                      title: 'Follow',
-                      titleSize: 14,
-                      titleColor: Colors.white,
-                      space: widthBox8,
-                      ontap: () {},
-                      borderRadius: 10,
-                    ),
-                    RectangleButtonWithIcon(
-                      height: 38,
-                      width: 170,
-                      iconData: Icons.sms,
-                      iconSize: 24,
-                      iconColor: Colors.white,
-                      title: 'Message',
-                      titleSize: 14,
-                      titleColor: Colors.white,
-                      space: widthBox8,
-                      ontap: () {
-                        Get.to(ChatScreen());
-                      },
-                      borderRadius: 10,
-                    ),
-                  ],
-                ),
-                heightBox12,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    ProfileBarIcon(
-                      showProductList: showProductList,
-                      ontap: () {
-                        setState(() {
-                          showProductList = true;
-                        });
-                      },
-                      iconData: Icons.task_outlined,
-                      isSelected: showProductList,
-                    ),
-                    ProfileBarIcon(
-                      showProductList: showProductList,
-                      ontap: () {
-                        setState(() {
-                          showProductList = false;
-                        });
-                      },
-                      iconData: Icons.photo,
-                      isSelected: !showProductList,
-                    ),
-                  ],
-                ),
-                heightBox12,
-                Expanded(child: showProductList ? ProfileProduct() : PostGallery())
-              ],
-            ),
+              ),
+              heightBox12,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  RectangleButtonWithIcon(
+                    height: 38,
+                    width: 170,
+                    iconData: Icons.person_add,
+                    iconSize: 24,
+                    iconColor: Colors.white,
+                    title: 'Follow',
+                    titleSize: 14,
+                    titleColor: Colors.white,
+                    space: widthBox8,
+                    ontap: () {},
+                    borderRadius: 10,
+                  ),
+                  RectangleButtonWithIcon(
+                    height: 38,
+                    width: 170,
+                    iconData: Icons.sms,
+                    iconSize: 24,
+                    iconColor: Colors.white,
+                    title: 'Message',
+                    titleSize: 14,
+                    titleColor: Colors.white,
+                    space: widthBox8,
+                    ontap: () {
+                      Get.to(ChatScreen(
+                        // chatId: '',
+                        // receiverId: '',
+                        // receiverName: '',
+                        // receiverImage: '',
+                      ));
+                    },
+                    borderRadius: 10,
+                  ),
+                ],
+              ),
+              heightBox12,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  ProfileBarIcon(
+                    showProductList: showProductList,
+                    ontap: () {
+                      setState(() {
+                        showProductList = true;
+                      });
+                    },
+                    iconData: Icons.task_outlined,
+                    isSelected: showProductList,
+                  ),
+                  ProfileBarIcon(
+                    showProductList: showProductList,
+                    ontap: () {
+                      setState(() {
+                        showProductList = false;
+                      });
+                    },
+                    iconData: Icons.photo,
+                    isSelected: !showProductList,
+                  ),
+                ],
+              ),
+              heightBox12,
+              Expanded(
+                  child: showProductList ? ProfileProduct() : PostGallery())
+            ],
           ),
-        
+        ),
       ),
     );
   }

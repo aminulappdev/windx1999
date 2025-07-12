@@ -19,6 +19,12 @@ class _ProfileProductState extends State<ProfileProduct> {
   final AllWishlistController allWishlistController =
       Get.put(AllWishlistController());
 
+   @override
+  void initState() {
+    allWishlistController.getAllWishlist();
+    super.initState();
+  }   
+  
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -40,7 +46,7 @@ class _ProfileProductState extends State<ProfileProduct> {
             ),
           ),
         ),
-        Expanded(
+        Expanded( 
           child: GetBuilder<AllWishlistController>(builder: (controller) {
             if (controller.inProgress) {
               return const Center(child: CircularProgressIndicator());
@@ -51,24 +57,27 @@ class _ProfileProductState extends State<ProfileProduct> {
                 itemCount: controller.allWishlistData?.length,
                 itemBuilder: (context, index) {
                   var wishlist = controller.allWishlistData?[index];
-                  return ProductListTile(
-                    imagePath: AssetsPath.blackGirl,
-                    title: wishlist?.title ?? 'no title',
-                    subtitle: '"Capturing moments that speak.',
-                    category: 'Wishlist',
-                    trailingIcon: RectangleButtonWithIcon(
-                      height: 30,
-                      width: 70,
-                      bgColor: Color(0xff6CC7FE),
-                      borderRadius: 8,
-                      title: '5.5k',
-                      titleColor: Colors.white,
-                      titleSize: 12,
-                      iconData: Icons.token_rounded,
-                      iconColor: Colors.white,
-                      iconSize: 16,
-                      space: heightBox4,
-                      ontap: () {},
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4),
+                    child: ProductListTile(
+                      imagePath: AssetsPath.blackGirl,
+                      title: wishlist?.title ?? 'no title',
+                      subtitle: wishlist?.description ?? 'no description',
+                      category: 'Wishlist',
+                      trailingIcon: RectangleButtonWithIcon(
+                        height: 30,
+                        width: 70,
+                        bgColor: Color(0xff6CC7FE),
+                        borderRadius: 8,
+                        title: controller.allWishlistData?[index].price.toString() ?? 'no price',
+                        titleColor: Colors.white,
+                        titleSize: 12,
+                        iconData: Icons.token_rounded,
+                        iconColor: Colors.white,
+                        iconSize: 16,
+                        space: heightBox4,
+                        ontap: () {},
+                      ),
                     ),
                   );
                 },

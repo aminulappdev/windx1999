@@ -82,9 +82,10 @@ class AllPostController extends GetxController {
 
     _inProgress = true;
     update();
-
+    Map<String, dynamic> params = {'limit': 200, 'page': 1};
     final NetworkResponse response = await Get.find<NetworkCaller>().getRequest(
         Urls.allPostUrl,
+        queryParams: params,
         accesToken: StorageUtil.getData(StorageUtil.userAccessToken));
 
     if (response.isSuccess) {

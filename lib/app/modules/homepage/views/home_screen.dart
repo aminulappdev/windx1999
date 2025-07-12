@@ -12,7 +12,8 @@ import 'package:windx1999/app/modules/homepage/controller/unFollow_request_contr
 import 'package:windx1999/app/modules/homepage/views/comment_screen.dart';
 import 'package:windx1999/app/modules/homepage/views/botton_sheet_screen.dart';
 import 'package:windx1999/app/modules/homepage/views/notification_screen.dart';
-import 'package:windx1999/app/modules/homepage/views/show_wishlist_screen.dart';
+import 'package:windx1999/app/modules/homepage/widgets/post_card_shimmer.dart';
+import 'package:windx1999/app/modules/wishlist/views/show_wishlist_screen.dart';
 import 'package:windx1999/app/modules/homepage/widgets/post_card.dart';
 import 'package:windx1999/app/modules/post/controller/all_post_controller.dart';
 import 'package:windx1999/app/modules/profile/controllers/profile_controller.dart';
@@ -133,13 +134,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       builder: (allPostController) {
                     if (allPostController.inProgress) {
                       return Center(child: CircularProgressIndicator());
-                    }
+                    } 
                     return ListView.builder(
                       padding: EdgeInsets.zero,
                       itemCount: allPostController.allPostData?.length ?? 0,
                       itemBuilder: (context, index) {
-                        final post = allPostController.allPostData![index];
-                        print(post.isHide);
+                         final post = allPostController.allPostData![index];
+                        // print(post.isHide);
                         // if (allPostController.allPostData?[index].isHide ==
                         //     false) {
                         return post.isHide == false
@@ -161,7 +162,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   activeStatus: '20m ago',
                                   addFriendOnTap: () {},
                                   wishListOnTap: () {
-                                    Get.to(ShowWishlistScreen());
+                                    Get.to(ShowWishlistScreen(
+                                        wishlistId: post.id!));
                                   },
                                   moreVertOntap: () {
                                     showModalBottomSheet(
@@ -264,9 +266,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                   //     },
                                   //   );
                                   // },
-                                  
-                                  imagePath: AssetsPath.blackGirl,
-                                  bookmarkOntap: () {},
+                                  isSaved:
+                                      post.isWatchLater == true ? true : false,
+                                  imagePath: post.content.isNotEmpty
+                                      ? post.content[0]
+                                      : null,
+                                  bookmarkOntap: () {
+                                    savePost(post.author?.id ?? '',
+                                        post.contentType ?? '', post.id ?? '');
+                                  },
                                   commentOnTap: () {
                                     Get.to(CommentScreen());
                                   },

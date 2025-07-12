@@ -22,7 +22,7 @@ class ProductListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Row(
           children: [
@@ -33,49 +33,56 @@ class ProductListTile extends StatelessWidget {
                 borderRadius: 8,
                 borderColor: Colors.transparent),
             widthBox8,
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: TextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white),
-                ),
-                heightBox4,
-                SizedBox(
-                  width: 220.w,
-                  child: Text(
-                    subtitle,
+            SizedBox(
+              width: 235.w,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
                     style: TextStyle(
-                        fontSize: 12.sp,
+                        fontSize: 14.sp,
                         fontWeight: FontWeight.w600,
                         color: Colors.white),
                   ),
-                ),
-                heightBox4,
-                Row(
-                  children: [
-                    CircleAvatar(
-                      radius: 3.r,
-                      backgroundColor: Colors.blue,
-                    ),
-                    widthBox8,
-                    Text(
-                      category,
+                  heightBox4,
+                  SizedBox(
+                    width: 230.w,
+                    child: Text(
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      subtitle,
                       style: TextStyle(
+                         
                           fontSize: 12.sp,
                           fontWeight: FontWeight.w600,
                           color: Colors.white),
                     ),
-                  ],
-                )
-              ],
+                  ),
+                  heightBox4,
+                  Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 3.r,
+                        backgroundColor: Colors.blue,
+                      ),
+                      widthBox8,
+                      Text(
+                        category,
+                        style: TextStyle(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white),
+                      ),
+                    ],
+                  )
+                ],
+              ),
             ),
           ],
         ),
-        trailingIcon
+      
+         trailingIcon
       ],
     );
   }

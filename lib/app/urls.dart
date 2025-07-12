@@ -24,6 +24,8 @@ class Urls {
   static const String feedPostUrl = '$_baseUrl/feeds';
   static const String reelsPostUrl = '$_baseUrl/reels';
   static const String createWishListUrl = '$_baseUrl/wishlists';
+  static const String allWishListUrl = '$_baseUrl/wishlists/my-wishlist';
+  static const String allFriendsChatnUrl = '$_baseUrl/chats/my-chat-list';
 
   static String updateUserByUrl(
     String id,
@@ -62,5 +64,10 @@ class Urls {
     return '$_baseUrl/content-meta/unlike/$id';
   }
 
+    static String wishlistById(
+    String id,
+  ) {
+    return '$_baseUrl/wishlists/$id';
+  }
  
 }

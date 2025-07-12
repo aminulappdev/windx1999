@@ -7,9 +7,12 @@ import 'package:get_storage/get_storage.dart';
 import 'package:windx1999/app/modules/onboarding/views/splash_screen.dart';
 import 'package:windx1999/app/res/app_binder/controller_binder.dart';
 import 'package:windx1999/app/res/app_colors/app_colors.dart';
+import 'package:windx1999/app/services/socket/socket_service.dart';
 
 void main() async {
+  SocketService socketService = Get.put(SocketService());
   await GetStorage.init();
+  await socketService.init();
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
     DevicePreview(

@@ -19,7 +19,7 @@ class IconWithReact extends StatelessWidget {
     return Column(
       children: [
         InkWell(
-            onTap: () {},
+            onTap: ontap,
             child: Icon(
               icon,
               color: Colors.white,

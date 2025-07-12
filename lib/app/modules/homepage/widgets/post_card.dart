@@ -6,6 +6,7 @@ import 'package:windx1999/app/res/common_widgets/image_container.dart';
 import 'package:windx1999/app/res/custom_style/custom_size.dart';
 
 class PostCard extends StatelessWidget {
+  final bool isSaved;
   final bool iSVisibleWishlist;
   final String profilePath;
   final String name;
@@ -36,9 +37,9 @@ class PostCard extends StatelessWidget {
     required this.react,
     required this.comment,
     required this.commentOnTap,
-    required this.share,
+    required this.share, 
     required this.reactOntap,
-    required this.bookmarkOntap, required this.bgColor, required this.iSVisibleWishlist,
+    required this.bookmarkOntap, required this.bgColor, required this.iSVisibleWishlist, required this.isSaved,
   });
 
   @override
@@ -52,6 +53,7 @@ class PostCard extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.all(8.0.h),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             PostCardHeader(
                 isShowWishlist: iSVisibleWishlist,
@@ -72,7 +74,7 @@ class PostCard extends StatelessWidget {
             imagePath != null
                 ? ImageContainer(
                     imagePath: imagePath,
-                    height: 190.h,
+                    height: 250.h,
                     width: MediaQuery.of(context).size.width,
                     borderColor: Colors.white,
                     borderRadius: 12.r,
@@ -83,7 +85,7 @@ class PostCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 PostCardFoterFeature(
-                  icon: Icons.favorite_border,
+                  icon: react == '0' ? Icons.favorite_border : Icons.favorite,
                   ontap: reactOntap,
                   quantity: react,
                 ),
@@ -100,7 +102,7 @@ class PostCard extends StatelessWidget {
                 GestureDetector(
                   onTap: bookmarkOntap,
                   child: Icon(
-                    Icons.bookmark_border,
+                   isSaved ? Icons.bookmark :  Icons.bookmark_border,
                     color: Colors.white,
                     size: 28.h,
                   ),

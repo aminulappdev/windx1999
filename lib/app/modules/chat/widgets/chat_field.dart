@@ -106,7 +106,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ChattingFieldWidget extends StatefulWidget {
-  const ChattingFieldWidget({super.key});
+  // Added controller and validator parameters
+  final TextEditingController? controller;
+  final String? Function(String?)? validator;
+
+  const ChattingFieldWidget({
+    super.key,
+    this.controller, // Added to support TextEditingController
+    this.validator, // Added to support form validation
+  });
 
   @override
   State<ChattingFieldWidget> createState() => _ChattingFieldWidgetState();
@@ -117,7 +125,9 @@ class _ChattingFieldWidgetState extends State<ChattingFieldWidget> {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 4.w),
-      child: TextField(
+      child: TextFormField( // Changed TextField to TextFormField for validation
+        controller: widget.controller, // Added controller
+        validator: widget.validator, // Added validator
         decoration: InputDecoration(
           hintText: 'Write message',
           hintStyle: TextStyle(color: Colors.grey.shade600),
@@ -145,7 +155,6 @@ class _ChattingFieldWidgetState extends State<ChattingFieldWidget> {
         return Dialog(
           backgroundColor: const Color.fromARGB(255, 242, 234, 247),
           shape: RoundedRectangleBorder(
-            
             borderRadius: BorderRadius.circular(15.r),
           ),
           child: Padding(
@@ -189,9 +198,8 @@ class _ChattingFieldWidgetState extends State<ChattingFieldWidget> {
             decoration: BoxDecoration(
               border: Border.all(color: const Color.fromARGB(216, 158, 158, 158)),
               color: const Color.fromARGB(185, 255, 255, 255),
-              shape: BoxShape.circle
+              shape: BoxShape.circle,
             ),
-            
             child: Icon(icon, color: const Color(0xFF7B3DD3), size: 30.sp),
           ),
         ),

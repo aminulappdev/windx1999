@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:windx1999/app/res/custom_style/custom_size.dart';
@@ -8,8 +7,9 @@ class ReelsDetails extends StatelessWidget {
   final String name;
   final String address;
   final VoidCallback addFriendOnTap;
-  final VoidCallback wishListOnTap;
+  final VoidCallback followOnTap;
   final String caption;
+  final String follow;
   final String musicName;
 
   const ReelsDetails({
@@ -18,9 +18,9 @@ class ReelsDetails extends StatelessWidget {
     required this.name,
     required this.address,
     required this.addFriendOnTap,
-    required this.wishListOnTap,
+    required this.followOnTap,
     required this.caption,
-    required this.musicName,
+    required this.musicName, required this.follow,
   });
 
   @override
@@ -56,13 +56,6 @@ class ReelsDetails extends StatelessWidget {
                             ),
                           ),
                           widthBox12,
-                          GestureDetector(
-                              onTap: addFriendOnTap,
-                              child: Icon(
-                                Icons.person_add_alt_1_outlined,
-                                color: Colors.white,
-                                size: 30.h,
-                              ))
                         ],
                       ),
                       Text(
@@ -77,24 +70,22 @@ class ReelsDetails extends StatelessWidget {
             Row(
               children: [
                 Container(
-                  height: 40.h,
-                  width: 100.w,
+                  height: 30.h,
+                  width: 90.w,
                   decoration: BoxDecoration(
-                    border: Border.all(color: Colors.white),
-                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: Colors.blue),
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(8),
                   ),
                   child: GestureDetector(
-                    onTap: wishListOnTap,
+                    onTap: followOnTap,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(
-                          Icons.task_outlined,
-                          color: Color(0xff6CC7FE),
-                        ),
                         Text(
-                          'Wishlist',
-                          style: TextStyle(color: Color(0xff6CC7FE)),
+                          follow,
+                          style: TextStyle(
+                              color: Color.fromARGB(255, 248, 248, 248)),
                         )
                       ],
                     ),
