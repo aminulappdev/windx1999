@@ -33,28 +33,31 @@ class RectangleButtonWithIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: height.h,
-      width: width.w,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(borderRadius.r), color: bgColor),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            iconData,
-            size: iconSize.h,
-            color: iconColor,
-          ),
-          space,
-          Text(
-            title,
-            style: TextStyle(
-                fontSize: titleSize.sp,
-                fontWeight: FontWeight.w400,
-                color: titleColor),
-          ),
-        ],
+    return InkWell(
+      onTap: ontap,
+      child: Container(
+        height: height.h,
+        width: width.w,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(borderRadius.r), color: bgColor),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              iconData,
+              size: iconSize.h,
+              color: iconColor,
+            ),
+            space,
+            Text(
+              title,
+              style: TextStyle(
+                  fontSize: titleSize.sp,
+                  fontWeight: FontWeight.w400,
+                  color: titleColor),
+            ),
+          ],
+        ),
       ),
     );
   }

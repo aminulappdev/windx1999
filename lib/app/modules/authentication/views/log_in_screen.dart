@@ -38,6 +38,8 @@ class _LogInScreenState extends State<LogInScreen> {
 
   @override
   Widget build(BuildContext context) {
+    emailCtrl.text = 'siresen699@fuasha.com';
+    passCtrl.text = '1234567';
     return Scaffold(
       body: CustomBackground(
         child: SingleChildScrollView(

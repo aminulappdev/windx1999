@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:windx1999/app/modules/profile/views/own_profile/others_profile_screen.dart';
+import 'package:windx1999/app/modules/profile/views/others_profile/others_profile_screen.dart';
 import 'package:windx1999/app/res/custom_style/custom_size.dart';
 
 class CustomChatAppBar extends StatefulWidget {
@@ -47,7 +47,7 @@ class _CustomChatAppBarState extends State<CustomChatAppBar> {
             widthBox8,
             InkWell(
               onTap: () {
-                Get.to(OthersProfileScreen());
+                Get.to(OthersProfileScreen(userId: '',));
               },
               child: Row(
                 children: [

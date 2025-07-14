@@ -34,8 +34,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   void initState() {
-    profileController.getMyProfile();
     super.initState();
+    // Schedule getMyProfile to run after the build phase
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      profileController.getMyProfile();
+    });
   }
 
   @override
@@ -43,163 +46,171 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final double width = MediaQuery.of(context).size.width;
 
     return SafeArea(
-        child: Scaffold(
-      key: _scaffoldKey,
-      drawer: MyDrawer(),
-      body: GetBuilder<ProfileController>(builder: (controller) {
-        if (controller.inProgress) {
-          return Center(child: CircularProgressIndicator());
-        }
-        return CustomBackground(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  Container(
-                    height: 200.h,
-                    width: width,
-                    decoration: BoxDecoration(
+      child: Scaffold(
+        key: _scaffoldKey,
+        drawer:  MyDrawer(),
+        body: GetBuilder<ProfileController>(builder: (controller) {
+          if (controller.inProgress) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          return CustomBackground(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    Container(
+                      height: 200.h,
+                      width: width,
+                      decoration: BoxDecoration(
                         image: DecorationImage(
-                            image: controller.profileData?.banner != null
-                                ? NetworkImage(controller.profileData!.banner!)
-                                : AssetImage(AssetsPath.blackGirl),
-                            fit: BoxFit.fill)),
-                    child: Padding(
-                      padding: EdgeInsets.all(12.0.h),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          CircleAvetareIconWidget(
-                            iconData: Icons.arrow_back,
-                            bgColor: Color.fromARGB(133, 255, 255, 255),
-                            iconColor: Colors.white,
-                            ontap: () {
-                              Get.back();
-                            },
-                          ),
-                          CircleAvetareIconWidget(
-                            iconData: Icons.settings,
-                            bgColor: Color.fromARGB(133, 255, 255, 255),
-                            iconColor: Colors.white,
-                            ontap: () {
-                              _scaffoldKey.currentState?.openDrawer();
-                            },
-                          ),
-                        ],
+                          image: controller.profileData?.banner != null
+                              ? NetworkImage(controller.profileData!.banner!)
+                              : const AssetImage(AssetsPath.blackGirl),
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.all(12.0.h),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CircleAvetareIconWidget(
+                              iconData: Icons.arrow_back,
+                              bgColor: const Color.fromARGB(133, 255, 255, 255),
+                              iconColor: Colors.white,
+                              ontap: () {
+                                Get.back();
+                              },
+                            ),
+                            CircleAvetareIconWidget(
+                              iconData: Icons.settings,
+                              bgColor: const Color.fromARGB(133, 255, 255, 255),
+                              iconColor: Colors.white,
+                              ontap: () {
+                                _scaffoldKey.currentState?.openDrawer();
+                              },
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  Positioned(
-                    bottom: -40.h,
-                    left: (width / 2) - (80.w / 2),
-                    child: Container(
-                      height: 80.h,
-                      width: 80.w,
-                      decoration: BoxDecoration(
+                    Positioned(
+                      bottom: -40.h,
+                      left: (width / 2) - (80.w / 2),
+                      child: Container(
+                        height: 80.h,
+                        width: 80.w,
+                        decoration: BoxDecoration(
                           border: Border.all(color: Colors.white),
                           image: DecorationImage(
-                              image: controller.profileData?.photoUrl != null
-                                  ? NetworkImage(
-                                      controller.profileData!.photoUrl!)
-                                  : AssetImage(AssetsPath.blackGirl),
-                              fit: BoxFit.fill),
+                            image: controller.profileData?.photoUrl != null
+                                ? NetworkImage(controller.profileData!.photoUrl!)
+                                : const AssetImage(AssetsPath.blackGirl),
+                            fit: BoxFit.fill,
+                          ),
                           shape: BoxShape.circle,
-                          color: Colors.white),
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
-                  )
-                ],
-              ),
-              heightBox8,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  QuantityDetailsWidget(
-                    quantity: '17.5k',
-                    title: 'Followers',
-                    titleSize: 14,
-                    quantitySize: 16,
-                    ontap: () {
-                      Get.to(FollowersScreen());
-                    },
-                  ),
-                  QuantityDetailsWidget(
-                    quantity: '17.5k',
-                    title: 'Following',
-                    titleSize: 14,
-                    quantitySize: 16,
-                    ontap: () {
-                      Get.to(FollowingScreen());
-                    },
-                  ),
-                ],
-              ),
-              heightBox8,
-              StraightLiner(),
-              heightBox16,
-              Text(
-                controller.profileData?.name ?? 'no name',
-                style: TextStyle(
+                  ],
+                ),
+                heightBox8,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    QuantityDetailsWidget(
+                      quantity: '17.5k',
+                      title: 'Followers',
+                      titleSize: 14,
+                      quantitySize: 16,
+                      ontap: () {
+                        Get.to(() => const FollowersScreen());
+                      },
+                    ),
+                    QuantityDetailsWidget(
+                      quantity: '17.5k',
+                      title: 'Following',
+                      titleSize: 14,
+                      quantitySize: 16,
+                      ontap: () {
+                        Get.to(() => const FollowingScreen());
+                      },
+                    ),
+                  ],
+                ),
+                heightBox8,
+                const StraightLiner(),
+                heightBox16,
+                Text(
+                  controller.profileData?.name ?? 'No name',
+                  style: TextStyle(
                     fontSize: 18.sp,
                     fontWeight: FontWeight.w600,
-                    color: Colors.white),
-              ),
-              heightBox8,
-              SizedBox(
-                width: 300.w,
-                child: Text(
-                  controller.profileData?.bio ?? 'no data',
-                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+                heightBox8,
+                SizedBox(
+                  width: 300.w,
+                  child: Text(
+                    controller.profileData?.bio ?? 'No bio available',
+                    style: TextStyle(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w400,
-                      color: Colors.white),
-                  textAlign: TextAlign.center,
+                      color: Colors.white,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
-              ),
-              heightBox12,
-              ElevatedButton(
+                heightBox12,
+                ElevatedButton(
                   onPressed: () {
-                    Get.to(EditProfileScreen());
+                    Get.to(() => const EditProfileScreen());
                   },
-                  child: Text(
+                  child: const Text(
                     'Edit profile',
                     style: TextStyle(color: Colors.white),
-                  )),
-              heightBox12,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  ProfileBarIcon(
-                    showProductList: showProductList,
-                    ontap: () {
-                      setState(() {
-                        showProductList = true;
-                      });
-                    },
-                    iconData: Icons.task_outlined,
-                    isSelected: showProductList,
                   ),
-                  ProfileBarIcon(
-                    showProductList: showProductList,
-                    ontap: () {
-                      setState(() {
-                        showProductList = false;
-                      });
-                    },
-                    iconData: Icons.photo,
-                    isSelected: !showProductList,
-                  ),
-                ],
-              ),
-              heightBox12,
-              Expanded(
-                  child: showProductList ? ProfileProduct() : PostGallery())
-            ],
-          ),
-        );
-      }),
-    ));
+                ),
+                heightBox12,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    ProfileBarIcon(
+                      showProductList: showProductList,
+                      ontap: () {
+                        setState(() {
+                          showProductList = true;
+                        });
+                      },
+                      iconData: Icons.task_outlined,
+                      isSelected: showProductList,
+                    ),
+                    ProfileBarIcon(
+                      showProductList: showProductList,
+                      ontap: () {
+                        setState(() {
+                          showProductList = false;
+                        });
+                      },
+                      iconData: Icons.photo,
+                      isSelected: !showProductList,
+                    ),
+                  ],
+                ),
+                heightBox12,
+                Expanded(
+                  child: showProductList ? const ProfileProduct() : const PostGallery(),
+                ),
+              ],
+            ),
+          );
+        }),
+      ),
+    );
   }
 }

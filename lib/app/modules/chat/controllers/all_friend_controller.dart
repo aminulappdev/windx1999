@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:windx1999/app/modules/chat/model/all_friends_model.dart';
 import 'package:windx1999/app/services/network_caller/network_caller.dart';
 import 'package:windx1999/app/services/network_caller/network_response.dart';
-import 'package:windx1999/app/services/socket/socket_service.dart';
+import 'package:windx1999/app/services/socket/socket_service.dart'; 
 import 'package:windx1999/app/urls.dart';
 import 'package:windx1999/get_storage.dart';
 

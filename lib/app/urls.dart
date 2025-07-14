@@ -8,7 +8,7 @@ class Urls {
   static const String loginUrl = '$_baseUrl/auth/login';
   static const String forgotEmailUrl = '$_baseUrl/auth/forgot-password';
   static const String resetPasswordUrl = '$_baseUrl/auth/reset-password';
-  static const String resendOtpUrl = '$_baseUrl/otp/resend-otp'; 
+  static const String resendOtpUrl = '$_baseUrl/otp/resend-otp';
   static const String userUpdateProfileUrl =
       '$_baseUrl/users/update-my-profile';
   static const String allPackageUrl = '$_baseUrl/packages';
@@ -26,11 +26,18 @@ class Urls {
   static const String createWishListUrl = '$_baseUrl/wishlists';
   static const String allWishListUrl = '$_baseUrl/wishlists/my-wishlist';
   static const String allFriendsChatnUrl = '$_baseUrl/chats/my-chat-list';
+  static const String reportUserUrl = '$_baseUrl/reports';
 
   static String updateUserByUrl(
     String id,
   ) {
     return '$_baseUrl/users/update/$id';
+  }
+
+  static String otherUserByUrl(
+    String id,
+  ) {
+    return '$_baseUrl/users/$id';
   }
 
   static String confirmedPaymentUrlsById(
@@ -45,14 +52,13 @@ class Urls {
     return '$_baseUrl/connection/follow/$id';
   }
 
-
   static String unfollowRequestById(
     String id,
   ) {
     return '$_baseUrl/connection/unfollow/$id';
   }
 
-   static String reactById(
+  static String reactById(
     String id,
   ) {
     return '$_baseUrl/content-meta/like/$id';
@@ -64,10 +70,21 @@ class Urls {
     return '$_baseUrl/content-meta/unlike/$id';
   }
 
-    static String wishlistById(
+  static String wishlistById(
     String id,
   ) {
     return '$_baseUrl/wishlists/$id';
   }
- 
+
+  static String blockUserById(
+    String id,
+  ) {
+    return '$_baseUrl/profile-block/block/$id';
+  }
+
+   static String getMessagesUrl(
+    String id,
+  ) {
+    return '$_baseUrl/messages/my-messages/$id';
+  }
 }

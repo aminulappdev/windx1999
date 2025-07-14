@@ -70,7 +70,7 @@ class TextFormFieldDesign {
       filled: true,
       border: inputBorder(),
       enabledBorder: inputBorder(),
-      focusedBorder: inputBorder(),
+      focusedBorder: inputBorder(), 
       errorBorder: inputBorder(),
     );
   }

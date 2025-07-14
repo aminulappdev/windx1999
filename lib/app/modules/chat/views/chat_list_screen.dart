@@ -21,9 +21,9 @@ class _ChatListScreenState extends State<ChatListScreen> {
 
   @override
   void initState() {
+    super.initState();
     socketService.init();
     friendController.getAllFriends();
-    super.initState();
   }
 
   @override
@@ -56,79 +56,100 @@ class _ChatListScreenState extends State<ChatListScreen> {
                     fontWeight: FontWeight.w600,
                     color: Colors.white),
               ),
-              GetBuilder<FriendController>(builder: (controller) {
-                if (controller.inProgress) {
-                  return const Center(child: CircularProgressIndicator());
-                }
+              heightBox8,
+              Expanded(
+                child: GetBuilder<FriendController>(builder: (controller) {
+                  if (controller.inProgress) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
 
-                if (controller.friendList.isEmpty) {
-                  return Center(
+                  if (controller.friendList.isEmpty) {
+                    return Center(
                       child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Your Chats with a Friends Will Appear Here.',
-                        style: TextStyle(
-                            fontSize: 13, fontWeight: FontWeight.bold),
-                      ),
-                      heightBox4,
-                      Text(
-                        'No Friends Found at this time',
-                        style: TextStyle(fontSize: 12),
-                      ),
-                    ],
-                  ));
-                }
-                return Expanded(
-                    child: ListView.builder(
-                  padding: EdgeInsets.zero,
-                  itemCount: controller.friendList.length,
-                  itemBuilder: (context, index) {
-                    return InkWell(
-                      onTap: () {
-                        Get.to(ChatScreen(
-                            // chatId: '',
-                            // receiverId: '',
-                            // receiverName: '',
-                            // receiverImage: '',
-                            ));
-                      },
-                      child: ListTile(
-                        contentPadding: EdgeInsets.all(0),
-                        leading: CircleAvatar(
-                          radius: 24.r,
-                          backgroundImage: NetworkImage(controller
-                                  .friendList[index]
-                                  .chat
-                                  ?.participants[0]
-                                  .photoUrl ??
-                              'https://fastly.picsum.photos/id/1/200/300.jpg?hmac=jH5bDkLr6Tgy3oAg5khKCHeunZMHq0ehBZr6vGifPLY'),
-                        ),
-                        title: Text(
-                          controller.friendList[index].chat?.participants[0]
-                                  .name ??
-                              'No Name',
-                          style: TextStyle(
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white),
-                        ),
-                        subtitle: Text(
-                          controller.friendList[index].message ?? 'No Message',
-                          style: TextStyle(
-                              fontSize: 13.sp,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.white),
-                        ),
-                        trailing: CircleAvatar(
-                          radius: 5,
-                          backgroundColor: Color(0xff6CC7FE),
-                        ),
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Your Chats with Friends Will Appear Here.',
+                            style: TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
+                          heightBox4,
+                          Text(
+                            'No Friends Found at this time',
+                            style:
+                                TextStyle(fontSize: 12, color: Colors.white70),
+                          ),
+                        ],
                       ),
                     );
-                  },
-                ));
-              })
+                  }
+
+                  return ListView.builder(
+                    padding: EdgeInsets.zero,
+                    itemCount: controller.friendList.length,
+                    itemBuilder: (context, index) {
+                      final friend = controller.friendList[index];
+                      final participant = friend.chat?.participants[0];
+
+                      return InkWell(
+                        onTap: () {
+                          Get.to(() => ChatScreen(
+                                chatId: friend.chat?.id ?? '',
+                                receiverId: participant?.id ?? '',
+                                receiverName: participant?.name ?? '',
+                                receiverImage: participant?.photoUrl ?? '',
+                                // chatId: friend.chat?.id ?? '',
+                                // receiverId: participant?.id ?? '',
+                                // receiverName: participant?.name ?? '',
+                                // receiverImage: participant?.photoUrl ?? '',
+                              ));
+                        },
+                        child: ListTile(
+                          contentPadding: EdgeInsets.zero,
+                          leading: CircleAvatar(
+                            radius: 24.r,
+                            backgroundImage: participant?.photoUrl != null
+                                ? NetworkImage(participant!.photoUrl!)
+                                : const AssetImage(
+                                        'assets/images/default_user.png')
+                                    as ImageProvider,
+                          ),
+                          title: Text(
+                            participant?.name ?? 'No Name',
+                            style: TextStyle(
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white),
+                          ),
+                          subtitle: Text(
+                            friend.message?.text ?? 'No Message',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                                fontSize: 13.sp,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.white70),
+                          ),
+                          trailing: friend.unreadMessageCount != null &&
+                                  friend.unreadMessageCount! > 0
+                              ? CircleAvatar(
+                                  radius: 10,
+                                  backgroundColor: const Color(0xff6CC7FE),
+                                  child: Text(
+                                    friend.unreadMessageCount.toString(),
+                                    style: const TextStyle(
+                                        fontSize: 10, color: Colors.white),
+                                  ),
+                                )
+                              : const SizedBox.shrink(),
+                        ),
+                      );
+                    },
+                  );
+                }),
+              )
             ],
           ),
         ),
