@@ -18,7 +18,7 @@ class MessageController extends GetxController {
   final SocketService socketService = Get.put(SocketService());
   var isLoading = false.obs;
 
-  var message = ChatMessageModel().obs;
+  var message = ChatMessageModel().obs; 
   var messageList = <MessageData>[].obs;
 
   Future<void> getMessages({required String chatId}) async {
@@ -41,6 +41,8 @@ class MessageController extends GetxController {
       // Clear socket messageList and populate with API messages
       socketService.messageList.clear();
 
+      
+      // Api diye data ene messageList e add kora hoyeche
       for (final msg in messageList) {
         socketService.messageList.add({
           "id": msg.id.toString(),
@@ -53,6 +55,7 @@ class MessageController extends GetxController {
           "createdAt": msg.createdAt?.toIso8601String() ??
               DateTime.now().toIso8601String(),
         });
+       
       }
     } else {
       _errorMessage = response.errorMessage;

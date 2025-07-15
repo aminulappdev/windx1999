@@ -1,183 +1,9 @@
-// import 'package:camera/camera.dart';
-// import 'package:flutter/material.dart';
-// import 'package:flutter_screenutil/flutter_screenutil.dart';
-// import 'package:get/get.dart';
-// import 'package:windx1999/app/modules/chat/views/action_screen.dart';
-// import 'package:windx1999/app/modules/chat/widgets/chat_appBar.dart';
-// import 'package:windx1999/app/modules/chat/widgets/chat_field.dart';
-// import 'package:windx1999/app/res/app_images/assets_path.dart';
-// import 'package:windx1999/app/res/common_widgets/custom_background.dart';
-// import 'package:windx1999/app/res/common_widgets/liner_widget.dart';
-// import 'package:windx1999/app/res/custom_style/custom_size.dart';
-
-// class ChatScreen extends StatefulWidget {
-
-//   const ChatScreen({
-//     super.key,
-//   });
-
-//   @override
-//   State<ChatScreen> createState() => _ChatScreenState();
-// }
-
-// class _ChatScreenState extends State<ChatScreen> {
-//   List<CameraDescription>? cameras;
-//   final List<Map<String, dynamic>> messageList = [
-//     {
-//       "text": "I have some loads, can you transfer them to Dhaka safely?",
-//       "isSent": true
-//     },
-//     {"text": "Oh it’s okay.", "isSent": false},
-//     {"text": "Next time, we will meet again", "isSent": true},
-//     {"text": "Oh it’s okay i like it too babe", "isSent": false},
-//     {"text": "Okay see you soon very soon", "isSent": true},
-//   ];
-
-//   @override
-//   void initState() {
-//     super.initState();
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//         body: CustomBackground(
-//           child: Padding(
-//             padding: EdgeInsets.all(12.0.h),
-//             child: Column(
-//               children: [
-//                 heightBox20,
-//                 CustomChatAppBar(
-//                   name: 'Dr. Jane Smith',
-//                   imagePath: AssetsPath.blackGirl,
-//                   activeStatus: 'Active',
-//                   isActive: true,
-//                   actionOntap: () {
-//                     Get.to(ActionScreen());
-//                   },
-//                 ),
-//                 Liner(text: 'Today'),
-//                 Expanded(
-//                   child: ListView.builder(
-//                     padding: EdgeInsets.all(10.r),
-//                     itemCount: messageList.length,
-//                     itemBuilder: (context, index) {
-//                       final message = messageList[index];
-//                       return Align(
-//                         alignment: message['isSent']
-//                             ? Alignment.centerRight
-//                             : Alignment.centerLeft,
-//                         child: Column(
-//                           crossAxisAlignment: message['isSent']
-//                               ? CrossAxisAlignment.end
-//                               : CrossAxisAlignment.start,
-//                           children: [
-//                             Container(
-//                               margin: EdgeInsets.symmetric(vertical: 5.h),
-//                               padding: EdgeInsets.symmetric(
-//                                   horizontal: 14.w, vertical: 10.h),
-//                               decoration: BoxDecoration(
-//                                 gradient: LinearGradient(
-//                                   begin: Alignment.centerLeft,
-//                                   end: Alignment.centerRight,
-//                                   colors: [
-//                                     Color(0xff9C57FF),
-//                                     Color.fromARGB(244, 108, 198, 254),
-//                                   ],
-//                                 ),
-//                                 borderRadius: BorderRadius.only(
-//                                   bottomLeft: message['isSent']
-//                                       ? Radius.circular(16.r)
-//                                       : Radius.circular(0.r),
-//                                   bottomRight: message['isSent']
-//                                       ? Radius.circular(0.r)
-//                                       : Radius.circular(16.r),
-//                                   topLeft: Radius.circular(16.r),
-//                                   topRight: Radius.circular(16.r),
-//                                 ),
-//                               ),
-//                               child: Text(
-//                                 message['text'],
-//                                 style: TextStyle(
-//                                     fontSize: 16.sp,
-//                                     color: message['isSent']
-//                                         ? Color.fromARGB(255, 253, 253, 252)
-//                                         : Colors.black),
-//                               ),
-//                             ),
-//                             message['isSent']
-//                                 ? Row(
-//                                     mainAxisAlignment: MainAxisAlignment.end,
-//                                     children: [
-//                                       Text(
-//                                         '11:30 AM',
-//                                         style: TextStyle(
-//                                             fontSize: 12.sp, color: Colors.white),
-//                                       ),
-//                                       widthBox4,
-//                                       Icon(
-//                                         Icons.check,
-//                                         color: Colors.blue,
-//                                         size: 18,
-//                                       )
-//                                     ],
-//                                   )
-//                                 : Text(
-//                                     '11:30 AM',
-//                                     style: TextStyle(
-//                                         fontSize: 12.sp, color: Colors.white),
-//                                   ),
-//                           ],
-//                         ),
-//                       );
-//                     },
-//                   ),
-//                 ),
-//                 Container(
-//                   height: 70.h,
-//                   padding: EdgeInsets.all(10),
-//                   child: Row(
-//                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                     children: [
-//                       SizedBox(
-//                         width: 280.w,
-//                         child: ChattingFieldWidget(),
-//                       ),
-//                       widthBox8,
-//                       GestureDetector(
-//                         onTap: () {},
-//                         child: Container(
-//                           height: 50.h,
-//                           width: 50.h,
-//                           decoration: BoxDecoration(
-//                             color: const Color.fromARGB(134, 255, 254, 255),
-//                             borderRadius: BorderRadius.circular(100),
-//                           ),
-//                           child: Center(
-//                             child: Icon(
-//                               Icons.send,
-//                               color: const Color.fromARGB(255, 113, 112, 112),
-//                             ),
-//                           ),
-//                         ),
-//                       )
-//                     ],
-//                   ),
-//                 ),
-//               ],
-//             ),
-//           ),
-//         ),
-
-//     );
-//   }
-// }
-
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:windx1999/app/modules/chat/controllers/message_controller.dart';
+import 'package:windx1999/app/modules/chat/controllers/message_send_controller.dart';
 import 'package:windx1999/app/modules/chat/views/action_screen.dart';
 import 'package:windx1999/app/modules/chat/widgets/chat_appBar.dart';
 import 'package:windx1999/app/modules/chat/widgets/chat_field.dart';
@@ -189,7 +15,8 @@ import 'package:intl/intl.dart';
 
 // Added imports for socket and message handling
 import 'package:windx1999/app/modules/profile/controllers/profile_controller.dart'; // Assuming similar profile controller
-import 'package:windx1999/app/services/socket/socket_service.dart'; // Assuming socket service
+import 'package:windx1999/app/services/socket/socket_service.dart';
+import 'package:windx1999/get_storage.dart'; // Assuming socket service
 
 class ChatScreen extends StatefulWidget {
   // Added required parameters for chat functionality
@@ -221,8 +48,8 @@ class _ChatScreenState extends State<ChatScreen> {
   final SocketService socketService = Get.put(SocketService());
   final TextEditingController messageController = TextEditingController();
   final MessageController messageFetchController = Get.put(MessageController());
-  // final MessageSendController messageSendController =
-  //     Get.put(MessageSendController());
+  final MessageSendController messageSendController =
+      Get.put(MessageSendController());
   final ScrollController _scrollController = ScrollController();
   bool isLoading = false;
   bool isSending = false;
@@ -250,6 +77,13 @@ class _ChatScreenState extends State<ChatScreen> {
       print('senderId: ${data['sender']}');
       print('receiverId: ${data['receiver']}');
       _handleIncomingMessage(data);
+    });
+
+    socketService.sokect
+        .on('chat-list::${StorageUtil.getData(StorageUtil.userId)}', (data) {
+      print('Socket chatlist data received ...............');
+      print(data);
+      _handleIncomingFriends(data);
     });
 
     // Fetch initial messages from the server
@@ -306,45 +140,65 @@ class _ChatScreenState extends State<ChatScreen> {
     _scrollToEnd();
   }
 
+  void _handleIncomingFriends(dynamic data) {  
+    
+  }
+
   // Added method to send messages
-  // Future<void> sendMessageBTN(
-  //     String chatId, String text, String receiverId) async {
-  //   if (_formKey.currentState!.validate() &&
-  //       !isSending &&
-  //       text.trim().isNotEmpty) {
-  //     setState(() {
-  //       isSending = true;
-  //     });
+  Future<void> sendMessageBTN(
+      String chatId, String text, String receiverId) async {
+    if (_formKey.currentState!.validate() &&
+        !isSending &&
+        text.trim().isNotEmpty) {
+      setState(() {
+        isSending = true;
+      });
 
-  //     final bool isSuccess =
-  //         await messageSendController.sendMessage(chatId, text, receiverId);
+      socketService.sokect.emit('send-message', {
+        'text': text,
+        'sender': senderId,
+        'receiver': receiverId,
+      });
 
-  //     if (isSuccess) {
-  //       if (mounted) {
-  //         messageController.clear();
-  //         WidgetsBinding.instance.addPostFrameCallback((_) {
-  //           _scrollToEnd();
-  //         });
-  //         Get.snackbar('Message Sent', 'Your message was successfully sent');
-  //       }
-  //     } else {
-  //       if (mounted) {
-  //         Get.snackbar(
-  //           'Error',
-  //           messageSendController.errorMessage ?? 'Failed to send message',
-  //         );
-  //       }
-  //     }
+      socketService.sokect
+          .on('chat-list::${StorageUtil.getData(StorageUtil.userId)}', (data) {
+        print(
+            'Chat list data er socket data ...................................................f\n$data');
+      });
 
-  //     if (mounted) {
-  //       setState(() {
-  //         isSending = false;
-  //       });
-  //     }
-  //   } else if (text.trim().isEmpty) {
-  //     Get.snackbar('Error', 'Message cannot be empty');
-  //   }
-  // }
+      socketService.sokect.on('new-message::${widget.chatId}', (data) {
+        print(data);
+      });
+
+      final bool isSuccess =
+          await messageSendController.sendMessage(chatId, text, receiverId);
+
+      // if (isSuccess) {
+      //   if (mounted) {
+      //     messageController.clear();
+      //     WidgetsBinding.instance.addPostFrameCallback((_) {
+      //       _scrollToEnd();
+      //     });
+      //     Get.snackbar('Message Sent', 'Your message was successfully sent');
+      //   }
+      // } else {
+      //   if (mounted) {
+      //     Get.snackbar(
+      //       'Error',
+      //       messageSendController.errorMessage ?? 'Failed to send message',
+      //     );
+      //   }
+      // }
+
+      if (mounted) {
+        setState(() {
+          isSending = false;
+        });
+      }
+    } else if (text.trim().isEmpty) {
+      Get.snackbar('Error', 'Message cannot be empty');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -493,15 +347,15 @@ class _ChatScreenState extends State<ChatScreen> {
                       widthBox8,
                       // Updated send button to handle socket-based sending
                       GestureDetector(
-                        // onTap: isSending || isTextEmpty
-                        //     ? null
-                        //     : () {
-                        //         sendMessageBTN(
-                        //           widget.chatId,
-                        //           messageController.text,
-                        //           widget.receiverId,
-                        //         );
-                        //       },
+                        onTap: isSending || isTextEmpty
+                            ? null
+                            : () {
+                                sendMessageBTN(
+                                  widget.chatId,
+                                  messageController.text,
+                                  widget.receiverId,
+                                );
+                              },
                         child: Container(
                           height: 50.h,
                           width: 50.h,

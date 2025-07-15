@@ -1,13 +1,13 @@
 class AllFriendsModel {
   AllFriendsModel({
-    required this.success,
-    required this.message,
-    required this.data,
+     this.success,
+     this.message,
+     this.data,
   });
 
   final bool? success;
   final String? message;
-  final List<AllFriendsItemModel> data;
+  final List<AllFriendsItemModel>? data;
 
   factory AllFriendsModel.fromJson(Map<String, dynamic> json) {
     return AllFriendsModel(

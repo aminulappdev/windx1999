@@ -27,6 +27,7 @@ class Urls {
   static const String allWishListUrl = '$_baseUrl/wishlists/my-wishlist';
   static const String allFriendsChatnUrl = '$_baseUrl/chats/my-chat-list';
   static const String reportUserUrl = '$_baseUrl/reports';
+  static const String sendMessageUrl = '$_baseUrl/messages/send-messages';
 
   static String updateUserByUrl(
     String id,
@@ -82,7 +83,7 @@ class Urls {
     return '$_baseUrl/profile-block/block/$id';
   }
 
-   static String getMessagesUrl(
+  static String getMessagesUrl(
     String id,
   ) {
     return '$_baseUrl/messages/my-messages/$id';
