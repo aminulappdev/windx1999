@@ -16,10 +16,12 @@ class SocketService extends GetxController {
   // 🟢 RxList রাখা হয়েছে যাতে UI Obx দিয়ে observe করতে পারে
   final _messageList = <Map<String, dynamic>>[].obs;
   final _socketFriendList = <Map<String, dynamic>>[].obs;
+  final _notificationsList = <Map<String, dynamic>>[].obs;
 
   // 🔁 Updated: এখন RxList return করবে, Obx রিঅ্যাক্ট করবে
   RxList<Map<String, dynamic>> get messageList => _messageList;
   RxList<Map<String, dynamic>> get socketFriendtList => _socketFriendList;
+  RxList<Map<String, dynamic>> get notificationsList => _notificationsList;
 
   String? userIID;
 

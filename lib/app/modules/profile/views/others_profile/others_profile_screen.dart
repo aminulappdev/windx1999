@@ -14,8 +14,8 @@ import 'package:windx1999/app/modules/profile/views/own_profile/block_user.dart'
 import 'package:windx1999/app/modules/profile/views/own_profile/report_screen.dart';
 import 'package:windx1999/app/modules/profile/views/followers_screen.dart';
 import 'package:windx1999/app/modules/profile/views/following_screen.dart';
-import 'package:windx1999/app/modules/profile/views/post_gallery.dart';
-import 'package:windx1999/app/modules/profile/views/profile_product.dart';
+import 'package:windx1999/app/modules/profile/views/own_profile/post_gallery.dart';
+import 'package:windx1999/app/modules/profile/views/own_profile/profile_product.dart';
 import 'package:windx1999/app/modules/profile/widgets/profile_bar_icon.dart';
 import 'package:windx1999/app/modules/profile/widgets/quantity_details_widget.dart';
 import 'package:windx1999/app/res/common_widgets/circle_aveture_icon.dart';
@@ -305,8 +305,10 @@ class _OthersProfileScreenState extends State<OthersProfileScreen> {
                 heightBox12,
                 Expanded(
                     child: showProductList
-                        ? OthersProfileProduct()
-                        : OthersPostGallery())
+                        ? OthersProfileProduct(
+                            userId: controller.otherProfileData?.id ?? '')
+                        : OthersPostGallery(
+                            userId: controller.otherProfileData?.id ?? ''))
               ],
             );
           }),

@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/get_navigation.dart';
 import 'package:windx1999/app/modules/profile/controllers/profile_controller.dart';
 import 'package:windx1999/app/modules/profile/views/set_up/edit_profile_screen.dart';
 import 'package:windx1999/app/modules/profile/views/followers_screen.dart';
 import 'package:windx1999/app/modules/profile/views/following_screen.dart';
-import 'package:windx1999/app/modules/profile/views/post_gallery.dart';
-import 'package:windx1999/app/modules/profile/views/profile_product.dart';
+import 'package:windx1999/app/modules/profile/views/own_profile/post_gallery.dart';
+import 'package:windx1999/app/modules/profile/views/own_profile/profile_product.dart';
 import 'package:windx1999/app/modules/profile/widgets/profile_bar_icon.dart';
 import 'package:windx1999/app/modules/profile/widgets/quantity_details_widget.dart';
-import 'package:windx1999/app/modules/wishlist/controller/all_wishlist_controller.dart';
 import 'package:windx1999/app/res/app_images/assets_path.dart';
 import 'package:windx1999/app/modules/profile/views/drawer/my_drawer.dart';
 import 'package:windx1999/app/res/common_widgets/circle_aveture_icon.dart';
@@ -29,7 +26,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final ProfileController profileController = Get.put(ProfileController());
-  
+
   bool showProductList = true;
 
   @override
@@ -48,7 +45,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return SafeArea(
       child: Scaffold(
         key: _scaffoldKey,
-        drawer:  MyDrawer(),
+        drawer: MyDrawer(),
         body: GetBuilder<ProfileController>(builder: (controller) {
           if (controller.inProgress) {
             return const Center(child: CircularProgressIndicator());
@@ -107,7 +104,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           border: Border.all(color: Colors.white),
                           image: DecorationImage(
                             image: controller.profileData?.photoUrl != null
-                                ? NetworkImage(controller.profileData!.photoUrl!)
+                                ? NetworkImage(
+                                    controller.profileData!.photoUrl!)
                                 : const AssetImage(AssetsPath.blackGirl),
                             fit: BoxFit.fill,
                           ),
@@ -123,7 +121,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     QuantityDetailsWidget(
-                      quantity: '17.5k',
+                      quantity:
+                          controller.profileData?.followers.toString() ?? '0',
                       title: 'Followers',
                       titleSize: 14,
                       quantitySize: 16,
@@ -132,7 +131,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       },
                     ),
                     QuantityDetailsWidget(
-                      quantity: '17.5k',
+                      quantity:
+                          controller.profileData?.following.toString() ?? '0',
                       title: 'Following',
                       titleSize: 14,
                       quantitySize: 16,
@@ -204,7 +204,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 heightBox12,
                 Expanded(
-                  child: showProductList ? const ProfileProduct() : const PostGallery(),
+                  child: showProductList
+                      ? const ProfileProduct()
+                      : const PostGallery(),
                 ),
               ],
             ),

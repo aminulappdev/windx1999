@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:windx1999/app/modules/authentication/views/log_in_screen.dart';
 import 'package:windx1999/app/modules/common/controllers/theme_controller.dart';
+import 'package:windx1999/app/modules/profile/controllers/delete_account_controller.dart';
 import 'package:windx1999/app/modules/profile/views/drawer/add_account.dart';
 import 'package:windx1999/app/modules/profile/views/drawer/block_account_screen.dart';
 import 'package:windx1999/app/modules/profile/views/drawer/save_items.dart';
@@ -13,6 +13,7 @@ import 'package:windx1999/app/res/common_widgets/custom_app_bar.dart';
 import 'package:windx1999/app/res/common_widgets/custom_dialoge.dart';
 import 'package:windx1999/app/res/common_widgets/straight_liner.dart';
 import 'package:windx1999/app/res/custom_style/custom_size.dart';
+import 'package:windx1999/get_storage.dart';
 
 // ignore: must_be_immutable
 class MyDrawer extends StatelessWidget {
@@ -21,8 +22,10 @@ class MyDrawer extends StatelessWidget {
   });
 
   ThemeController themeController = Get.find<ThemeController>();
+  final DeleteAccountController deleteAccountController =
+      Get.put(DeleteAccountController());
 
-  @override
+  @override 
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     return GetBuilder<ThemeController>(builder: (controller) {
@@ -40,8 +43,8 @@ class MyDrawer extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     heightBox16,
-                   heightBox20,
-                  CustomAppBar(title: 'Settings'),
+                    heightBox20,
+                    CustomAppBar(title: 'Settings'),
                     heightBox40,
                     costomRow(context, Icons.person, 'Your Account',
                         Icons.arrow_forward_ios, () {
@@ -100,12 +103,12 @@ class MyDrawer extends StatelessWidget {
                     heightBox20,
                     costomRowWithoutArrow(context, Icons.bookmark, 'Logout',
                         () {
-                      _showDeleteAccountDialog(context);
+                      _showLogoutDialog(context);
                     }),
                     heightBox20,
                     costomRowWithoutArrow(
                         context, Icons.person_off, 'Delete Account', () {
-                      _showLogoutDialog(context);
+                      _showDeleteAccountDialog(context);
                     }),
                   ],
                 ),
@@ -117,25 +120,6 @@ class MyDrawer extends StatelessWidget {
     });
   }
 
-  void _showDeleteAccountDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return CustomDeleteDialog(
-          noOntap: () {
-            Navigator.pop(context);
-          },
-          yesOntap: () {
-            Navigator.pop(context);
-          },
-          iconData: Icons.logout,
-          subtitle: 'Do you want to log out this profile?',
-          title: 'Delete',
-        );
-      },
-    );
-  }
-
   void _showLogoutDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -145,11 +129,32 @@ class MyDrawer extends StatelessWidget {
             Navigator.pop(context);
           },
           yesOntap: () {
+            StorageUtil.deleteData(StorageUtil.userAccessToken);
+            StorageUtil.deleteData(StorageUtil.userId);
+            Get.to(LogInScreen());
+          },
+          iconData: Icons.logout,
+          subtitle: 'Do you want to log out this profile?',
+          title: 'Logout',
+        );
+      },
+    );
+  }
+
+  void _showDeleteAccountDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return CustomDeleteDialog(
+          noOntap: () {
             Navigator.pop(context);
+          },
+          yesOntap: () {
+            deleteAccount(StorageUtil.getData(StorageUtil.userId));
           },
           iconData: Icons.delete,
           subtitle: 'Do you want to delete this profile?',
-          title: 'Logout',
+          title: 'Delete',
         );
       },
     );
@@ -236,5 +241,22 @@ class MyDrawer extends StatelessWidget {
         StraightLiner()
       ],
     );
+  }
+
+  Future<void> deleteAccount(String userId) async {
+    final bool isSuccess = await deleteAccountController.deleteAccount(userId);
+
+    if (isSuccess) { 
+      StorageUtil.deleteData(StorageUtil.userAccessToken);
+      StorageUtil.deleteData(StorageUtil.userId);
+      Get.to(LogInScreen());
+    } else {
+      Get.snackbar(
+        backgroundColor: Colors.red,
+        snackPosition: SnackPosition.TOP,
+        'Failed',
+        'Failed to delete account',
+      );
+    }
   }
 }

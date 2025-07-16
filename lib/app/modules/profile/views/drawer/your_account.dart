@@ -32,14 +32,7 @@ class _YourAccountState extends State<YourAccount> {
             child: Text('Changed password',style: TextStyle(color: Colors.white,fontSize: 14),)),
           heightBox20,
           StraightLiner(),
-          heightBox20,
-          InkWell(
-             onTap: () {
-              Get.to(TwoFactorScreen());
-            },
-            child: Text('Two factor authentication',style: TextStyle(color: Colors.white,fontSize: 14),)),
-          heightBox20,
-          StraightLiner(),
+         
           heightBox100
         ],
       ),

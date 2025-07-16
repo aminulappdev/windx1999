@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:windx1999/app/modules/authentication/views/log_in_screen.dart';
+import 'package:windx1999/app/modules/authentication/views/sign_up_screen.dart';
 import 'package:windx1999/app/res/common_widgets/custom_rectangle_buttom.dart';
 import 'package:windx1999/app/res/common_widgets/straight_liner.dart';
 import 'package:windx1999/app/res/custom_style/custom_size.dart';
@@ -33,7 +36,9 @@ class _AddAccountState extends State<AddAccount> {
             width: 319,
             radiusSize: 50,
             text: 'Log In an others account',
-            ontap: () {},
+            ontap: () {
+              Get.to(LogInScreen());
+            },
             textColor: Colors.white,
             borderColor: Colors.transparent,
           ),
@@ -44,7 +49,9 @@ class _AddAccountState extends State<AddAccount> {
             width: 319,
             radiusSize: 50,
             text: 'Create new account',
-            ontap: () {},
+            ontap: () {
+              Get.to(SignUpScreen());
+            },
             textColor: Colors.blue,
           ),
           heightBox40

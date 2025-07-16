@@ -2,26 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:windx1999/app/modules/profile/widgets/product_listTile.dart';
+import 'package:windx1999/app/modules/wishlist/controller/all_others_wishlist_controller.dart';
 import 'package:windx1999/app/modules/wishlist/controller/all_wishlist_controller.dart';
-import 'package:windx1999/app/modules/wishlist/views/add_wish_list_screen.dart';
 import 'package:windx1999/app/res/app_images/assets_path.dart';
 import 'package:windx1999/app/res/common_widgets/rectangle_button_with_icon.dart';
 import 'package:windx1999/app/res/custom_style/custom_size.dart';
 
 class OthersProfileProduct extends StatefulWidget {
-  const OthersProfileProduct({super.key});
+  final String userId;
+  const OthersProfileProduct({super.key, required this.userId});
 
   @override
   State<OthersProfileProduct> createState() => _OthersProfileProductState();
 }
 
 class _OthersProfileProductState extends State<OthersProfileProduct> {
-  final AllWishlistController allWishlistController =
-      Get.put(AllWishlistController());
+
+
+  final AllOthersWishlistController allOthersWishlistController =
+      Get.put(AllOthersWishlistController());
 
   @override
   void initState() {
-    allWishlistController.getAllWishlist();
+    allOthersWishlistController.getAllWishlistByUser(widget.userId);
     super.initState();
   }
 
@@ -30,7 +33,7 @@ class _OthersProfileProductState extends State<OthersProfileProduct> {
     return Column(
       children: [
         Expanded(
-          child: GetBuilder<AllWishlistController>(builder: (controller) {
+          child: GetBuilder<AllOthersWishlistController>(builder: (controller) {
             if (controller.inProgress) {
               return const Center(child: CircularProgressIndicator());
             }
@@ -73,4 +76,6 @@ class _OthersProfileProductState extends State<OthersProfileProduct> {
       ],
     );
   }
+
+
 }

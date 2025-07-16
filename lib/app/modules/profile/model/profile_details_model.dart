@@ -38,6 +38,8 @@ class ProfileData {
         required this.state,
         required this.street,
         required this.zipCode,
+        required this.followers,
+        required this.following,
     });
 
     final String? id;
@@ -57,6 +59,8 @@ class ProfileData {
     final String? state;
     final String? street;
     final String? zipCode;
+    final int? followers;
+    final int? following;
 
     factory ProfileData.fromJson(Map<String, dynamic> json){ 
         return ProfileData(
@@ -77,6 +81,8 @@ class ProfileData {
             state: json["state"],
             street: json["street"],
             zipCode: json["zipCode"],
+            followers: json["followers"],
+            following: json["following"],
         );
     }
 

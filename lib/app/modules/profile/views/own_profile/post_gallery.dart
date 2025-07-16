@@ -5,23 +5,23 @@ import 'package:windx1999/app/modules/profile/controllers/all_feed_controller.da
 import 'package:windx1999/app/modules/profile/widgets/profile_dropdown.dart';
 import 'package:windx1999/app/res/common_widgets/image_container.dart';
 import 'package:windx1999/app/res/custom_style/custom_size.dart';
+import 'package:windx1999/get_storage.dart';
 
-class OthersPostGallery extends StatefulWidget {
-  final String userId;
-  const OthersPostGallery({super.key, required this.userId});
+class PostGallery extends StatefulWidget {
+  const PostGallery({super.key});
 
   @override
-  State<OthersPostGallery> createState() => _OthersPostGalleryState();
+  State<PostGallery> createState() => _PostGalleryState();
 }
 
-class _OthersPostGalleryState extends State<OthersPostGallery> {
+class _PostGalleryState extends State<PostGallery> {
   final AllFeedController allFeedController = Get.put(AllFeedController());
   String selectedOption = 'All';
 
   @override
   void initState() {
     super.initState();
-    allFeedController.getAllFeed(widget.userId);
+    allFeedController.getAllFeed(StorageUtil.getData(StorageUtil.userId));
   }
 
   @override

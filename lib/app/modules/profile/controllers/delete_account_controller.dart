@@ -5,8 +5,9 @@ import 'package:windx1999/app/modules/authentication/controllers/otp_verify_cont
 import 'package:windx1999/app/services/network_caller/network_caller.dart';
 import 'package:windx1999/app/services/network_caller/network_response.dart';
 import 'package:windx1999/app/urls.dart';
+import 'package:windx1999/get_storage.dart';
 
-class ResetPasswordController extends GetxController {
+class DeleteAccountController extends GetxController {
   final OtpVerifyController otpVerifyController = OtpVerifyController();
   bool _inProgress = false;
   bool get inProgress => _inProgress;
@@ -14,22 +15,17 @@ class ResetPasswordController extends GetxController {
   String? _errorMessage;
   String? get errorMessage => _errorMessage;
 
-  Future<bool> resetPassword(
-      String password, String cPassword, String token) async {
+  Future<bool> deleteAccount(
+      String userId) async {
     bool isSuccess = false;
 
     _inProgress = true;
 
     update();
 
-    Map<String, dynamic> requestBody = {
-      "newPassword": password,
-      "confirmPassword": cPassword
-    }; // Replace your body data
-    print('Controller er token : $token');
     final NetworkResponse response = await Get.find<NetworkCaller>()
-        .patchRequestWithToken(Urls.resetPasswordUrl,
-            accesToken: token, body: requestBody); // Replace your api url
+        .patchRequestWithToken(Urls.deleteAccountById(userId),
+            accesToken: StorageUtil.getData(StorageUtil.userAccessToken),); // Replace your api url
 
     if (response.isSuccess) {
       _errorMessage = null;

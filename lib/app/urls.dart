@@ -1,12 +1,13 @@
 class Urls {
   static const String _baseUrl = 'http://172.252.13.74:5010/api/v1';
-  // static const String _baseUrl = 'http://192.168.10.144:5010/api/v1';
+  //static const String _baseUrl = 'http://10.10.10.16:5011/api/v1';
   static const String socketUrl = 'http://172.252.13.74:4010/';
   // static const String socketUrl = 'http://192.168.10.144:4001/';
   static const String createUserUrl = '$_baseUrl/users/register';
   static const String otpVerifyUrl = '$_baseUrl/otp/verify-otp';
   static const String loginUrl = '$_baseUrl/auth/login';
   static const String forgotEmailUrl = '$_baseUrl/auth/forgot-password';
+  static const String changePasswordUrl = '$_baseUrl/auth/change-password';
   static const String resetPasswordUrl = '$_baseUrl/auth/reset-password';
   static const String resendOtpUrl = '$_baseUrl/otp/resend-otp';
   static const String userUpdateProfileUrl =
@@ -28,12 +29,28 @@ class Urls {
   static const String allFriendsChatnUrl = '$_baseUrl/chats/my-chat-list';
   static const String reportUserUrl = '$_baseUrl/reports';
   static const String sendMessageUrl = '$_baseUrl/messages/send-messages';
+  static const String notificationUrl = '$_baseUrl/notification';
+  static const String mySavePostUrl = '$_baseUrl/watch-later/my-watch-later';
+  static const String allBlockersUrl = '$_baseUrl/profile-block/my-block';
 
   static String updateUserByUrl(
     String id,
   ) {
     return '$_baseUrl/users/update/$id';
   }
+
+  static String othersWishlistById(
+    String id,
+  ) {
+    return '$_baseUrl/wishlists/user/$id';
+  }
+
+   static String allFeedById(
+    String id,
+  ) {
+    return '$_baseUrl/feeds/user/$id';
+  }
+
 
   static String otherUserByUrl(
     String id,
@@ -87,5 +104,23 @@ class Urls {
     String id,
   ) {
     return '$_baseUrl/messages/my-messages/$id';
+  }
+
+  static String deleteAccountById(
+    String id,
+  ) {
+    return '$_baseUrl/users/$id';
+  }
+
+  static String deleteSavePostById(
+    String id,
+  ) {
+    return '$_baseUrl/watch-later/$id';
+  }
+
+  static String userUnblockById(
+    String id,
+  ) {
+    return '$_baseUrl/profile-block/unblock/$id';
   }
 }
