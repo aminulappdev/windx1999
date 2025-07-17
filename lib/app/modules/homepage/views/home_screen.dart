@@ -12,6 +12,7 @@ import 'package:windx1999/app/modules/homepage/controller/unFollow_request_contr
 import 'package:windx1999/app/modules/homepage/views/comment_screen.dart';
 import 'package:windx1999/app/modules/homepage/views/botton_sheet_screen.dart';
 import 'package:windx1999/app/modules/homepage/views/notification_screen.dart';
+import 'package:windx1999/app/modules/homepage/views/search_screen.dart';
 import 'package:windx1999/app/modules/profile/controllers/others_profile_controller.dart';
 import 'package:windx1999/app/modules/profile/views/own_profile/block_user.dart';
 import 'package:windx1999/app/modules/profile/views/others_profile/others_profile_screen.dart';
@@ -29,7 +30,6 @@ import 'package:windx1999/app/res/common_widgets/date_time_formate_class.dart';
 import 'package:windx1999/app/res/common_widgets/search_bar.dart';
 import 'package:windx1999/app/res/custom_style/custom_size.dart';
 import 'package:windx1999/get_storage.dart';
-
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -72,10 +72,8 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 heightBox20,
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    SizedBox(
-                        height: 40.h, width: 196.w, child: CustomSearchBar()),
                     Container(
                       height: 40.h,
                       width: 80.w,
@@ -121,6 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         );
                       }),
                     ),
+                    widthBox10,
                     CircleIconTransparent(
                       icon: Icons.notifications,
                       fillColor: Color.fromARGB(116, 255, 255, 255),
@@ -128,6 +127,17 @@ class _HomeScreenState extends State<HomeScreen> {
                       iconSize: 30.h,
                       ontap: () {
                         Get.to(NotificationScreen());
+                      },
+                      radius: 40.r,
+                    ),
+                    widthBox10,
+                    CircleIconTransparent(
+                      icon: Icons.search,
+                      fillColor: Color.fromARGB(116, 255, 255, 255),
+                      iconColor: Colors.white,
+                      iconSize: 30.h,
+                      ontap: () {
+                        Get.to(SearchScreen());
                       },
                       radius: 40.r,
                     ),
@@ -167,11 +177,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                   },
                                   iSVisibleWishlist:
                                       post.contentType == 'wishlist',
-                                  bgColor: Color(0xffAF7CF8),
+                                  bgColor: controller.isDarkMode
+                                      ? Color(0xffAFAFAF)
+                                      : Color(0xffAF7CF8),
                                   name: post.author?.name ?? 'name',
                                   profilePath: post.author?.photoUrl ??
                                       'https://fastly.picsum.photos/id/1/200/300.jpg',
-                                  activeStatus: dateFormatter.getRelativeTimeFormat(),
+                                  activeStatus:
+                                      dateFormatter.getRelativeTimeFormat(),
                                   addFriendOnTap: () {},
                                   wishListOnTap: () {
                                     Get.to(ShowWishlistScreen(
@@ -193,7 +206,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                             ButtonSheetDetailsScreen(
                                               buttonSheetDetailsList: [
                                                 {
-                                                  'icon': Icons.bookmark,
+                                                  'icon': post.isFollowing ==
+                                                          true
+                                                      ? Icons.bookmark
+                                                      : Icons
+                                                          .bookmark_border_outlined,
                                                   'name': 'Save post',
                                                   'ontap': () {
                                                     savePost(
@@ -279,8 +296,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       post.contentMeta?.like.toString() ?? '0',
                                   share:
                                       post.contentMeta?.share.toString() ?? '0',
-                                  isSaved:
-                                      post.isWatchLater == true ? true : false,
+                                  isSaved: post.isWatchLater!,
                                   imagePath: post.content.isNotEmpty
                                       ? post.content[0]
                                       : null,
@@ -289,7 +305,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                         post.contentType ?? '', post.id ?? '');
                                   },
                                   commentOnTap: () {
-                                    Get.to(CommentScreen());
+                                    Get.to(CommentScreen(
+                                      postId: post.id!,
+                                    ));
                                   },
                                 ),
                               )
@@ -310,7 +328,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final bool isSuccess = await followRequestController.followRequest(frindId);
     if (isSuccess) {
       allPostController.getAllPost();
-      addChatTherapist(
+      addChatFriend(
           userId: StorageUtil.getData(StorageUtil.userId), friendId: frindId);
       if (mounted) {
         showSnackBarMessage(context, 'Follow successfully done');
@@ -401,7 +419,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  Future<void> addChatTherapist(
+  Future<void> addChatFriend(
       {required String userId, required String friendId}) async {
     final bool isSuccess = await addChatController.addChat(userId, friendId);
 

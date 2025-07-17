@@ -32,11 +32,30 @@ class Urls {
   static const String notificationUrl = '$_baseUrl/notification';
   static const String mySavePostUrl = '$_baseUrl/watch-later/my-watch-later';
   static const String allBlockersUrl = '$_baseUrl/profile-block/my-block';
+  static const String allUserssUrl = '$_baseUrl/users/public';
 
   static String updateUserByUrl(
     String id,
   ) {
     return '$_baseUrl/users/update/$id';
+  }
+
+  static String commentByContentId(
+    String id,
+  ) {
+    return '$_baseUrl/comments/content/$id';
+  }
+
+  static String allFollowersById(
+    String id,
+  ) {
+    return '$_baseUrl/connection/followers/$id';
+  }
+
+  static String allFollowingById(
+    String id,
+  ) {
+    return '$_baseUrl/connection/following/$id';
   }
 
   static String othersWishlistById(
@@ -45,12 +64,11 @@ class Urls {
     return '$_baseUrl/wishlists/user/$id';
   }
 
-   static String allFeedById(
+  static String allFeedById(
     String id,
   ) {
     return '$_baseUrl/feeds/user/$id';
   }
-
 
   static String otherUserByUrl(
     String id,

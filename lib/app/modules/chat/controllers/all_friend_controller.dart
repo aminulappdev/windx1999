@@ -51,7 +51,7 @@ class FriendController extends GetxController {
       friendList.clear();
       friends.value = AllFriendsModel.fromJson(response.responseData);
       print(
-          'friends data is get all friends from Controller: ${friends.value.data?.length}');
+          'friends data is get all friends from Controller: ${friends.value.data?.length}'); 
       friendList.addAll(friends.value.data ?? []);
 
       socketService.socketFriendtList.clear(); // Clear the socket's friend list

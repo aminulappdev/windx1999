@@ -1,15 +1,13 @@
-// ignore_for_file: unused_local_variable, avoid_print
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:windx1999/app/modules/chat/controllers/all_friend_controller.dart';
 import 'package:windx1999/app/modules/chat/views/chat_screen.dart';
 import 'package:windx1999/app/res/common_widgets/custom_background.dart';
 import 'package:windx1999/app/res/common_widgets/search_bar.dart';
 import 'package:windx1999/app/res/custom_style/custom_size.dart';
 import 'package:windx1999/app/services/socket/socket_service.dart';
-import 'package:intl/intl.dart';
 import 'package:windx1999/get_storage.dart';
 
 class ChatListScreen extends StatefulWidget {
@@ -29,24 +27,87 @@ class _ChatListScreenState extends State<ChatListScreen> {
     socketService.init();
     friendController.getAllFriends();
 
-    // Listen for incoming friends from the socket
-
     socketService.sokect
         .on('chat-list::${StorageUtil.getData(StorageUtil.userId)}', (data) {
       print('Socket chatlist data received ...............');
-      print(data);
+      print('Raw data: $data');
       _handleIncomingFriends(data);
     });
+
+    // socketService.sokect.on('chat-list::68514596201244ee7aeb5047', (data) {
+    //   print('Socket chatlist data received emon bhaiyer ...............');
+    //   print('Raw data: $data');
+    //   _handleIncomingFriends(data);
+    // });
   }
 
+  // Updated: Adjusted to parse nested chat and message data correctly
   void _handleIncomingFriends(dynamic data) {
-    if (data['createdAt'] == null) {
-      data['createdAt'] = DateTime.now().toIso8601String();
+    if (data == null) {
+      print('Error: Received null data from socket');
+      return;
     }
-    socketService.socketFriendtList.add(data);
-  }
 
- 
+    if (data is List) {
+      socketService.socketFriendtList.clear();
+      for (var friend in data) {
+        if (friend is Map<String, dynamic> && friend['chat'] != null) {
+          final chat = friend['chat'];
+          final message = friend['message'];
+          final participants = chat['participants'] as List? ?? [];
+          final participant = participants.isNotEmpty ? participants[0] : null;
+
+          socketService.socketFriendtList.add({
+            "id": chat['_id']?.toString() ?? '',
+            "receiverId": participant?['_id']?.toString() ?? '',
+            "name": participant?['name'] ?? 'No Name',
+            "email": participant?['email'] ?? '',
+            "profileImage": participant?['photoUrl'] ?? '',
+            "createdAt": chat['createdAt'] ?? DateTime.now().toIso8601String(),
+            "lastMessage": message != null ? message['text'] ?? 'No Message' : 'No Message',
+            "lastMessageTime": message != null ? message['createdAt'] ?? DateTime.now().toIso8601String() : DateTime.now().toIso8601String(),
+            "isSeen": message != null ? message['seen'] ?? false : false,
+            "unreadMessageCount": friend['unreadMessageCount'] ?? 0,
+          });
+          print('Added friend: ${participant?['name'] ?? 'null'}');
+        }
+      }
+      socketService.socketFriendtList.refresh();
+      print('Updated socketFriendtList with ${socketService.socketFriendtList.length} friends');
+    } else if (data is Map<String, dynamic>) {
+      final chat = data['chat'];
+      final message = data['message'];
+      final participants = chat?['participants'] as List? ?? [];
+      final participant = participants.isNotEmpty ? participants[0] : null;
+
+      final newFriend = {
+        "id": chat?['_id']?.toString() ?? '',
+        "receiverId": participant?['_id']?.toString() ?? '',
+        "name": participant?['name'] ?? 'No Name',
+        "email": participant?['email'] ?? '',
+        "profileImage": participant?['photoUrl'] ?? '',
+        "createdAt": chat?['createdAt'] ?? DateTime.now().toIso8601String(),
+        "lastMessage": message != null ? message['text'] ?? 'No Message' : 'No Message',
+        "lastMessageTime": message != null ? message['createdAt'] ?? DateTime.now().toIso8601String() : DateTime.now().toIso8601String(),
+        "isSeen": message != null ? message['seen'] ?? false : false,
+        "unreadMessageCount": data['unreadMessageCount'] ?? 0,
+      };
+
+      final existingIndex = socketService.socketFriendtList.indexWhere(
+        (f) => f['id'] == newFriend['id'],
+      );
+
+      if (existingIndex != -1) {
+        socketService.socketFriendtList[existingIndex] = newFriend;
+      } else {
+        socketService.socketFriendtList.add(newFriend);
+      }
+      socketService.socketFriendtList.refresh();
+      print('Updated socketFriendtList with single friend: ${participant?['name']}');
+    } else {
+      print('Error: Unsupported data format received: $data');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,14 +119,12 @@ class _ChatListScreenState extends State<ChatListScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               heightBox20,
-              InkWell(
-                onTap: () {},
-                child: Text(
-                  'Aminul Islam',
-                  style: TextStyle(
-                      fontSize: 20.sp,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.white),
+              Text(
+                'Aminul Islam',
+                style: TextStyle(
+                  fontSize: 20.sp,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.white,
                 ),
               ),
               heightBox12,
@@ -74,18 +133,21 @@ class _ChatListScreenState extends State<ChatListScreen> {
               Text(
                 'Message',
                 style: TextStyle(
-                    fontSize: 18.sp,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white),
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
               ),
               heightBox8,
               Expanded(
                 child: Obx(() {
+                  final friendList = socketService.socketFriendtList;
+
                   if (friendController.inProgress) {
                     return const Center(child: CircularProgressIndicator());
                   }
 
-                  if (socketService.socketFriendtList.isEmpty) {
+                  if (friendList.isEmpty) {
                     return Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -93,15 +155,18 @@ class _ChatListScreenState extends State<ChatListScreen> {
                           Text(
                             'Your Chats with Friends Will Appear Here.',
                             style: TextStyle(
-                                fontSize: 13,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
+                              fontSize: 13,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
                           ),
                           heightBox4,
                           Text(
                             'No Friends Found at this time',
-                            style:
-                                TextStyle(fontSize: 12, color: Colors.white70),
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.white70,
+                            ),
                           ),
                         ],
                       ),
@@ -110,9 +175,9 @@ class _ChatListScreenState extends State<ChatListScreen> {
 
                   return ListView.builder(
                     padding: EdgeInsets.zero,
-                    itemCount: socketService.socketFriendtList.length,
+                    itemCount: friendList.length,
                     itemBuilder: (context, index) {
-                      final friend = socketService.socketFriendtList[index];
+                      final friend = friendList[index];
                       final String chatId = friend['id'] ?? '';
                       final String receiverId = friend['receiverId'] ?? '';
                       final String receiverName = friend['name'] ?? 'No Name';
@@ -155,36 +220,40 @@ class _ChatListScreenState extends State<ChatListScreen> {
                           title: Text(
                             receiverName,
                             style: TextStyle(
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.white),
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
                           ),
                           subtitle: Text(
                             lastMessage,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
-                                fontSize: 13.sp,
-                                fontWeight: FontWeight.w400,
-                                color: Colors.white70),
+                              fontSize: 13.sp,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.white70,
+                            ),
                           ),
-                          trailing: unreadMessageCount > 0
-                              ? CircleAvatar(
-                                  radius: 10,
-                                  backgroundColor: const Color(0xff6CC7FE),
-                                  child: Text(
-                                    unreadMessageCount.toString(),
-                                    style: const TextStyle(
-                                        fontSize: 10, color: Colors.white),
-                                  ),
-                                )
-                              : const SizedBox.shrink(),
+                          // trailing: unreadMessageCount > 0
+                          //     ? CircleAvatar(
+                          //         radius: 10,
+                          //         backgroundColor: const Color(0xff6CC7FE),
+                          //         child: Text(
+                          //           unreadMessageCount.toString(),
+                          //           style: const TextStyle(
+                          //             fontSize: 10,
+                          //             color: Colors.white,
+                          //           ),
+                          //         ),
+                          //       )
+                          //     : const SizedBox.shrink(),
                         ),
                       );
                     },
                   );
                 }),
-              )
+              ),
             ],
           ),
         ),

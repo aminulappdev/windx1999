@@ -10,10 +10,10 @@ import 'package:windx1999/app/res/app_colors/app_colors.dart';
 import 'package:windx1999/app/services/socket/socket_service.dart';
 
 void main() async {
-  SocketService socketService = Get.put(SocketService());
-  await GetStorage.init();
-  await socketService.init();
   WidgetsFlutterBinding.ensureInitialized();
+  await GetStorage.init();
+  final SocketService socketService = Get.put(SocketService());
+  await socketService.init();
   runApp(
     DevicePreview(
       enabled: false,
@@ -82,9 +82,3 @@ OutlineInputBorder inputBorder() {
     borderRadius: BorderRadius.circular(16),
   );
 }
-
-
-/** 
-  siresen699@fuasha.com || 1234567
-
- **/

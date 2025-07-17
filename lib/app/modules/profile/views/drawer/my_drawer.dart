@@ -9,6 +9,7 @@ import 'package:windx1999/app/modules/profile/views/drawer/add_account.dart';
 import 'package:windx1999/app/modules/profile/views/drawer/block_account_screen.dart';
 import 'package:windx1999/app/modules/profile/views/drawer/save_items.dart';
 import 'package:windx1999/app/modules/profile/views/drawer/your_account.dart';
+import 'package:windx1999/app/modules/profile/widgets/feature_row.dart';
 import 'package:windx1999/app/res/common_widgets/custom_app_bar.dart';
 import 'package:windx1999/app/res/common_widgets/custom_dialoge.dart';
 import 'package:windx1999/app/res/common_widgets/straight_liner.dart';
@@ -25,7 +26,7 @@ class MyDrawer extends StatelessWidget {
   final DeleteAccountController deleteAccountController =
       Get.put(DeleteAccountController());
 
-  @override 
+  @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     return GetBuilder<ThemeController>(builder: (controller) {
@@ -76,6 +77,15 @@ class MyDrawer extends StatelessWidget {
                         Icons.arrow_forward_ios, () {
                       Get.to(BlockScreen());
                     }),
+                    heightBox10,
+                    FeatureRow(
+                      title: 'Dark mode',
+                      onToggle: (value) {
+                        themeController.themeMode(value);
+                        themeController.update();
+                        print(value);
+                      },
+                    ),
                     SizedBox(
                       height: 50.h,
                     ),
@@ -246,7 +256,7 @@ class MyDrawer extends StatelessWidget {
   Future<void> deleteAccount(String userId) async {
     final bool isSuccess = await deleteAccountController.deleteAccount(userId);
 
-    if (isSuccess) { 
+    if (isSuccess) {
       StorageUtil.deleteData(StorageUtil.userAccessToken);
       StorageUtil.deleteData(StorageUtil.userId);
       Get.to(LogInScreen());

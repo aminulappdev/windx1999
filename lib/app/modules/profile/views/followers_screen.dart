@@ -1,29 +1,59 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:windx1999/app/res/app_images/assets_path.dart';
+import 'package:get/get.dart';
+import 'package:windx1999/app/modules/chat/controllers/add_chat_controller.dart';
+import 'package:windx1999/app/modules/homepage/controller/follow_request_controller.dart';
+import 'package:windx1999/app/modules/post/controller/all_post_controller.dart';
+import 'package:windx1999/app/modules/profile/controllers/all_followers_controller.dart';
 import 'package:windx1999/app/res/common_widgets/custom_app_bar.dart';
 import 'package:windx1999/app/res/common_widgets/custom_background.dart';
 import 'package:windx1999/app/res/common_widgets/custom_rectangle_buttom.dart';
+import 'package:windx1999/app/res/common_widgets/custom_snackbar.dart';
 import 'package:windx1999/app/res/custom_style/custom_size.dart';
+import 'package:windx1999/get_storage.dart';
 
-class FollowersScreen extends StatelessWidget {
-  const FollowersScreen({super.key});
+class FollowersScreen extends StatefulWidget {
+  final String userId;
+  const FollowersScreen({super.key, required this.userId});
+
+  @override
+  State<FollowersScreen> createState() => _FollowersScreenState();
+}
+
+class _FollowersScreenState extends State<FollowersScreen> {
+  final AllFollowersController allFollowersController =
+      Get.put(AllFollowersController());
+  AllPostController allPostController = Get.put(AllPostController());
+  final FollowRequestController followRequestController =
+      FollowRequestController();
+  AddChatController addChatController = Get.put(AddChatController());
+
+  @override
+  void initState() {
+    super.initState();
+    allFollowersController.getAllFollowers(widget.userId);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: CustomBackground(
-          child: Padding(
-            padding: EdgeInsets.all(16.0.h),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-               heightBox20,
-                  CustomAppBar(title: 'Followers'),
-                heightBox12,
-                Expanded(
+      body: CustomBackground(
+        child: Padding(
+          padding: EdgeInsets.all(16.0.h),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              heightBox20,
+              CustomAppBar(title: 'Followers'),
+              heightBox12,
+              GetBuilder<AllFollowersController>(builder: (controller) {
+                if (controller.inProgress) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                return Expanded(
                   child: ListView.builder(
-                    itemCount: 10,
+                    padding: EdgeInsets.zero,
+                    itemCount: controller.allFollowersData?.length ?? 0,
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: EdgeInsets.all(8.0.h),
@@ -34,12 +64,17 @@ class FollowersScreen extends StatelessWidget {
                               children: [
                                 CircleAvatar(
                                   radius: 20.r,
-                                  backgroundImage:
-                                      AssetImage(AssetsPath.blackGirl),
+                                  backgroundImage: NetworkImage(controller
+                                          .allFollowersData![index]
+                                          .follower
+                                          ?.photoUrl ??
+                                      ''),
                                 ),
                                 widthBox8,
                                 Text(
-                                  'Md Aminul',
+                                  controller.allFollowersData![index].follower!
+                                          .name ??
+                                      '',
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 16.sp,
@@ -53,7 +88,10 @@ class FollowersScreen extends StatelessWidget {
                               width: 90,
                               radiusSize: 8,
                               text: 'Follow back',
-                              ontap: () {},
+                              ontap: () {
+                                followRequest(controller
+                                    .allFollowersData![index].follower!.id!);
+                              },
                               textSize: 12,
                               borderColor: Colors.lightBlue,
                               textColor: Colors.white,
@@ -63,12 +101,50 @@ class FollowersScreen extends StatelessWidget {
                       );
                     },
                   ),
-                )
-              ],
-            ),
+                );
+              })
+            ],
           ),
         ),
-      
+      ),
     );
+  }
+
+  Future<void> followRequest(String frindId) async {
+    final bool isSuccess = await followRequestController.followRequest(frindId);
+    if (isSuccess) {
+      allPostController.getAllPost();
+      addChatFriend(
+          userId: StorageUtil.getData(StorageUtil.userId), friendId: frindId);
+      if (mounted) {
+        showSnackBarMessage(context, 'Follow successfully done');
+      }
+    } else {
+      if (mounted) {
+        showSnackBarMessage(
+            context, followRequestController.errorMessage ?? 'failed', true);
+      }
+    }
+  }
+
+  Future<void> addChatFriend(
+      {required String userId, required String friendId}) async {
+    final bool isSuccess = await addChatController.addChat(userId, friendId);
+
+    if (isSuccess) {
+      if (mounted) {
+        showSnackBarMessage(context, 'Added new chat');
+        print(
+            'Chat create hoye geche .............................................');
+        print('FriendId id :  $friendId');
+        print(
+            'Chat create hoye geche .............................................');
+      }
+    } else {
+      if (mounted) {
+        showSnackBarMessage(
+            context, addChatController.errorMessage ?? 'Ekhanei problem', true);
+      }
+    }
   }
 }

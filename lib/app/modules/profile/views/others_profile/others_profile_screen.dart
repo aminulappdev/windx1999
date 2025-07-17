@@ -14,8 +14,6 @@ import 'package:windx1999/app/modules/profile/views/own_profile/block_user.dart'
 import 'package:windx1999/app/modules/profile/views/own_profile/report_screen.dart';
 import 'package:windx1999/app/modules/profile/views/followers_screen.dart';
 import 'package:windx1999/app/modules/profile/views/following_screen.dart';
-import 'package:windx1999/app/modules/profile/views/own_profile/post_gallery.dart';
-import 'package:windx1999/app/modules/profile/views/own_profile/profile_product.dart';
 import 'package:windx1999/app/modules/profile/widgets/profile_bar_icon.dart';
 import 'package:windx1999/app/modules/profile/widgets/quantity_details_widget.dart';
 import 'package:windx1999/app/res/common_widgets/circle_aveture_icon.dart';
@@ -189,7 +187,9 @@ class _OthersProfileScreenState extends State<OthersProfileScreen> {
                       titleSize: 14,
                       quantitySize: 16,
                       ontap: () {
-                        Get.to(FollowersScreen());
+                        Get.to(FollowersScreen(
+                          userId: controller.otherProfileData!.id!,
+                        ));
                       },
                     ),
                     QuantityDetailsWidget(
@@ -200,7 +200,9 @@ class _OthersProfileScreenState extends State<OthersProfileScreen> {
                       titleSize: 14,
                       quantitySize: 16,
                       ontap: () {
-                        Get.to(FollowingScreen());
+                        Get.to(FollowingScreen(
+                          userId: controller.otherProfileData!.id!,
+                        ));
                       },
                     ),
                   ],
@@ -303,12 +305,31 @@ class _OthersProfileScreenState extends State<OthersProfileScreen> {
                   ],
                 ),
                 heightBox12,
-                Expanded(
-                    child: showProductList
-                        ? OthersProfileProduct(
-                            userId: controller.otherProfileData?.id ?? '')
-                        : OthersPostGallery(
-                            userId: controller.otherProfileData?.id ?? ''))
+                controller.otherProfileData?.profilePublic == true
+                    ? SizedBox(
+                        height: 100.h,
+                        width: double.infinity,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.lock,
+                              color: Colors.white,
+                            ),
+                            widthBox8,
+                            Text(
+                              'This account is private',
+                              style: TextStyle(color: Colors.white),
+                            )
+                          ],
+                        ),
+                      )
+                    : Expanded(
+                        child: showProductList
+                            ? OthersProfileProduct(
+                                userId: controller.otherProfileData?.id ?? '')
+                            : OthersPostGallery(
+                                userId: controller.otherProfileData?.id ?? ''))
               ],
             );
           }),

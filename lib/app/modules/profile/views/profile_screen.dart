@@ -15,6 +15,7 @@ import 'package:windx1999/app/res/common_widgets/circle_aveture_icon.dart';
 import 'package:windx1999/app/res/common_widgets/custom_background.dart';
 import 'package:windx1999/app/res/common_widgets/straight_liner.dart';
 import 'package:windx1999/app/res/custom_style/custom_size.dart';
+import 'package:windx1999/get_storage.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -127,7 +128,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       titleSize: 14,
                       quantitySize: 16,
                       ontap: () {
-                        Get.to(() => const FollowersScreen());
+                        Get.to(() => FollowersScreen(
+                              userId: StorageUtil.getData(StorageUtil.userId),
+                            ));
                       },
                     ),
                     QuantityDetailsWidget(
@@ -137,7 +140,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       titleSize: 14,
                       quantitySize: 16,
                       ontap: () {
-                        Get.to(() => const FollowingScreen());
+                        Get.to(() => FollowingScreen(
+                              userId: StorageUtil.getData(StorageUtil.userId),
+                            ));
                       },
                     ),
                   ],

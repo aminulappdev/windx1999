@@ -86,6 +86,13 @@ class _ChatScreenState extends State<ChatScreen> {
       _handleIncomingFriends(data);
     });
 
+    socketService.sokect
+        .on('chat-list::68514596201244ee7aeb5047', (data) {
+      print('Socket chatlist data received emon bhaiyer ...............');
+      print(data);
+      _handleIncomingFriends(data);
+    });
+
     // Fetch initial messages from the server
     messageFetchController.getMessages(chatId: widget.chatId).then((_) {
       // Check if messageList is empty and auto-message hasn't been sent
@@ -108,6 +115,10 @@ class _ChatScreenState extends State<ChatScreen> {
       });
     });
   }
+  
+  
+
+  
 
   @override
   void dispose() {
@@ -220,7 +231,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 actionOntap: () {
                   Get.to(ActionScreen());
                 },
-              ),
+              ), 
               Liner(text: 'Today'),
               // Replaced static messageList with socketService.messageList
               Expanded(

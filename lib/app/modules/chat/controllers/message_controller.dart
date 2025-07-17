@@ -38,7 +38,7 @@ class MessageController extends GetxController {
 
       print('📦 Messages loaded from API: ${messageList.length}');
 
-      // Clear socket messageList and populate with API messages
+      // Clear socket messageList and populate with API messages 
       socketService.messageList.clear();
 
       

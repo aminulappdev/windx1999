@@ -6,7 +6,7 @@ import 'package:windx1999/app/urls.dart';
 import 'package:windx1999/get_storage.dart';
 
 class AddChatController extends GetxController {
-  bool _inProgress = false;
+  bool _inProgress = false; 
   bool get inProgress => _inProgress;
 
   String? _errorMessage;
