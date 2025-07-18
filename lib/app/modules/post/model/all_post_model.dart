@@ -24,29 +24,29 @@ class AllPostModel {
 
 class AllPostItemModel {
     AllPostItemModel({
-        required this.id,
-        required this.author,
-        required this.description,
-        required this.content,
-        required this.audience,
-        required this.contentMeta,
-        required this.isDeleted,
-        required this.createdAt,
-        required this.updatedAt,
-        required this.v,
-        required this.hideBy,
-        required this.isLiked,
-        required this.isFollowing,
-        required this.isVisible,
-        required this.isHide,
-        required this.isWatchLater,
-        required this.contentType,
-        required this.title,
-        required this.link,
-        required this.price,
-        required this.token,
-        required this.status,
-        required this.reason,
+         this.id,
+         this.author,
+         this.description,
+         required this.content,
+         this.audience,
+         this.contentMeta,
+         this.isDeleted,
+         this.createdAt,
+         this.updatedAt,
+         this.v,
+         required this.hideBy,
+         this.isLiked,
+         this.isFollowing,
+         this.isVisible,
+         this.isHide,
+         this.isWatchLater,
+         this.contentType,
+         this.title,
+         this.link,
+         this.price,
+         this.token,
+         this.status,
+         this.reason,
     });
 
     final String? id;
@@ -60,7 +60,7 @@ class AllPostItemModel {
     final DateTime? updatedAt;
     final int? v;
     final List<String> hideBy;
-    final bool? isLiked;
+    late final bool? isLiked;
     late final bool? isFollowing;
     final bool? isVisible;
     final bool? isHide;
@@ -137,7 +137,7 @@ class ContentMeta {
     });
 
     final String? id;
-    final int? like;
+    late final int? like;
     final List<String> likeBy;
     final int? comment;
     final int? share;

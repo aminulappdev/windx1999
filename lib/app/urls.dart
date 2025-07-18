@@ -33,6 +33,7 @@ class Urls {
   static const String mySavePostUrl = '$_baseUrl/watch-later/my-watch-later';
   static const String allBlockersUrl = '$_baseUrl/profile-block/my-block';
   static const String allUserssUrl = '$_baseUrl/users/public';
+  static const String sendCommentUrl = '$_baseUrl/comments';
 
   static String updateUserByUrl(
     String id,

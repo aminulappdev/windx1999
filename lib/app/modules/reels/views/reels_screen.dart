@@ -10,11 +10,13 @@ import 'package:windx1999/app/modules/homepage/controller/follow_request_control
 import 'package:windx1999/app/modules/homepage/controller/react_controller.dart';
 import 'package:windx1999/app/modules/homepage/controller/save_post_controller.dart';
 import 'package:windx1999/app/modules/homepage/controller/unFollow_request_controller.dart';
+import 'package:windx1999/app/modules/homepage/views/comment_screen.dart';
 import 'package:windx1999/app/modules/reels/controller/all_reels_controller.dart';
 import 'package:windx1999/app/modules/reels/widgets/icon_with_react.dart';
 import 'package:windx1999/app/modules/reels/widgets/reels_details.dart';
 import 'package:windx1999/app/res/common_widgets/custom_background.dart';
 import 'package:windx1999/app/res/common_widgets/custom_snackbar.dart';
+import 'package:windx1999/app/res/common_widgets/date_time_formate_class.dart';
 import 'package:windx1999/app/res/custom_style/custom_size.dart';
 
 class ReelsScreen extends StatefulWidget {
@@ -28,9 +30,12 @@ class _ReelsScreenState extends State<ReelsScreen> {
   final AllReelsController allReelsController = Get.put(AllReelsController());
   final SavePostController savePostController = SavePostController();
   final ReactPostController reactPostController = ReactPostController();
-  final DisReactPostController disReactPostController = DisReactPostController();
-  final FollowRequestController followRequestController = FollowRequestController();
-  final UnFollowRequestController unFollowRequestController = UnFollowRequestController();
+  final DisReactPostController disReactPostController =
+      DisReactPostController();
+  final FollowRequestController followRequestController =
+      FollowRequestController();
+  final UnFollowRequestController unFollowRequestController =
+      UnFollowRequestController();
 
   final Map<int, VideoPlayerController> _videoControllers = {};
   final Map<int, Future<void>> _initializeFutures = {};
@@ -89,9 +94,11 @@ class _ReelsScreenState extends State<ReelsScreen> {
                 final videoUrl = reel.video?.toString() ?? '';
 
                 if (!_videoControllers.containsKey(index)) {
-                  final videoController = VideoPlayerController.network(videoUrl);
+                  final videoController =
+                      VideoPlayerController.network(videoUrl);
                   _videoControllers[index] = videoController;
-                  _initializeFutures[index] = videoController.initialize().then((_) {
+                  _initializeFutures[index] =
+                      videoController.initialize().then((_) {
                     videoController.setLooping(true);
                     videoController.play();
                     setState(() {});
@@ -107,7 +114,8 @@ class _ReelsScreenState extends State<ReelsScreen> {
                     if (snapshot.connectionState != ConnectionState.done) {
                       return const Center(child: CircularProgressIndicator());
                     }
-
+                    final dateFormatter = DateFormatter(
+                        controller.allReelsData![index].createdAt!);
                     return GestureDetector(
                       onTap: toggleControls,
                       child: Stack(
@@ -125,12 +133,6 @@ class _ReelsScreenState extends State<ReelsScreen> {
                             left: 20.w,
                             child: Row(
                               children: [
-                                InkWell(
-                                  onTap: () => Navigator.pop(context),
-                                  child: Icon(Icons.close,
-                                      color: Colors.white, size: 26.h),
-                                ),
-                                widthBox5,
                                 Text(
                                   'Reel',
                                   style: TextStyle(
@@ -150,23 +152,39 @@ class _ReelsScreenState extends State<ReelsScreen> {
                             child: Column(
                               children: [
                                 IconWithReact(
-                                  icon: controller.allReelsData![index].isLiked == false
-                                      ? Icons.favorite_outline
-                                      : Icons.favorite,
-                                  text: reel.contentMeta?.like?.toString() ?? '0',
+                                  icon:
+                                      controller.allReelsData![index].isLiked ==
+                                              false
+                                          ? Icons.favorite_outline
+                                          : Icons.favorite,
+                                  text:
+                                      reel.contentMeta?.like?.toString() ?? '0',
                                   ontap: () {
-                                    controller.allReelsData![index].isLiked == true
-                                        ? disReactPost(
-                                            controller.allReelsData![index].contentMeta!.id!)
-                                        : reactPost(
-                                            controller.allReelsData![index].contentMeta!.id!);
+                                    controller.allReelsData![index].isLiked ==
+                                            true
+                                        ? disReactPost(controller
+                                            .allReelsData![index]
+                                            .contentMeta!
+                                            .id!)
+                                        : reactPost(controller
+                                            .allReelsData![index]
+                                            .contentMeta!
+                                            .id!);
                                   },
                                 ),
                                 heightBox16,
                                 IconWithReact(
                                   icon: Icons.comment_outlined,
-                                  text: reel.contentMeta?.comment?.toString() ?? '0',
-                                  ontap: () {},
+                                  text: reel.contentMeta?.comment?.toString() ??
+                                      '0',
+                                  ontap: () {
+                                    Get.to(CommentScreen(
+                                      postId:
+                                          controller.allReelsData?[index].id ??
+                                              '',
+                                      postType: 'reels',
+                                    ));
+                                  },
                                 ),
                                 heightBox16,
                                 IconWithReact(
@@ -174,9 +192,12 @@ class _ReelsScreenState extends State<ReelsScreen> {
                                   text: '',
                                   ontap: () {
                                     savePost(
-                                        controller.allReelsData![index].author?.id ?? '',
+                                        controller.allReelsData![index].author
+                                                ?.id ??
+                                            '',
                                         'reels',
-                                        controller.allReelsData![index].id ?? '');
+                                        controller.allReelsData![index].id ??
+                                            '');
                                   },
                                 ),
                               ],
@@ -188,23 +209,37 @@ class _ReelsScreenState extends State<ReelsScreen> {
                             bottom: 30.h,
                             left: 10.h,
                             child: ReelsDetails(
-                              follow: controller.allReelsData![index].isWatchLater == true
+                              follow: controller
+                                          .allReelsData![index].isWatchLater ==
+                                      true
                                   ? 'Unfollow'
                                   : 'Follow',
-                              imagePath: controller.allReelsData![index].author?.photoUrl ??
+                              imagePath: controller
+                                      .allReelsData![index].author?.photoUrl ??
                                   'https://fastly.picsum.photos/id/1/200/300.jpg',
-                              name: controller.allReelsData![index].author?.name ?? '',
-                              address: '',
+                              name: controller
+                                      .allReelsData![index].author?.name ??
+                                  '',
+                              address:
+                                  dateFormatter.getDateTimeFormat(),
                               addFriendOnTap: () {},
                               followOnTap: () {
-                                if (controller.allReelsData![index].isWatchLater == true) {
-                                  unFollowRequest(controller.allReelsData![index].author?.id ?? '');
+                                if (controller
+                                        .allReelsData![index].isWatchLater ==
+                                    true) {
+                                  unFollowRequest(controller
+                                          .allReelsData![index].author?.id ??
+                                      '');
                                 } else {
-                                  followRequest(controller.allReelsData![index].author?.id ?? '');
+                                  followRequest(controller
+                                          .allReelsData![index].author?.id ??
+                                      '');
                                 }
                               },
-                              caption: 'No caption',
-                              musicName: 'Original Audio',
+                              caption:
+                                  controller.allReelsData?[index].description ??
+                                      '',
+                              musicName: '',
                             ),
                           ),
 
@@ -223,7 +258,8 @@ class _ReelsScreenState extends State<ReelsScreen> {
                                 },
                                 child: CircleAvatar(
                                   radius: 28.r,
-                                  backgroundColor: Colors.white.withOpacity(0.50),
+                                  backgroundColor:
+                                      Colors.white.withOpacity(0.50),
                                   child: Icon(
                                     videoController.value.isPlaying
                                         ? Icons.pause
@@ -244,14 +280,18 @@ class _ReelsScreenState extends State<ReelsScreen> {
                                 onTap: () {
                                   setState(() {
                                     isMuted = !isMuted;
-                                    videoController.setVolume(isMuted ? 0.0 : 1.0);
+                                    videoController
+                                        .setVolume(isMuted ? 0.0 : 1.0);
                                   });
                                 },
                                 child: CircleAvatar(
                                   radius: 28.r,
-                                  backgroundColor: Colors.white.withOpacity(0.50),
+                                  backgroundColor:
+                                      Colors.white.withOpacity(0.50),
                                   child: Icon(
-                                    isMuted ? Icons.volume_off : Icons.volume_up,
+                                    isMuted
+                                        ? Icons.volume_off
+                                        : Icons.volume_up,
                                     color: Colors.white,
                                     size: 30,
                                   ),
@@ -271,7 +311,8 @@ class _ReelsScreenState extends State<ReelsScreen> {
     );
   }
 
-  Future<void> savePost(String userId, String modelType, String contentId) async {
+  Future<void> savePost(
+      String userId, String modelType, String contentId) async {
     final bool isSuccess =
         await savePostController.savePostF(userId, modelType, contentId);
     if (isSuccess) {
@@ -279,7 +320,8 @@ class _ReelsScreenState extends State<ReelsScreen> {
       if (mounted) showSnackBarMessage(context, 'Hide successfully done');
     } else {
       if (mounted) {
-        showSnackBarMessage(context, savePostController.errorMessage ?? 'failed', true);
+        showSnackBarMessage(
+            context, savePostController.errorMessage ?? 'failed', true);
       }
     }
   }
@@ -291,19 +333,22 @@ class _ReelsScreenState extends State<ReelsScreen> {
       if (mounted) showSnackBarMessage(context, 'Follow successfully done');
     } else {
       if (mounted) {
-        showSnackBarMessage(context, followRequestController.errorMessage ?? 'failed', true);
+        showSnackBarMessage(
+            context, followRequestController.errorMessage ?? 'failed', true);
       }
     }
   }
 
   Future<void> unFollowRequest(String frindId) async {
-    final bool isSuccess = await unFollowRequestController.unfollowRequest(frindId);
+    final bool isSuccess =
+        await unFollowRequestController.unfollowRequest(frindId);
     if (isSuccess) {
       allReelsController.getAllReels();
       if (mounted) showSnackBarMessage(context, 'Unfollow successfully done');
     } else {
       if (mounted) {
-        showSnackBarMessage(context, unFollowRequestController.errorMessage ?? 'failed', true);
+        showSnackBarMessage(
+            context, unFollowRequestController.errorMessage ?? 'failed', true);
       }
     }
   }
@@ -314,7 +359,8 @@ class _ReelsScreenState extends State<ReelsScreen> {
       allReelsController.getAllReels();
     } else {
       if (mounted) {
-        showSnackBarMessage(context, savePostController.errorMessage ?? 'failed', true);
+        showSnackBarMessage(
+            context, savePostController.errorMessage ?? 'failed', true);
       }
     }
   }
@@ -325,7 +371,8 @@ class _ReelsScreenState extends State<ReelsScreen> {
       allReelsController.getAllReels();
     } else {
       if (mounted) {
-        showSnackBarMessage(context, savePostController.errorMessage ?? 'failed', true);
+        showSnackBarMessage(
+            context, savePostController.errorMessage ?? 'failed', true);
       }
     }
   }

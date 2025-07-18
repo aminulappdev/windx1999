@@ -60,7 +60,7 @@ class ReelsDetails extends StatelessWidget {
                       ),
                       Text(
                         address,
-                        style: TextStyle(color: Colors.white, fontSize: 12.sp),
+                        style: TextStyle(color: Colors.white, fontSize: 10.sp),
                       )
                     ],
                   ),
@@ -106,10 +106,10 @@ class ReelsDetails extends StatelessWidget {
         heightBox8,
         Row(
           children: [
-            Icon(
-              Icons.music_note,
-              color: Colors.white,
-            ),
+            // Icon(
+            //   Icons.music_note,
+            //   color: Colors.white,
+            // ),
             widthBox4,
             SizedBox(
               width: 300.w,

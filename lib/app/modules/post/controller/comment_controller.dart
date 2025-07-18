@@ -32,15 +32,17 @@ class CommentController extends GetxController {
         accesToken: StorageUtil.getData(StorageUtil.userAccessToken));
 
     if (response.isSuccess) {
+      print("Received Data: ${response.responseData}"); // ডিবাগ
       commentModel = CommentModel.fromJson(response.responseData);
       _errorMessage = null;
       isSuccess = true;
     } else {
       _errorMessage = response.errorMessage;
+      print("Error: $_errorMessage");
     }
 
     _inProgress = false;
-    update();
+    update(); // UI আপডেট নিশ্চিত করা
     return isSuccess;
   }
 }
