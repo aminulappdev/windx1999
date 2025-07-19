@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/get_navigation.dart';
+import 'package:get/get.dart';
 import 'package:windx1999/app/modules/authentication/controllers/forgot_email_controller.dart';
 import 'package:windx1999/app/modules/authentication/views/forgot_email_verification_screen.dart';
 import 'package:windx1999/app/res/app_images/assets_path.dart';
@@ -21,7 +20,7 @@ class ForgotpasswordScreen extends StatefulWidget {
 class _ForgotpasswordScreenState extends State<ForgotpasswordScreen> {
   final TextEditingController emailCtrl = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final ForgotEmailController forgotEmailController = ForgotEmailController();
+  final ForgotEmailController forgotEmailController = Get.put(ForgotEmailController());
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +70,6 @@ class _ForgotpasswordScreenState extends State<ForgotpasswordScreen> {
                           if (value!.isEmpty) {
                             return 'Enter email';
                           }
-
                           return null;
                         },
                       ),
@@ -79,11 +77,29 @@ class _ForgotpasswordScreenState extends State<ForgotpasswordScreen> {
                   ),
                 ),
                 heightBox24,
-                ElevatedButton(
-                    onPressed: () {
-                      otpBTN(emailCtrl.text);
-                    },
-                    child: Text('Next'))
+                GetBuilder<ForgotEmailController>(
+                  builder: (controller) {
+                    return ElevatedButton(
+                      onPressed: controller.inProgress
+                          ? null
+                          : () async {
+                              if (_formKey.currentState!.validate()) {
+                                await otpBTN(emailCtrl.text);
+                              }
+                            },
+                      child: controller.inProgress
+                          ? const SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 2,
+                              ),
+                            )
+                          : const Text('Next'),
+                    );
+                  },
+                ),
               ],
             ),
           ),
@@ -100,14 +116,14 @@ class _ForgotpasswordScreenState extends State<ForgotpasswordScreen> {
         showSnackBarMessage(context, 'Successfully done');
         var token = forgotEmailController.forgotData?.token ?? 'Empty';
         print('Token is $token');
-        Get.to(ForgotEmailVerificationScreen(
-          accessToken: token,
-        ));
+        Get.to(() => ForgotEmailVerificationScreen(
+              accessToken: token,
+            ));
       }
     } else {
       if (mounted) {
-        showSnackBarMessage(context,
-            forgotEmailController.errorMessage ?? 'Login failed', true);
+        showSnackBarMessage(
+            context, forgotEmailController.errorMessage ?? 'Failed to send OTP', true);
       }
     }
   }

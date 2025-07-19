@@ -111,7 +111,7 @@ class _SearchScreenState extends State<SearchScreen> {
           context,
           addChatController.errorMessage ?? 'Failed to add chat',
           true,
-        );
+        ); 
       }
     }
   }

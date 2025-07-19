@@ -31,7 +31,7 @@ class SavePostController extends GetxController {
             ? 'Wishlist'
             : 'Feed';
     Map<String, dynamic> requestBody = {
-      "user": "68514596201244ee7aeb5047",
+      "user": userId,
       "modelType": upadatedModelType,
       "content": contentId
     };

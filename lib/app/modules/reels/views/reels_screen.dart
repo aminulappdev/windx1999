@@ -1,16 +1,20 @@
 // ignore_for_file: deprecated_member_use
 
 import 'dart:async';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
+import 'package:windx1999/app/modules/common/controllers/save_my_post_controller.dart';
 import 'package:windx1999/app/modules/homepage/controller/dis_react_controller.dart';
 import 'package:windx1999/app/modules/homepage/controller/follow_request_controller.dart';
 import 'package:windx1999/app/modules/homepage/controller/react_controller.dart';
 import 'package:windx1999/app/modules/homepage/controller/save_post_controller.dart';
 import 'package:windx1999/app/modules/homepage/controller/unFollow_request_controller.dart';
+import 'package:windx1999/app/modules/homepage/controller/un_saved_post_controller.dart';
 import 'package:windx1999/app/modules/homepage/views/comment_screen.dart';
+import 'package:windx1999/app/modules/post/controller/all_post_controller.dart';
 import 'package:windx1999/app/modules/reels/controller/all_reels_controller.dart';
 import 'package:windx1999/app/modules/reels/widgets/icon_with_react.dart';
 import 'package:windx1999/app/modules/reels/widgets/reels_details.dart';
@@ -18,6 +22,7 @@ import 'package:windx1999/app/res/common_widgets/custom_background.dart';
 import 'package:windx1999/app/res/common_widgets/custom_snackbar.dart';
 import 'package:windx1999/app/res/common_widgets/date_time_formate_class.dart';
 import 'package:windx1999/app/res/custom_style/custom_size.dart';
+import 'package:windx1999/get_storage.dart';
 
 class ReelsScreen extends StatefulWidget {
   const ReelsScreen({super.key});
@@ -36,7 +41,11 @@ class _ReelsScreenState extends State<ReelsScreen> {
       FollowRequestController();
   final UnFollowRequestController unFollowRequestController =
       UnFollowRequestController();
+  final UnSavedPostController unSavedPostController =
+      Get.put(UnSavedPostController());
 
+  final SaveAllPostController saveAllPostController =
+      Get.put(SaveAllPostController());
   final Map<int, VideoPlayerController> _videoControllers = {};
   final Map<int, Future<void>> _initializeFutures = {};
 
@@ -188,16 +197,56 @@ class _ReelsScreenState extends State<ReelsScreen> {
                                 ),
                                 heightBox16,
                                 IconWithReact(
-                                  icon: Icons.bookmark,
+                                  icon: controller.allReelsData?[index]
+                                              .isWatchLater ==
+                                          true
+                                      ? Icons.bookmark
+                                      : Icons.bookmark_outline,
                                   text: '',
                                   ontap: () {
-                                    savePost(
-                                        controller.allReelsData![index].author
-                                                ?.id ??
-                                            '',
-                                        'reels',
-                                        controller.allReelsData![index].id ??
-                                            '');
+                                    print(
+                                        'isWatch later ${controller.allReelsData?[index].isWatchLater}\n...................................................................');
+                                    // controller.allReelsData?[index]
+                                    //             .isWatchLater ==
+                                    //         false
+                                    //     ? unSavePost(controller
+                                    //             .allReelsData![index].id ??
+                                    //         '')
+                                    //     : savePost(
+                                    //         controller.allReelsData![index]
+                                    //                 .author?.id ??
+                                    //             '',
+                                    //         'reels',
+                                    //         controller
+                                    //                 .allReelsData![index].id ??
+                                    //             '');
+                                    if (controller.allReelsData?[index]
+                                            .isWatchLater ==
+                                        true) {
+                                      unSavePost(
+                                          controller.allReelsData![index].id ??
+                                              '');
+                                    } else if (controller.allReelsData?[index]
+                                            .isWatchLater ==
+                                        false) {
+                                      savePost(
+                                          StorageUtil.getData(
+                                                  StorageUtil.userId) ??
+                                              '',
+                                          'reels',
+                                          controller.allReelsData![index].id ??
+                                              '');
+                                    } else {
+                                      print('Problem');
+                                    }
+
+                                    // savePost(
+                                    //     StorageUtil.getData(
+                                    //             StorageUtil.userId) ??
+                                    //         '',
+                                    //     'reels',
+                                    //     controller.allReelsData![index].id ??
+                                    //         '');
                                   },
                                 ),
                               ],
@@ -220,8 +269,7 @@ class _ReelsScreenState extends State<ReelsScreen> {
                               name: controller
                                       .allReelsData![index].author?.name ??
                                   '',
-                              address:
-                                  dateFormatter.getDateTimeFormat(),
+                              address: dateFormatter.getDateTimeFormat(),
                               addFriendOnTap: () {},
                               followOnTap: () {
                                 if (controller
@@ -317,7 +365,9 @@ class _ReelsScreenState extends State<ReelsScreen> {
         await savePostController.savePostF(userId, modelType, contentId);
     if (isSuccess) {
       allReelsController.getAllReels();
-      if (mounted) showSnackBarMessage(context, 'Hide successfully done');
+      if (mounted) {
+        // showSnackBarMessage(context, 'Hide successfully done');
+      }
     } else {
       if (mounted) {
         showSnackBarMessage(
@@ -326,11 +376,31 @@ class _ReelsScreenState extends State<ReelsScreen> {
     }
   }
 
+  Future<void> unSavePost(String postId) async {
+    final bool isSuccess =
+        await unSavedPostController.unSavePost(postId: postId);
+
+    if (isSuccess) {
+      saveAllPostController.getMySavePost();
+      allReelsController.getAllReels();
+      // showSnackBarMessage(context, 'unsaved successfully done');
+    } else {
+      Get.snackbar(
+        backgroundColor: Colors.red,
+        snackPosition: SnackPosition.TOP,
+        'Failed',
+        'Failed to delete account',
+      );
+    }
+  }
+
   Future<void> followRequest(String frindId) async {
     final bool isSuccess = await followRequestController.followRequest(frindId);
     if (isSuccess) {
       allReelsController.getAllReels();
-      if (mounted) showSnackBarMessage(context, 'Follow successfully done');
+      if (mounted) {
+        // showSnackBarMessage(context, 'Follow successfully done');
+      }
     } else {
       if (mounted) {
         showSnackBarMessage(
@@ -344,7 +414,9 @@ class _ReelsScreenState extends State<ReelsScreen> {
         await unFollowRequestController.unfollowRequest(frindId);
     if (isSuccess) {
       allReelsController.getAllReels();
-      if (mounted) showSnackBarMessage(context, 'Unfollow successfully done');
+      if (mounted) {
+        // showSnackBarMessage(context, 'Unfollow successfully done');
+      }
     } else {
       if (mounted) {
         showSnackBarMessage(

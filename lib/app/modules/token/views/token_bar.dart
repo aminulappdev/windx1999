@@ -147,8 +147,8 @@ class _TokenBarState extends State<TokenBar> {
                           ? GetBuilder<MyOrderController>(
                               builder: (oController) {
                                 if (oController.inProgress) {
-                                  return const Center(
-                                      child: CircularProgressIndicator());
+                                  // return const Center(
+                                  //     child: CircularProgressIndicator());
                                 }
 
                                 final createdAt = oController

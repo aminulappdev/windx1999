@@ -18,17 +18,14 @@ class ChangedPasswordScreen extends StatefulWidget {
 
 class _ChangedPasswordScreenState extends State<ChangedPasswordScreen> {
   bool _obscureText = true;
+  bool _obscureConfirmText = true;
 
   final _globalKey = GlobalKey<FormState>();
-  final TextEditingController currentPasswordController =
-      TextEditingController();
+  final TextEditingController currentPasswordController = TextEditingController();
   final TextEditingController newPasswordController = TextEditingController();
-  final TextEditingController confirmPasswordController =
-      TextEditingController();
-  final ChangePasswordController changePasswordController =
-      Get.put(ChangePasswordController());
+  final TextEditingController confirmPasswordController = TextEditingController();
+  final ChangePasswordController changePasswordController = Get.put(ChangePasswordController());
 
-  bool _obscureConfirmText = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -160,29 +157,46 @@ class _ChangedPasswordScreenState extends State<ChangedPasswordScreen> {
                       heightBox12,
                       GestureDetector(
                         onTap: () {
-                          Get.to(ForgotpasswordScreen());
+                          Get.to(() => const ForgotpasswordScreen());
                         },
                         child: Text(
-                          'Confirm password',
-                          style:
-                              TextStyle(fontSize: 16.sp, color: Colors.white),
+                          'Forgot password?',
+                          style: TextStyle(fontSize: 16.sp, color: Colors.white),
                         ),
                       ),
                     ],
                   ),
                 ),
                 heightBox24,
-                ElevatedButton(
-                  onPressed: () {
-                    changePassword(
-                        currentPasswordController.text,
-                        newPasswordController.text,
-                        confirmPasswordController.text);
+                GetBuilder<ChangePasswordController>(
+                  builder: (controller) {
+                    return ElevatedButton(
+                      onPressed: controller.inProgress
+                          ? null
+                          : () async {
+                              if (_globalKey.currentState!.validate()) {
+                                await changePassword(
+                                  currentPasswordController.text,
+                                  newPasswordController.text,
+                                  confirmPasswordController.text,
+                                );
+                              }
+                            },
+                      child: controller.inProgress
+                          ? const SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 2,
+                              ),
+                            )
+                          : const Text(
+                              'Change password',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                    );
                   },
-                  child: Text(
-                    'Change password',
-                    style: TextStyle(color: Colors.white),
-                  ),
                 ),
               ],
             ),
@@ -206,12 +220,12 @@ class _ChangedPasswordScreenState extends State<ChangedPasswordScreen> {
     if (isSuccess) {
       if (mounted) {
         showSnackBarMessage(context, 'Successfully done');
-        Get.to(ProfileScreen());
+        Get.to(() => const ProfileScreen());
       }
     } else {
       if (mounted) {
         showSnackBarMessage(
-            context, changePasswordController.errorMessage ?? 'failed', true);
+            context, changePasswordController.errorMessage ?? 'Failed to change password', true);
       }
     }
   }

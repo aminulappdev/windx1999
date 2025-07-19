@@ -16,7 +16,7 @@ void main() async {
   await socketService.init();
   runApp(
     DevicePreview(
-      enabled: false,
+      enabled: false, 
       builder: (context) => ScreenUtilInit(
         designSize: const Size(393, 852),
         minTextAdapt: true,

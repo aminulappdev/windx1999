@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -32,7 +34,6 @@ class _CommentScreenState extends State<CommentScreen> {
       Get.put(SendCommentController());
   final TextEditingController commentCtrl = TextEditingController();
   final TextEditingController replyCtrl = TextEditingController();
-  final _globalKey = GlobalKey<FormState>();
   int? selectedCommentIndex; // নতুন স্টেট ভেরিয়েবল
 
   @override
@@ -166,8 +167,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                       GestureDetector(
                                         onTap: () {
                                           setState(() {
-                                            selectedCommentIndex =
-                                                index; // নির্দিষ্ট ইনডেক্স সেট
+                                            selectedCommentIndex = index;
                                             replyCtrl.text = '';
                                           });
                                         },
@@ -202,7 +202,11 @@ class _CommentScreenState extends State<CommentScreen> {
                                       if (value.isNotEmpty) {
                                         sendReply(
                                           contentId: widget.postId,
-                                          modelType: 'Feed',
+                                          modelType: widget.postType == 'feed'
+                                              ? 'Feed'
+                                              : widget.postType == 'reels'
+                                                  ? 'Reels'
+                                                  : 'Wishlist',
                                           comment: value,
                                           isReply: true,
                                           userId: StorageUtil.getData(
@@ -210,8 +214,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                           replyRef: comment.id ?? '',
                                         );
                                         setState(() {
-                                          selectedCommentIndex =
-                                              null; // সাবমিটের পর ফিল্ড লুকানো
+                                          selectedCommentIndex = null;
                                         });
                                       }
                                     },
@@ -321,7 +324,7 @@ class _CommentScreenState extends State<CommentScreen> {
       allPostController.updatePostHide(contentId, true);
       commentController.getAllComment(contentId);
       if (mounted) {
-        showSnackBarMessage(context, 'Comment successfully posted');
+       // showSnackBarMessage(context, 'Comment successfully posted');
         commentCtrl.clear();
       }
     } else {
@@ -351,8 +354,8 @@ class _CommentScreenState extends State<CommentScreen> {
     if (isSuccess) {
       commentController.getAllComment(contentId);
       if (mounted) {
-        allPostController.updatePostHide(contentId, true);   
-        showSnackBarMessage(context, 'Reply successfully posted');
+        allPostController.updatePostHide(contentId, true);
+       // showSnackBarMessage(context, 'Reply successfully posted');
         replyCtrl.clear();
       }
     } else {

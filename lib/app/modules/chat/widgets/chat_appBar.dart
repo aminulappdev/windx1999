@@ -5,7 +5,6 @@ import 'package:windx1999/app/modules/profile/views/others_profile/others_profil
 import 'package:windx1999/app/res/custom_style/custom_size.dart';
 
 class CustomChatAppBar extends StatefulWidget {
-  
   final String name;
   final String activeStatus;
   final String imagePath;
@@ -13,7 +12,11 @@ class CustomChatAppBar extends StatefulWidget {
   final VoidCallback actionOntap;
   const CustomChatAppBar({
     super.key,
-    required this.name, required this.activeStatus, required this.imagePath, required this.isActive, required this.actionOntap,
+    required this.name,
+    required this.activeStatus,
+    required this.imagePath,
+    required this.isActive,
+    required this.actionOntap,
   });
 
   @override
@@ -47,15 +50,16 @@ class _CustomChatAppBarState extends State<CustomChatAppBar> {
             widthBox8,
             InkWell(
               onTap: () {
-                Get.to(OthersProfileScreen(userId: '',));
+                Get.to(OthersProfileScreen(
+                  userId: '',
+                ));
               },
               child: Row(
                 children: [
                   CircleAvatar(
                     backgroundColor: Colors.transparent,
-                    backgroundImage: AssetImage(widget.imagePath),
+                    backgroundImage: NetworkImage(widget.imagePath),
                     radius: 24.r,
-                   
                   ),
                   widthBox5,
                   Column(
@@ -78,10 +82,10 @@ class _CustomChatAppBarState extends State<CustomChatAppBar> {
                                 fontWeight: FontWeight.w400),
                           ),
                           widthBox8,
-                          CircleAvatar(
-                            radius: 4,
-                            backgroundColor: widget.isActive ? Colors.green : Colors.red,
-                          )
+                          // CircleAvatar(
+                          //   radius: 4,
+                          //   backgroundColor: widget.isActive ? Colors.green : Colors.red,
+                          // )
                         ],
                       ),
                     ],

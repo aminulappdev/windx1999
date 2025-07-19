@@ -45,7 +45,7 @@ class OtpVerifyController extends GetxController {
 
     if (response.isSuccess) {
       // Accessing the otpToken from the response data safely
-
+      StorageUtil.deleteData('user-otp-token');
       otpResponseModel = OtpResponseModel.fromJson(response.responseData);
       print('Otp response model : ${response.responseData}');
       print('Token is : ${response.responseData['data']['token']}');

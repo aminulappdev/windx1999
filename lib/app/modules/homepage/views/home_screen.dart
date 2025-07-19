@@ -1,7 +1,9 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:windx1999/app/modules/chat/controllers/add_chat_controller.dart';
+import 'package:windx1999/app/modules/common/controllers/save_my_post_controller.dart';
 import 'package:windx1999/app/modules/common/controllers/theme_controller.dart';
 import 'package:windx1999/app/modules/homepage/controller/dis_react_controller.dart';
 import 'package:windx1999/app/modules/homepage/controller/follow_request_controller.dart';
@@ -9,6 +11,7 @@ import 'package:windx1999/app/modules/homepage/controller/hide_post_controller.d
 import 'package:windx1999/app/modules/homepage/controller/react_controller.dart';
 import 'package:windx1999/app/modules/homepage/controller/save_post_controller.dart';
 import 'package:windx1999/app/modules/homepage/controller/unFollow_request_controller.dart';
+import 'package:windx1999/app/modules/homepage/controller/un_saved_post_controller.dart';
 import 'package:windx1999/app/modules/homepage/views/comment_screen.dart';
 import 'package:windx1999/app/modules/homepage/views/botton_sheet_screen.dart';
 import 'package:windx1999/app/modules/homepage/views/notification_screen.dart';
@@ -44,24 +47,45 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final HidePostController hidePostController = HidePostController();
   final SavePostController savePostController = SavePostController();
-  final FollowRequestController followRequestController = FollowRequestController();
-  final UnFollowRequestController unFollowRequestController = UnFollowRequestController();
+  final FollowRequestController followRequestController =
+      FollowRequestController();
+  final UnFollowRequestController unFollowRequestController =
+      UnFollowRequestController();
   final ReactPostController reactPostController = ReactPostController();
-  final DisReactPostController disReactPostController = DisReactPostController();
+  final DisReactPostController disReactPostController =
+      DisReactPostController();
+  final UnSavedPostController unSavedPostController =
+      Get.put(UnSavedPostController());
+  final SaveAllPostController saveAllPostController =
+      Get.put(SaveAllPostController());
 
   // New: Added ScrollController
-  final ScrollController _scrollController = ScrollController();
+  final ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
-    allPostController.getAllPost();
-    profileController.getMyProfile();
+    scrollController.addListener(_loadMoreData);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      allPostController.getAllPost();
+      profileController.getMyProfile();
+    });
+  }
+
+  void _loadMoreData() {
+    if (scrollController.position.extentAfter < 500 &&
+        !allPostController.inProgress) {
+          print('Load more data');
+      allPostController.getAllPost();
+    }
+    {
+      allPostController.getAllPost();
+    }
   }
 
   @override
   void dispose() {
-    _scrollController.dispose();
+    scrollController.dispose();
     super.dispose();
   }
 
@@ -85,7 +109,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         borderRadius: BorderRadius.circular(50),
                         color: Color.fromARGB(116, 255, 255, 255),
                       ),
-                      child: GetBuilder<ProfileController>(builder: (pController) {
+                      child:
+                          GetBuilder<ProfileController>(builder: (pController) {
                         if (pController.inProgress) {
                           return Center(
                             child: SizedBox(
@@ -105,12 +130,18 @@ class _HomeScreenState extends State<HomeScreen> {
                               Icon(
                                 Icons.token_rounded,
                                 size: 26.h,
-                                color: controller.isDarkMode ? Colors.white : Colors.black,
+                                color: controller.isDarkMode
+                                    ? Colors.white
+                                    : Colors.black,
                               ),
                               Text(
-                                pController.profileData?.tokenAmount.toString() ?? '0',
+                                pController.profileData?.tokenAmount
+                                        .toString() ??
+                                    '0',
                                 style: TextStyle(
-                                  color: controller.isDarkMode ? Colors.white : Colors.black,
+                                  color: controller.isDarkMode
+                                      ? Colors.white
+                                      : Colors.black,
                                 ),
                               ),
                             ],
@@ -146,48 +177,66 @@ class _HomeScreenState extends State<HomeScreen> {
                 Expanded(
                   child: GetBuilder<AllPostController>(
                     builder: (allPostController) {
-                      if (allPostController.inProgress) {
+                      if (allPostController.inProgress &&
+                          allPostController.page == 1) {
                         return Center(child: CircularProgressIndicator());
                       }
-                      if (allPostController.allPostData == null || allPostController.allPostData!.isEmpty) {
+
+                      if (allPostController.postList == null ||
+                          allPostController.postList!.isEmpty) {
                         return Center(child: Text('No posts available'));
                       }
                       return ListView.builder(
-                        controller: _scrollController,
+                        controller: scrollController,
                         padding: EdgeInsets.zero,
-                        itemCount: allPostController.allPostData?.length ?? 0,
+                        itemCount: allPostController.postList?.length ?? 0,
                         itemBuilder: (context, index) {
-                          final post = allPostController.allPostData![index];
-                          final dateFormatter = DateFormatter(post.createdAt ?? DateTime.now());
+                          final post = allPostController.postList![index];
+                          final dateFormatter =
+                              DateFormatter(post.createdAt ?? DateTime.now());
                           return post.isHide == false
                               ? Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 4),
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 4),
                                   child: PostCard(
+                                    isLiked:
+                                        post.isLiked == true ? true : false,
                                     aboutProfileTap: () {
-                                      Get.to(post.author?.id == StorageUtil.getData(StorageUtil.userId)
+                                      Get.to(post.author?.id ==
+                                              StorageUtil.getData(
+                                                  StorageUtil.userId)
                                           ? ProfileScreen()
-                                          : OthersProfileScreen(userId: post.author?.id ?? ''));
+                                          : OthersProfileScreen(
+                                              userId: post.author?.id ?? ''));
                                     },
                                     reactOntap: () {
                                       post.isLiked == true
                                           ? disReactPost(post.contentMeta!.id!)
                                           : reactPost(post.contentMeta!.id!);
                                     },
-                                    iSVisibleWishlist: post.contentType == 'wishlist',
-                                    bgColor: controller.isDarkMode ? Color(0xffAFAFAF) : Color(0xffAF7CF8),
+                                    iSVisibleWishlist:
+                                        post.contentType == 'wishlist',
+                                    bgColor: controller.isDarkMode
+                                        ? Color(0xffAFAFAF)
+                                        : Color(0xffAF7CF8),
                                     name: post.author?.name ?? 'Unknown',
-                                    profilePath: post.author?.photoUrl ?? 'https://fastly.picsum.photos/id/1/200/300.jpg',
-                                    activeStatus: dateFormatter.getRelativeTimeFormat(),
+                                    profilePath: post.author?.photoUrl ??
+                                        'https://fastly.picsum.photos/id/1/200/300.jpg',
+                                    activeStatus:
+                                        dateFormatter.getRelativeTimeFormat(),
                                     addFriendOnTap: () {},
                                     wishListOnTap: () {
-                                      Get.to(ShowWishlistScreen(wishlistId: post.id ?? ''));
+                                      Get.to(ShowWishlistScreen(
+                                          wishlistId: post.id ?? ''));
                                     },
                                     moreVertOntap: () {
                                       showModalBottomSheet(
-                                        scrollControlDisabledMaxHeightRatio: 0.6,
+                                        scrollControlDisabledMaxHeightRatio:
+                                            0.6,
                                         context: context,
                                         shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                                          borderRadius: BorderRadius.vertical(
+                                              top: Radius.circular(20)),
                                         ),
                                         backgroundColor: Color(0xffA96CFF),
                                         builder: (context) {
@@ -197,29 +246,35 @@ class _HomeScreenState extends State<HomeScreen> {
                                               ButtonSheetDetailsScreen(
                                                 buttonSheetDetailsList: [
                                                   {
-                                                    'icon': post.isWatchLater == true
-                                                        ? Icons.bookmark
-                                                        : Icons.bookmark_border_outlined,
-                                                    'name': 'Save post',
-                                                    'ontap': () {
-                                                      savePost(post.author?.id ?? '', post.contentType ?? '', post.id ?? '');
-                                                    }
-                                                  },
-                                                  {
-                                                    'icon': Icons.visibility_off,
+                                                    'icon':
+                                                        Icons.visibility_off,
                                                     'name': 'Hide post',
                                                     'ontap': () {
-                                                      hidePost(post.id ?? '', post.contentType ?? '');
+                                                      hidePost(
+                                                          post.id ?? '',
+                                                          post.contentType ??
+                                                              '');
                                                     }
                                                   },
                                                   {
-                                                    'icon': post.isFollowing == true ? Icons.person_remove : Icons.person_add,
-                                                    'name': post.isFollowing == true ? 'Unfollow' : 'Follow',
+                                                    'icon': post.isFollowing ==
+                                                            true
+                                                        ? Icons.person_remove
+                                                        : Icons.person_add,
+                                                    'name':
+                                                        post.isFollowing == true
+                                                            ? 'Unfollow'
+                                                            : 'Follow',
                                                     'ontap': () {
-                                                      if (post.isFollowing == true) {
-                                                        unFollowRequest(post.author?.id ?? '');
+                                                      if (post.isFollowing ==
+                                                          true) {
+                                                        unFollowRequest(
+                                                            post.author?.id ??
+                                                                '');
                                                       } else {
-                                                        followRequest(post.author?.id ?? '');
+                                                        followRequest(
+                                                            post.author?.id ??
+                                                                '');
                                                       }
                                                     }
                                                   },
@@ -227,18 +282,32 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     'icon': Icons.person_off,
                                                     'name': 'Block',
                                                     'ontap': () {
-                                                      Get.to(() => BlockUserScreen(
-                                                            userId: post.author?.id ?? '',
-                                                            userName: post.author?.name ?? '',
-                                                            userImage: post.author?.photoUrl ?? '',
-                                                          ));
+                                                      Get.to(
+                                                          () => BlockUserScreen(
+                                                                userId: post
+                                                                        .author
+                                                                        ?.id ??
+                                                                    '',
+                                                                userName: post
+                                                                        .author
+                                                                        ?.name ??
+                                                                    '',
+                                                                userImage: post
+                                                                        .author
+                                                                        ?.photoUrl ??
+                                                                    '',
+                                                              ));
                                                     }
                                                   },
                                                   {
-                                                    'icon': Icons.smart_display_outlined,
+                                                    'icon': Icons
+                                                        .smart_display_outlined,
                                                     'name': 'Report profile',
                                                     'ontap': () {
-                                                      Get.to(ReportScreen(reportId: post.author?.id ?? ''));
+                                                      Get.to(ReportScreen(
+                                                          reportId:
+                                                              post.author?.id ??
+                                                                  ''));
                                                     }
                                                   },
                                                 ],
@@ -249,16 +318,31 @@ class _HomeScreenState extends State<HomeScreen> {
                                       );
                                     },
                                     text: post.description ?? '',
-                                    comment: post.contentMeta?.comment.toString() ?? '0',
-                                    react: post.contentMeta?.like.toString() ?? '0',
-                                    share: post.contentMeta?.share.toString() ?? '0',
+                                    comment:
+                                        post.contentMeta?.comment.toString() ??
+                                            '0',
+                                    react: post.contentMeta?.like.toString() ??
+                                        '0',
+                                    share: post.contentMeta?.share.toString() ??
+                                        '0',
                                     isSaved: post.isWatchLater ?? false,
-                                    imagePath: post.content?.isNotEmpty == true ? post.content![0] : null,
+                                    imagePath: post.content.isNotEmpty == true
+                                        ? post.content[0]
+                                        : null,
                                     bookmarkOntap: () {
-                                      savePost(post.author?.id ?? '', post.contentType ?? '', post.id ?? '');
+                                      post.isWatchLater == true
+                                          ? unSavePost(post.id ?? '')
+                                          : savePost(
+                                              StorageUtil.getData(
+                                                      StorageUtil.userId) ??
+                                                  '',
+                                              post.contentType ?? '',
+                                              post.id ?? '');
                                     },
                                     commentOnTap: () {
-                                      Get.to(CommentScreen(postId: post.id ?? '', postType: post.contentType ?? ''));
+                                      Get.to(CommentScreen(
+                                          postId: post.id ?? '',
+                                          postType: post.contentType ?? ''));
                                     },
                                   ),
                                 )
@@ -277,30 +361,38 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> followRequest(String friendId) async {
-    final bool isSuccess = await followRequestController.followRequest(friendId);
+    final bool isSuccess =
+        await followRequestController.followRequest(friendId);
     if (isSuccess) {
       allPostController.updateFollowStatus(friendId, true);
-      addChatFriend(userId: StorageUtil.getData(StorageUtil.userId) ?? '', friendId: friendId);
+      addChatFriend(
+          userId: StorageUtil.getData(StorageUtil.userId) ?? '',
+          friendId: friendId);
       if (mounted) {
-        showSnackBarMessage(context, 'Follow successfully completed');
+        // showSnackBarMessage(context, 'Follow successfully completed');
       }
     } else {
       if (mounted) {
-        showSnackBarMessage(context, followRequestController.errorMessage ?? 'Failed to follow', true);
+        showSnackBarMessage(context,
+            followRequestController.errorMessage ?? 'Failed to follow', true);
       }
     }
   }
 
   Future<void> unFollowRequest(String friendId) async {
-    final bool isSuccess = await unFollowRequestController.unfollowRequest(friendId);
+    final bool isSuccess =
+        await unFollowRequestController.unfollowRequest(friendId);
     if (isSuccess) {
       allPostController.updateFollowStatus(friendId, false);
       if (mounted) {
-        showSnackBarMessage(context, 'Unfollow successfully completed');
+        // showSnackBarMessage(context, 'Unfollow successfully completed');
       }
     } else {
       if (mounted) {
-        showSnackBarMessage(context, unFollowRequestController.errorMessage ?? 'Failed to unfollow', true);
+        showSnackBarMessage(
+            context,
+            unFollowRequestController.errorMessage ?? 'Failed to unfollow',
+            true);
       }
     }
   }
@@ -310,43 +402,70 @@ class _HomeScreenState extends State<HomeScreen> {
     if (isSuccess) {
       allPostController.updatePostHide(postId, true);
       if (mounted) {
-        showSnackBarMessage(context, 'Post hidden successfully');
+        // showSnackBarMessage(context, 'Post hidden successfully');
       }
     } else {
       if (mounted) {
-        showSnackBarMessage(context, hidePostController.errorMessage ?? 'Failed to hide post', true);
+        showSnackBarMessage(context,
+            hidePostController.errorMessage ?? 'Failed to hide post', true);
       }
     }
   }
 
-  Future<void> savePost(String userId, String modelType, String contentId) async {
-    final bool isSuccess = await savePostController.savePostF(userId, modelType, contentId);
+  Future<void> savePost(
+      String userId, String modelType, String contentId) async {
+    final bool isSuccess =
+        await savePostController.savePostF(userId, modelType, contentId);
     if (isSuccess) {
+      saveAllPostController.getMySavePost();
       allPostController.updatePostSave(contentId, true);
       if (mounted) {
-        showSnackBarMessage(context, 'Post saved successfully');
+        // showSnackBarMessage(context, 'Post saved successfully');
       }
     } else {
       if (mounted) {
-        showSnackBarMessage(context, savePostController.errorMessage ?? 'Failed to save post', true);
+        showSnackBarMessage(context,
+            savePostController.errorMessage ?? 'Failed to save post', true);
       }
+    }
+  }
+
+  Future<void> unSavePost(String postId) async {
+    final bool isSuccess =
+        await unSavedPostController.unSavePost(postId: postId);
+
+    if (isSuccess) {
+      saveAllPostController.getMySavePost();
+      allPostController.updatePostUnSave(postId, false);
+      // showSnackBarMessage(context, 'unsaved successfully done');
+    } else {
+      Get.snackbar(
+        backgroundColor: Colors.red,
+        snackPosition: SnackPosition.TOP,
+        'Failed',
+        'Failed to delete account',
+      );
     }
   }
 
   Future<void> reactPost(String postId) async {
     final bool isSuccess = await reactPostController.reactPost(postId);
     if (isSuccess) {
-      int index = allPostController.allPostData?.indexWhere((post) => post.contentMeta?.id == postId) ?? -1;
-      if (index != -1 && allPostController.allPostData != null) {
-        int currentLikes = allPostController.allPostData![index].contentMeta?.like ?? 0;
+      int index = allPostController.postList
+              ?.indexWhere((post) => post.contentMeta?.id == postId) ??
+          -1;
+      if (index != -1 && allPostController.postList != null) {
+        int currentLikes =
+            allPostController.postList![index].contentMeta?.like ?? 0;
         allPostController.updatePostLike(postId, true, currentLikes + 1);
       }
       if (mounted) {
-        showSnackBarMessage(context, 'Like successfully completed');
+        // showSnackBarMessage(context, 'Like successfully completed');
       }
     } else {
       if (mounted) {
-        showSnackBarMessage(context, reactPostController.errorMessage ?? 'Failed to like', true);
+        showSnackBarMessage(context,
+            reactPostController.errorMessage ?? 'Failed to like', true);
       }
     }
   }
@@ -354,34 +473,44 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> disReactPost(String postId) async {
     final bool isSuccess = await disReactPostController.disReactPost(postId);
     if (isSuccess) {
-      int index = allPostController.allPostData?.indexWhere((post) => post.contentMeta?.id == postId) ?? -1;
-      if (index != -1 && allPostController.allPostData != null) {
-        int currentLikes = allPostController.allPostData![index].contentMeta?.like ?? 0;
-        allPostController.updatePostLike(postId, false, currentLikes > 0 ? currentLikes - 1 : 0);
+      int index = allPostController.postList
+              ?.indexWhere((post) => post.contentMeta?.id == postId) ??
+          -1;
+      if (index != -1 && allPostController.postList != null) {
+        int currentLikes =
+            allPostController.postList![index].contentMeta?.like ?? 0;
+        allPostController.updatePostLike(
+            postId, false, currentLikes > 0 ? currentLikes - 1 : 0);
       }
       if (mounted) {
-        showSnackBarMessage(context, 'Dislike successfully completed');
+        // showSnackBarMessage(context, 'Dislike successfully completed');
       }
     } else {
       if (mounted) {
-        showSnackBarMessage(context, disReactPostController.errorMessage ?? 'Failed to dislike', true);
+        showSnackBarMessage(context,
+            disReactPostController.errorMessage ?? 'Failed to dislike', true);
       }
     }
   }
 
-  Future<void> addChatFriend({required String userId, required String friendId}) async {
+  Future<void> addChatFriend(
+      {required String userId, required String friendId}) async {
     final bool isSuccess = await addChatController.addChat(userId, friendId);
     if (isSuccess) {
       if (mounted) {
-        showSnackBarMessage(context, 'New chat added successfully');
-        print('Chat created successfully .............................................');
+        // showSnackBarMessage(context, 'New chat added successfully');
+        print(
+            'Chat created successfully .............................................');
         print('FriendId: $friendId');
-        print('Chat created successfully .............................................');
+        print(
+            'Chat created successfully .............................................');
       }
     } else {
       if (mounted) {
-        showSnackBarMessage(context, addChatController.errorMessage ?? 'Failed to add chat', true);
+        showSnackBarMessage(context,
+            addChatController.errorMessage ?? 'Failed to add chat', true);
       }
     }
   }
 }
+

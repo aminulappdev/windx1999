@@ -9,43 +9,45 @@ class FeatureRow extends StatelessWidget {
   const FeatureRow({
     super.key,
     required this.title,
+    required this.isToggled,
     required this.onToggle,
   });
 
   final String title;
+  final bool isToggled;
   final ValueChanged<bool> onToggle;
 
   @override
   Widget build(BuildContext context) {
     final ThemeController themeController = Get.find<ThemeController>();
 
-    return Obx(() => Container(
-          height: 48.h,
-          width: 330.w,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-            color: themeController.isDarkMode ? Colors.grey[800] : Colors.white,
-          ),
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8.w),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  title,
-                  style: GoogleFonts.notoSansMyanmar(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w600,
-                    color: themeController.isDarkMode ? Colors.white : Colors.black,
-                  ),
-                ),
-                ToggleButton(
-                  isToggled: title == 'Dark mode' ? themeController.isDarkMode : false,
-                  onToggle: onToggle,
-                ),
-              ],
+    return Container(
+      height: 48.h,
+      width: 330.w,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        color: themeController.isDarkMode ? Colors.grey[800] : Colors.white,
+      ),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 8.w),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              title,
+              style: GoogleFonts.notoSansMyanmar(
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w600,
+                color: themeController.isDarkMode ? Colors.white : Colors.black,
+              ),
             ),
-          ),
-        ));
+            ToggleButton(
+              isToggled: isToggled,
+              onToggle: onToggle,
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

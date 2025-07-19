@@ -12,6 +12,7 @@ import 'package:windx1999/app/res/common_widgets/custom_app_bar.dart';
 import 'package:windx1999/app/res/common_widgets/custom_background.dart';
 import 'package:windx1999/app/res/common_widgets/custom_snackbar.dart';
 import 'package:windx1999/app/res/custom_style/custom_size.dart';
+import 'package:windx1999/get_storage.dart';
 
 class EmailVerificationScreen extends StatefulWidget {
   final String accessToken;
@@ -31,6 +32,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
   void initState() {
     super.initState();
     // ডিবাগ: স্ক্রিন লোড হওয়ার সময় ডাটা চেক
+    
     print('Initial userData: ${createUserController.userData}');
     print('Initial otpToken: ${createUserController.otpToken}');
   }
@@ -103,7 +105,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                     var token = controller.userData?.otpToken?.token ?? 'Empty token';
                     return ElevatedButton(
                       onPressed: () {
-                        otpBTN(otpCtrl.text, token);
+                        otpBTN(otpCtrl.text, StorageUtil.getData('user-otp-token'));
                       },
                       child: const Text('Confirm'),
                     );
@@ -118,13 +120,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
   } 
 
 
-  Future<void> otpBTN(String otp, String token) async {
-    print('OTP Button token: $token'); // ডিবাগ
-    if (token == 'Empty token') {
-      print('Controller data: ${createUserController.createUserModel}');
-      print('User data: ${createUserController.userData}');
-    }
-
+  Future<void> otpBTN(String otp, String token) async { 
     final bool isSuccess = await otpVerifyController.otpVerify(otp, token);
     if (isSuccess) {
 

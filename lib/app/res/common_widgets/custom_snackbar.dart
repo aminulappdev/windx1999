@@ -18,8 +18,12 @@ void showSnackBarMessage(BuildContext context, String msg,
   Get.snackbar(
     isError ? 'Failed' : 'Success', // Title based on isError
     msg, // Message
-    backgroundColor: isError ? const Color.fromARGB(207, 255, 82, 82) : const Color.fromARGB(255, 222, 214, 233),
-    colorText: Colors.black, // Text color for better visibility
+    backgroundColor: isError
+        ? const Color.fromARGB(207, 255, 82, 82)
+        : const Color.fromARGB(255, 222, 214, 233),
+    colorText: isError
+        ? Colors.white
+        : Colors.black, // Text color for better visibility
     snackPosition: SnackPosition.TOP, // Position at bottom
     margin: EdgeInsets.all(16), // Margin for better appearance
     borderRadius: 8, // Rounded corners

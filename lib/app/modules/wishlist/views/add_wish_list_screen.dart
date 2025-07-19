@@ -27,9 +27,8 @@ class _CreateWishlistScreenState extends State<CreateWishlistScreen> {
   final TextEditingController productUrlCtrl = TextEditingController();
   final TextEditingController priceCtrl = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
   final CreateWishListController createWishListController =
-      CreateWishListController();
+      Get.put(CreateWishListController());
 
   Future<void> pickFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -44,6 +43,10 @@ class _CreateWishlistScreenState extends State<CreateWishlistScreen> {
     }
   }
 
+  // Check if the Create Wishlist button should be enabled
+  bool get _isCreateButtonEnabled =>
+      descriptionCtrl.text.trim().isNotEmpty || selectedFile != null;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,7 +58,7 @@ class _CreateWishlistScreenState extends State<CreateWishlistScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 heightBox20,
-                CustomAppBar(title: 'Set up your Wishlist'),
+                const CustomAppBar(title: 'Set up your Wishlist'),
                 heightBox20,
                 Form(
                   key: _formKey,
@@ -69,14 +72,14 @@ class _CreateWishlistScreenState extends State<CreateWishlistScreen> {
                       heightBox10,
                       TextFormField(
                         controller: titleCtrl,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           hintText: 'Enter title your product',
                           errorStyle: TextStyle(
-                              color: const Color.fromARGB(255, 237, 82, 82)),
+                              color: Color.fromARGB(255, 237, 82, 82)),
                         ),
                         autovalidateMode: AutovalidateMode.onUserInteraction,
-                        validator: (value) =>
-                            value!.isEmpty ? 'Enter title' : null,
+                        // Validator is optional, so not required
+                        validator: (value) => null,
                       ),
                       heightBox20,
                       Text(
@@ -86,14 +89,17 @@ class _CreateWishlistScreenState extends State<CreateWishlistScreen> {
                       heightBox10,
                       TextFormField(
                         controller: descriptionCtrl,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           hintText: 'Enter description of your product',
                           errorStyle: TextStyle(
-                              color: const Color.fromARGB(255, 237, 82, 82)),
+                              color: Color.fromARGB(255, 237, 82, 82)),
                         ),
                         autovalidateMode: AutovalidateMode.onUserInteraction,
-                        validator: (value) =>
-                            value!.isEmpty ? 'Enter description' : null,
+                        // Validator is optional, so not required
+                        validator: (value) => null,
+                        onChanged: (value) {
+                          setState(() {}); // Update UI when text changes
+                        },
                       ),
                       heightBox20,
                       Text(
@@ -103,14 +109,14 @@ class _CreateWishlistScreenState extends State<CreateWishlistScreen> {
                       heightBox10,
                       TextFormField(
                         controller: productUrlCtrl,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           hintText: 'Enter product link',
                           errorStyle: TextStyle(
-                              color: const Color.fromARGB(255, 237, 82, 82)),
+                              color: Color.fromARGB(255, 237, 82, 82)),
                         ),
                         autovalidateMode: AutovalidateMode.onUserInteraction,
-                        validator: (value) =>
-                            value!.isEmpty ? 'Enter product link' : null,
+                        // Validator is optional, so not required
+                        validator: (value) => null,
                       ),
                       heightBox20,
                       Text(
@@ -120,15 +126,15 @@ class _CreateWishlistScreenState extends State<CreateWishlistScreen> {
                       heightBox10,
                       TextFormField(
                         controller: priceCtrl,
-                        decoration: InputDecoration(
-                          prefixIcon: const Icon(Icons.money),
+                        decoration: const InputDecoration(
+                          prefixIcon: Icon(Icons.money),
                           hintText: 'Enter product price',
                           errorStyle: TextStyle(
-                              color: const Color.fromARGB(255, 237, 82, 82)),
+                              color: Color.fromARGB(255, 237, 82, 82)),
                         ),
                         autovalidateMode: AutovalidateMode.onUserInteraction,
-                        validator: (value) =>
-                            value!.isEmpty ? 'Enter product price' : null,
+                        // Validator is optional, so not required
+                        validator: (value) => null,
                       ),
                       heightBox20,
                       Text(
@@ -183,20 +189,46 @@ class _CreateWishlistScreenState extends State<CreateWishlistScreen> {
                   ),
                 ),
                 heightBox24,
-                ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      createWishListFunction(
-                        StorageUtil.getData(StorageUtil.userId),
-                        titleCtrl.text.trim(),
-                        descriptionCtrl.text.trim(),
-                        productUrlCtrl.text.trim(),
-                        priceCtrl.text,
-                        contentFile: selectedFile,
-                      );
-                    }
+                GetBuilder<CreateWishListController>(
+                  builder: (controller) {
+                    return Opacity(
+                      opacity: _isCreateButtonEnabled && !controller.inProgress
+                          ? 1.0
+                          : 0.3,
+                      child: ElevatedButton(
+                        onPressed: _isCreateButtonEnabled &&
+                                !controller.inProgress
+                            ? () {
+                                createWishListFunction(
+                                  StorageUtil.getData(StorageUtil.userId) ?? '',
+                                  titleCtrl.text.trim(),
+                                  descriptionCtrl.text.trim(),
+                                  productUrlCtrl.text.trim(),
+                                  priceCtrl.text,
+                                  contentFile: selectedFile,
+                                );
+                              }
+                            : null,
+                        child: controller.inProgress
+                            ? const SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : Text(
+                                'Create wishlist',
+                                style: TextStyle(
+                                  color: _isCreateButtonEnabled
+                                      ? Colors.white
+                                      : Colors.grey,
+                                ),
+                              ),
+                      ),
+                    );
                   },
-                  child: const Text('Create wishlist'),
                 ),
                 heightBox12,
               ],
@@ -215,26 +247,46 @@ class _CreateWishlistScreenState extends State<CreateWishlistScreen> {
     dynamic price, {
     PlatformFile? contentFile,
   }) async {
-    if (_formKey.currentState!.validate()) {
-      final bool isSuccess = await createWishListController.createWishList(
-        authorId,
-        title,
-        description,
-        link,
-        price,
-        contentFile: contentFile,
-      );
+    if (authorId.isEmpty) {
+      showSnackBarMessage(context, 'User ID is missing', true);
+      return;
+    }
+    if (price.isNotEmpty) {
+      try {
+        int.parse(price);
+      } catch (e) {
+        showSnackBarMessage(context, 'Invalid price format', true);
+        return;
+      }
+    }
+    final bool isSuccess = await createWishListController.createWishList(
+      authorId,
+      title,
+      description,
+      link,
+      price,
+      contentFile: contentFile,
+    );
 
-      if (isSuccess) {
-        if (mounted) {
-          showSnackBarMessage(context, 'WishList created');
-          
-        }
-      } else {
-        if (mounted) {
-          showSnackBarMessage(
-              context, createWishListController.errorMessage!, true);
-        }
+    if (isSuccess) {
+      if (mounted) {
+        showSnackBarMessage(context, 'WishList created');
+        // Clear form after successful creation
+        setState(() {
+          titleCtrl.clear();
+          descriptionCtrl.clear();
+          productUrlCtrl.clear();
+          priceCtrl.clear();
+          selectedFile = null;
+        });
+      }
+    } else {
+      if (mounted) {
+        showSnackBarMessage(
+            context,
+            createWishListController.errorMessage ??
+                'Failed to create wishlist',
+            true);
       }
     }
   }

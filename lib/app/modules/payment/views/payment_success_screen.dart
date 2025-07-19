@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:windx1999/app/modules/payment/views/payment_details_screen.dart';
 import 'package:windx1999/app/res/app_images/assets_path.dart';
 import 'package:windx1999/app/res/common_widgets/custom_background.dart';
 import 'package:windx1999/app/res/custom_style/custom_size.dart';
@@ -21,11 +24,8 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
 
   Future<void> _movetoNewScreen() async {
     await Future.delayed(const Duration(seconds: 3));
+    Get.to(PaymentDetailsScreen());
 
-    // Navigator.pushReplacementNamed(
-    //   context,
-    //   PaymentDetailsScreen.routeName,
-    // );
   }
 
   @override
@@ -64,7 +64,6 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
                     color: Colors.white,
                     fontSize: 16.sp,
                     fontStyle: FontStyle.italic,
-                    
                     fontWeight: FontWeight.w400),
               ),
             ),

@@ -143,14 +143,17 @@ class _ShowWishlistScreenState extends State<ShowWishlistScreen> {
                               TextStyle(fontSize: 16.sp, color: Colors.white),
                         ),
                         heightBox10,
-                        ImageContainer(
-                            imagePath: controller.wishlistData!.content.isEmpty
-                                ? 'https://fastly.picsum.photos/id/966/200/300.jpg?hmac=vBALR2x0cV-keVNLecwjd8ZluSHv17AHDvpiYjBqar0'
-                                : controller.wishlistData?.content[0],
-                            height: 212.h,
-                            width: MediaQuery.of(context).size.width,
-                            borderRadius: 12,
-                            borderColor: Colors.transparent),
+                        controller.wishlistData!.content.isEmpty
+                            ? Container()
+                            : ImageContainer(
+                                imagePath: controller
+                                        .wishlistData!.content.isEmpty
+                                    ? 'https://fastly.picsum.photos/id/966/200/300.jpg?hmac=vBALR2x0cV-keVNLecwjd8ZluSHv17AHDvpiYjBqar0'
+                                    : controller.wishlistData?.content[0],
+                                height: 212.h,
+                                width: MediaQuery.of(context).size.width,
+                                borderRadius: 12,
+                                borderColor: Colors.transparent),
                       ],
                     ),
                   ),

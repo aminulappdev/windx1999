@@ -73,16 +73,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         padding: EdgeInsets.all(12.0.h),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            CircleAvetareIconWidget(
-                              iconData: Icons.arrow_back,
-                              bgColor: const Color.fromARGB(133, 255, 255, 255),
-                              iconColor: Colors.white,
-                              ontap: () {
-                                Get.back();
-                              },
-                            ),
+                           
                             CircleAvetareIconWidget(
                               iconData: Icons.settings,
                               bgColor: const Color.fromARGB(133, 255, 255, 255),

@@ -80,10 +80,11 @@ class MyDrawer extends StatelessWidget {
                     heightBox10,
                     FeatureRow(
                       title: 'Dark mode',
+                      isToggled: themeController.isDarkMode,
                       onToggle: (value) {
                         themeController.themeMode(value);
                         themeController.update();
-                        print(value);
+                        print('Dark mode: $value');
                       },
                     ),
                     SizedBox(

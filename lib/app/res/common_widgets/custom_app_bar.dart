@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/get_navigation.dart';
+import 'package:get/get.dart';
 
 class CustomAppBar extends StatelessWidget {
   final String title;
@@ -9,6 +8,7 @@ class CustomAppBar extends StatelessWidget {
   final Color color;
   final Color textColor;
   final VoidCallback? ontap;
+  final Widget? buttonChild; // New parameter for custom button content
 
   const CustomAppBar({
     super.key,
@@ -17,6 +17,7 @@ class CustomAppBar extends StatelessWidget {
     this.color = Colors.blue,
     this.textColor = Colors.white,
     this.ontap,
+    this.buttonChild, // Optional parameter
   });
 
   @override
@@ -25,19 +26,21 @@ class CustomAppBar extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         GestureDetector(
-            onTap: () {
-              Get.back();
-            },
-            child: Icon(
-              Icons.arrow_back,
-              color: Colors.white,
-            )),
+          onTap: () {
+            Get.back();
+          },
+          child: const Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+          ),
+        ),
         Text(
           title,
           style: TextStyle(
-              fontSize: 24.sp,
-              fontWeight: FontWeight.w600,
-              color: Colors.white),
+            fontSize: 24.sp,
+            fontWeight: FontWeight.w600,
+            color: Colors.white,
+          ),
         ),
         showButton
             ? InkWell(
@@ -46,17 +49,22 @@ class CustomAppBar extends StatelessWidget {
                   height: 32.h,
                   width: 60.w,
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8), color: color),
+                    borderRadius: BorderRadius.circular(8),
+                    color: color,
+                  ),
                   child: Center(
-                    child: Text(
-                      'Post',
-                      style: TextStyle(
-                          fontWeight: FontWeight.w600, color: textColor),
-                    ),
+                    child: buttonChild ??
+                        Text(
+                          'Post',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            color: textColor,
+                          ),
+                        ),
                   ),
                 ),
               )
-            : Container()
+            : Container(),
       ],
     );
   }

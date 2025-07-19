@@ -80,7 +80,7 @@ class MessageController extends GetxController {
     final autoMessage = {
       "id": DateTime.now().millisecondsSinceEpoch.toString(),
       "text":
-          "Hi, I’m $therapistName. You’re safe here. Everything we talk about stays between us. How are you feeling today?",
+          "Hi, I’m $therapistName. How are you feeling today?",
       "imageUrl": null,
       "seen": false,
       "senderId": receiverId, // Therapist is the sender

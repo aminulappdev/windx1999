@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:windx1999/app/modules/chat/controllers/all_friend_controller.dart';
 import 'package:windx1999/app/modules/chat/views/chat_screen.dart';
+import 'package:windx1999/app/modules/common/controllers/theme_controller.dart';
 import 'package:windx1999/app/res/common_widgets/custom_background.dart';
 import 'package:windx1999/app/res/common_widgets/search_bar.dart';
 import 'package:windx1999/app/res/custom_style/custom_size.dart';
@@ -20,6 +21,9 @@ class ChatListScreen extends StatefulWidget {
 class _ChatListScreenState extends State<ChatListScreen> {
   final SocketService socketService = Get.put(SocketService());
   final FriendController friendController = Get.put(FriendController());
+  final ThemeController themeController = Get.find<ThemeController>();
+  final TextEditingController searchCtrl = TextEditingController();
+  String search = '';
 
   @override
   void initState() {
@@ -27,26 +31,30 @@ class _ChatListScreenState extends State<ChatListScreen> {
     socketService.init();
     friendController.getAllFriends();
 
-    socketService.sokect
-        .on('chat-list::${StorageUtil.getData(StorageUtil.userId)}', (data) {
-      print('Socket chatlist data received ...............');
-      print('Raw data: $data');
-      _handleIncomingFriends(data);
+    searchCtrl.addListener(() {
+      setState(() {
+        search = searchCtrl.text;
+      });
     });
 
-    // socketService.sokect.on('chat-list::68514596201244ee7aeb5047', (data) {
-    //   print('Socket chatlist data received emon bhaiyer ...............');
-    //   print('Raw data: $data');
-    //   _handleIncomingFriends(data);
-    // });
+    socketService.sokect.on(
+      'chat-list::${StorageUtil.getData(StorageUtil.userId)}',
+      (data) {
+        print('Socket chatlist data received ...............');
+        print('Raw data: $data');
+        _handleIncomingFriends(data);
+      },
+    );
   }
 
-  // Updated: Adjusted to parse nested chat and message data correctly
+  @override
+  void dispose() {
+    searchCtrl.dispose();
+    super.dispose();
+  }
+
   void _handleIncomingFriends(dynamic data) {
-    if (data == null) {
-      print('Error: Received null data from socket');
-      return;
-    }
+    if (data == null) return;
 
     if (data is List) {
       socketService.socketFriendtList.clear();
@@ -63,17 +71,19 @@ class _ChatListScreenState extends State<ChatListScreen> {
             "name": participant?['name'] ?? 'No Name',
             "email": participant?['email'] ?? '',
             "profileImage": participant?['photoUrl'] ?? '',
-            "createdAt": chat['createdAt'] ?? DateTime.now().toIso8601String(),
-            "lastMessage": message != null ? message['text'] ?? 'No Message' : 'No Message',
-            "lastMessageTime": message != null ? message['createdAt'] ?? DateTime.now().toIso8601String() : DateTime.now().toIso8601String(),
+            "createdAt":
+                chat['createdAt'] ?? DateTime.now().toIso8601String(),
+            "lastMessage":
+                message != null ? message['text'] ?? 'No Message' : 'No Message',
+            "lastMessageTime": message != null
+                ? message['createdAt'] ?? DateTime.now().toIso8601String()
+                : DateTime.now().toIso8601String(),
             "isSeen": message != null ? message['seen'] ?? false : false,
             "unreadMessageCount": friend['unreadMessageCount'] ?? 0,
           });
-          print('Added friend: ${participant?['name'] ?? 'null'}');
         }
       }
       socketService.socketFriendtList.refresh();
-      print('Updated socketFriendtList with ${socketService.socketFriendtList.length} friends');
     } else if (data is Map<String, dynamic>) {
       final chat = data['chat'];
       final message = data['message'];
@@ -86,9 +96,13 @@ class _ChatListScreenState extends State<ChatListScreen> {
         "name": participant?['name'] ?? 'No Name',
         "email": participant?['email'] ?? '',
         "profileImage": participant?['photoUrl'] ?? '',
-        "createdAt": chat?['createdAt'] ?? DateTime.now().toIso8601String(),
-        "lastMessage": message != null ? message['text'] ?? 'No Message' : 'No Message',
-        "lastMessageTime": message != null ? message['createdAt'] ?? DateTime.now().toIso8601String() : DateTime.now().toIso8601String(),
+        "createdAt":
+            chat?['createdAt'] ?? DateTime.now().toIso8601String(),
+        "lastMessage":
+            message != null ? message['text'] ?? 'No Message' : 'No Message',
+        "lastMessageTime": message != null
+            ? message['createdAt'] ?? DateTime.now().toIso8601String()
+            : DateTime.now().toIso8601String(),
         "isSeen": message != null ? message['seen'] ?? false : false,
         "unreadMessageCount": data['unreadMessageCount'] ?? 0,
       };
@@ -103,9 +117,6 @@ class _ChatListScreenState extends State<ChatListScreen> {
         socketService.socketFriendtList.add(newFriend);
       }
       socketService.socketFriendtList.refresh();
-      print('Updated socketFriendtList with single friend: ${participant?['name']}');
-    } else {
-      print('Error: Unsupported data format received: $data');
     }
   }
 
@@ -120,7 +131,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
             children: [
               heightBox20,
               Text(
-                'Aminul Islam',
+                'Chat List',
                 style: TextStyle(
                   fontSize: 20.sp,
                   fontWeight: FontWeight.w500,
@@ -128,7 +139,38 @@ class _ChatListScreenState extends State<ChatListScreen> {
                 ),
               ),
               heightBox12,
-              CustomSearchBar(),
+              GetBuilder<ThemeController>(builder: (controller) {
+                return TextFormField(
+                  controller: searchCtrl,
+                  style: TextStyle(
+                    color: controller.isDarkMode == true
+                        ? Colors.white
+                        : Colors.black,
+                  ),
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(
+                      Icons.search,
+                      color: controller.isDarkMode == true
+                          ? Colors.white
+                          : Colors.black,
+                    ),
+                    contentPadding: EdgeInsets.symmetric(vertical: 8.h),
+                    hintText: 'Search',
+                    hintStyle: TextStyle(
+                      fontWeight: FontWeight.w300,
+                      color: controller.isDarkMode == true
+                          ? Colors.white
+                          : Colors.black,
+                    ),
+                    fillColor: const Color.fromARGB(116, 255, 255, 255),
+                    filled: true,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.r),
+                      borderSide: BorderSide.none,
+                    ),
+                  ),
+                );
+              }),
               heightBox14,
               Text(
                 'Message',
@@ -143,30 +185,37 @@ class _ChatListScreenState extends State<ChatListScreen> {
                 child: Obx(() {
                   final friendList = socketService.socketFriendtList;
 
-                  if (friendController.inProgress) {
+                  if (friendController.inProgress.value) {
                     return const Center(child: CircularProgressIndicator());
                   }
 
-                  if (friendList.isEmpty) {
+                  final filteredFriends = friendList.where((friend) {
+                    final name = friend['name']?.toLowerCase() ?? '';
+                    return search.isEmpty ||
+                        name.contains(search.toLowerCase());
+                  }).toList();
+
+                  if (filteredFriends.isEmpty) {
                     return Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            'Your Chats with Friends Will Appear Here.',
+                            'No results for "${search.isEmpty ? 'Friends' : search}"',
                             style: TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.bold,
+                              fontSize: 20.sp,
+                              fontWeight: FontWeight.w600,
                               color: Colors.white,
                             ),
                           ),
                           heightBox4,
                           Text(
-                            'No Friends Found at this time',
+                            'We couldn’t find any matching chats. Please refine your search or check back later.',
                             style: TextStyle(
-                              fontSize: 12,
+                              fontSize: 16.sp,
                               color: Colors.white70,
                             ),
+                            textAlign: TextAlign.center,
                           ),
                         ],
                       ),
@@ -175,17 +224,15 @@ class _ChatListScreenState extends State<ChatListScreen> {
 
                   return ListView.builder(
                     padding: EdgeInsets.zero,
-                    itemCount: friendList.length,
+                    itemCount: filteredFriends.length,
                     itemBuilder: (context, index) {
-                      final friend = friendList[index];
+                      final friend = filteredFriends[index];
                       final String chatId = friend['id'] ?? '';
                       final String receiverId = friend['receiverId'] ?? '';
                       final String receiverName = friend['name'] ?? 'No Name';
                       final String receiverImage = friend['profileImage'] ?? '';
                       final String lastMessage =
                           friend['lastMessage'] ?? 'No Message';
-                      final int unreadMessageCount =
-                          friend['unreadMessageCount'] ?? 0;
 
                       String formattedTime = '';
                       try {
@@ -235,19 +282,6 @@ class _ChatListScreenState extends State<ChatListScreen> {
                               color: Colors.white70,
                             ),
                           ),
-                          // trailing: unreadMessageCount > 0
-                          //     ? CircleAvatar(
-                          //         radius: 10,
-                          //         backgroundColor: const Color(0xff6CC7FE),
-                          //         child: Text(
-                          //           unreadMessageCount.toString(),
-                          //           style: const TextStyle(
-                          //             fontSize: 10,
-                          //             color: Colors.white,
-                          //           ),
-                          //         ),
-                          //       )
-                          //     : const SizedBox.shrink(),
                         ),
                       );
                     },

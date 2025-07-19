@@ -129,7 +129,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                       TextFormField(
                         controller: usernameCtrl,
                         decoration: InputDecoration(
-                          hintText: 'aminulappdev',
+                          hintText: 'username',
                           errorStyle: TextStyle(
                               color: const Color.fromARGB(255, 237, 82, 82)),
                         ),

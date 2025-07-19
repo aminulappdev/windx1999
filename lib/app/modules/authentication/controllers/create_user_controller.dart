@@ -6,6 +6,7 @@ import 'package:windx1999/app/modules/authentication/model/create_user_model.dar
 import 'package:windx1999/app/services/network_caller/network_caller.dart';
 import 'package:windx1999/app/services/network_caller/network_response.dart';
 import 'package:windx1999/app/urls.dart';
+import 'package:windx1999/get_storage.dart';
 
 class CreateUserController extends GetxController {
   final OtpVerifyController otpVerifyController = OtpVerifyController();
@@ -41,7 +42,8 @@ class CreateUserController extends GetxController {
       createUserModel = CreateUserModel.fromJson(response.responseData);
 
       _otpToken = createUserModel?.data?.otpToken?.token;
-      print('Otp token from model: ${createUserModel?.data?.otpToken?.token}');
+      StorageUtil.saveData('user-otp-token',createUserModel?.data?.otpToken?.token);
+      print('User Otp token is : ${StorageUtil.getData('user-otp-token')}');
 
       _errorMessage = null;
       isSuccess = true;

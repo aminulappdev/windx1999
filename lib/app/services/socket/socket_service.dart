@@ -7,7 +7,7 @@ import 'package:windx1999/get_storage.dart';
 class SocketService extends GetxController {
   late IO.Socket _socket; 
 
-  RxBool isLoading = false.obs;
+  RxBool isLoading = false.obs; 
   final ProfileController profileController = Get.put(ProfileController());
 
   final _messageList = <Map<String, dynamic>>[].obs;

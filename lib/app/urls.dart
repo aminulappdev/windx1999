@@ -137,6 +137,18 @@ class Urls {
     return '$_baseUrl/watch-later/$id';
   }
 
+  static String deleteChatDataById(
+    String id,
+  ) {
+    return '$_baseUrl/messages/chat/$id';
+  }
+
+  static String unSavePostById(
+    String id,
+  ) {
+    return '$_baseUrl/watch-later/content/$id';
+  }
+
   static String userUnblockById(
     String id,
   ) {

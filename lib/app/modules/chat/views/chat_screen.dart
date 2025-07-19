@@ -9,7 +9,6 @@ import 'package:windx1999/app/modules/chat/widgets/chat_appBar.dart';
 import 'package:windx1999/app/modules/chat/widgets/chat_field.dart';
 import 'package:windx1999/app/res/app_images/assets_path.dart';
 import 'package:windx1999/app/res/common_widgets/custom_background.dart';
-import 'package:windx1999/app/res/common_widgets/liner_widget.dart';
 import 'package:windx1999/app/res/custom_style/custom_size.dart';
 import 'package:intl/intl.dart';
 
@@ -86,13 +85,6 @@ class _ChatScreenState extends State<ChatScreen> {
       _handleIncomingFriends(data);
     });
 
-    socketService.sokect
-        .on('chat-list::68514596201244ee7aeb5047', (data) {
-      print('Socket chatlist data received emon bhaiyer ...............');
-      print(data);
-      _handleIncomingFriends(data);
-    });
-
     // Fetch initial messages from the server
     messageFetchController.getMessages(chatId: widget.chatId).then((_) {
       // Check if messageList is empty and auto-message hasn't been sent
@@ -115,10 +107,6 @@ class _ChatScreenState extends State<ChatScreen> {
       });
     });
   }
-  
-  
-
-  
 
   @override
   void dispose() {
@@ -151,9 +139,7 @@ class _ChatScreenState extends State<ChatScreen> {
     _scrollToEnd();
   }
 
-  void _handleIncomingFriends(dynamic data) {  
-    
-  }
+  void _handleIncomingFriends(dynamic data) {}
 
   // Added method to send messages
   Future<void> sendMessageBTN(
@@ -181,8 +167,7 @@ class _ChatScreenState extends State<ChatScreen> {
         print(data);
       });
 
-      final bool isSuccess =
-          await messageSendController.sendMessage(chatId, text, receiverId);
+      messageController.clear();
 
       // if (isSuccess) {
       //   if (mounted) {
@@ -223,16 +208,19 @@ class _ChatScreenState extends State<ChatScreen> {
               // Updated CustomChatAppBar to use dynamic receiver details
               CustomChatAppBar(
                 name: widget.receiverName,
-                imagePath: widget.receiverImage.isNotEmpty
-                    ? widget.receiverImage
-                    : AssetsPath.blackGirl,
-                activeStatus: 'Active',
+                imagePath: widget.receiverImage,
+                activeStatus: '',
                 isActive: true,
                 actionOntap: () {
-                  Get.to(ActionScreen());
+                  Get.to(ActionScreen(
+                    authorId: widget.receiverId,
+                    chatId: widget.chatId,
+                    authorImage: widget.receiverImage,
+                    authorName: widget.receiverName,
+                  ));
                 },
-              ), 
-              Liner(text: 'Today'),
+              ),
+              heightBox5,
               // Replaced static messageList with socketService.messageList
               Expanded(
                 child: Obx(() {

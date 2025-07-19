@@ -30,7 +30,8 @@ class _LogInScreenState extends State<LogInScreen> {
   final TextEditingController passCtrl = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final LogInController logInController = Get.find<LogInController>();
-  final ResendOtpController resendOtpController = ResendOtpController();
+  final ResendOtpController resendOtpController =
+      Get.put(ResendOtpController());
   final ProfileController profileController = Get.find<ProfileController>();
 
   bool _obscureText = true;
@@ -38,8 +39,6 @@ class _LogInScreenState extends State<LogInScreen> {
 
   @override
   Widget build(BuildContext context) {
-    emailCtrl.text = 'siresen699@fuasha.com';
-    passCtrl.text = '1234567';
     return Scaffold(
       body: CustomBackground(
         child: SingleChildScrollView(
@@ -80,7 +79,7 @@ class _LogInScreenState extends State<LogInScreen> {
                           if (value!.isEmpty) {
                             return 'Enter email';
                           }
-                          if (EmailValidator.validate(value) == false) {
+                          if (!EmailValidator.validate(value)) {
                             return 'Enter a valid email address';
                           }
                           return null;
@@ -133,43 +132,54 @@ class _LogInScreenState extends State<LogInScreen> {
                     });
                   },
                   ontap: () {
-                    Get.to(ForgotpasswordScreen());
+                    Get.to(() => const ForgotpasswordScreen());
                   },
                 ),
                 heightBox12,
-                isChecked == true
-                    ? ElevatedButton(
+                GetBuilder<LogInController>(
+                  builder: (controller) {
+                    return Opacity(
+                      opacity: isChecked && !controller.inProgress ? 1.0 : 0.3,
+                      child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.blue,
                         ),
-                        onPressed: () {
-                          loginBTN(emailCtrl.text, passCtrl.text);
-                        },
-                        child: Text('Log In'),
-                      )
-                    : Opacity(
-                        opacity: 0.3,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.blue,
-                          ),
-                          onPressed: () {},
-                          child: Text(
-                            'Log In',
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                        ),
+                        onPressed: isChecked && !controller.inProgress
+                            ? () async {
+                                if (_formKey.currentState!.validate()) {
+                                  await loginBTN(emailCtrl.text, passCtrl.text);
+                                }
+                              }
+                            : null,
+                        child: controller.inProgress
+                            ? const SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : Text(
+                                'Log In',
+                                style: TextStyle(
+                                  color: isChecked ? Colors.white : Colors.grey,
+                                ),
+                              ),
                       ),
+                    );
+                  },
+                ),
                 heightBox20,
                 AuthenticationFooterSection(
                   fTextName: 'Don’t have an account? ',
                   fTextColor: Colors.white,
                   sTextName: 'Sign up',
-                  sTextColor: Color(0xff6CC7FE),
+                  sTextColor: const Color(0xff6CC7FE),
                   ontap: () {
-                    Get.to(SignUpScreen());
+                    Get.to(() => const SignUpScreen());
                   },
-                )
+                ),
               ],
             ),
           ),
@@ -183,21 +193,16 @@ class _LogInScreenState extends State<LogInScreen> {
 
     if (logInController.errorMessage?.contains('not') == true) {
       print('User not verified otp');
-      // ignore: unused_local_variable
-      final bool isSuccess = await resendOtpController.resendOtp(
-        email,
-      );
+      final bool isSuccess = await resendOtpController.resendOtp(email);
       var token = resendOtpController.resendOtpData?.token ?? 'Empty';
-      print('ResendOtp : $token');
-      Get.to(EmailVerificationScreen(
-        accessToken: token,
-      ));
+      print('ResendOtp: $token');
+      Get.to(() => EmailVerificationScreen(accessToken: token));
     } else if (isSuccess) {
-      profileController.getMyProfile();
+      await profileController.getMyProfile();
       print('User verified');
       if (mounted) {
         showSnackBarMessage(context, 'Login successfully done');
-        Get.offAll(BottomNavBarScreen());
+        Get.offAll(() => const BottomNavBarScreen());
       }
     } else {
       print('User not verified');

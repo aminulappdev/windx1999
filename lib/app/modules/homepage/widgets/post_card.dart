@@ -7,6 +7,7 @@ import 'package:windx1999/app/res/custom_style/custom_size.dart';
 
 class PostCard extends StatelessWidget {
   final bool isSaved;
+  final bool isLiked;
   final bool iSVisibleWishlist;
   final String profilePath;
   final String name;
@@ -45,6 +46,7 @@ class PostCard extends StatelessWidget {
     required this.iSVisibleWishlist,
     required this.isSaved,
     required this.aboutProfileTap,
+    required this.isLiked,
   });
 
   @override
@@ -93,7 +95,7 @@ class PostCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 PostCardFoterFeature(
-                  icon: react == '0' ? Icons.favorite_border : Icons.favorite,
+                  icon: isLiked ? Icons.favorite : Icons.favorite_border,
                   ontap: reactOntap,
                   quantity: react,
                 ),
@@ -125,6 +127,7 @@ class MediaContainer extends StatefulWidget {
   final double width;
   final Color borderColor;
   final double borderRadius;
+  final Widget? child;
 
   const MediaContainer({
     super.key,
@@ -133,6 +136,7 @@ class MediaContainer extends StatefulWidget {
     required this.width,
     required this.borderColor,
     required this.borderRadius,
+    this.child,
   });
 
   @override
@@ -194,53 +198,69 @@ class _MediaContainerState extends State<MediaContainer> {
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(widget.borderRadius),
-        child: _errorMessage != null
-            ? Container(
-                color: Colors.grey,
-                child: Center(child: Text(_errorMessage!, style: TextStyle(color: Colors.white))),
-              )
-            : _isVideo && _controller != null && _isInitialized
-                ? Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      VideoPlayer(_controller!),
-                      IconButton(
-                        icon: Icon(
-                          _controller!.value.isPlaying ? Icons.pause : Icons.play_arrow,
-                          color: Colors.white,
-                          size: 50.h,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            if (_controller!.value.isPlaying) {
-                              _controller!.pause();
-                            } else {
-                              _controller!.play();
-                            }
-                          });
-                        },
+        child: Stack(
+          children: [
+            _errorMessage != null
+                ? Container(
+                    color: Colors.grey,
+                    child: Center(
+                      child: Text(
+                        _errorMessage!,
+                        style: const TextStyle(color: Colors.white),
                       ),
-                    ],
+                    ),
                   )
-                : _isInitialized
-                    ? Image.network(
-                        widget.mediaPath,
-                        height: widget.height,
-                        width: widget.width,
-                        fit: BoxFit.cover,
-                        loadingBuilder: (context, child, loadingProgress) {
-                          if (loadingProgress == null) return child;
-                          return Center(child: CircularProgressIndicator());
-                        },
-                        errorBuilder: (context, error, stackTrace) {
-                          print('Image Load Error: $error'); // Debug log
-                          return Container(
-                            color: Colors.grey,
-                            child: Center(child: Text('Failed to load image', style: TextStyle(color: Colors.white))),
-                          );
-                        },
-                      )
-                    : Center(child: CircularProgressIndicator()),
+                : _isVideo && _controller != null && _isInitialized
+                    ? VideoPlayer(_controller!)
+                    : _isInitialized
+                        ? Image.network(
+                            widget.mediaPath,
+                            height: widget.height,
+                            width: widget.width,
+                            fit: BoxFit.cover,
+                            loadingBuilder: (context, child, loadingProgress) {
+                              if (loadingProgress == null) return child;
+                              return const Center(
+                                  child: CircularProgressIndicator());
+                            },
+                            errorBuilder: (context, error, stackTrace) {
+                              print('Image Load Error: $error'); // Debug log
+                              return Container(
+                                color: Colors.grey,
+                                child: const Center(
+                                  child: Text(
+                                    'Failed to load image',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              );
+                            },
+                          )
+                        : const Center(child: CircularProgressIndicator()),
+            if (_isVideo && _isInitialized && _controller != null)
+              Center(
+                child: IconButton(
+                  icon: Icon(
+                    _controller!.value.isPlaying
+                        ? Icons.pause
+                        : Icons.play_arrow,
+                    color: Colors.white,
+                    size: 30.h,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      if (_controller!.value.isPlaying) {
+                        _controller!.pause();
+                      } else {
+                        _controller!.play();
+                      }
+                    });
+                  },
+                ),
+              ),
+            if (widget.child != null) widget.child!,
+          ],
+        ),
       ),
     );
   }
