@@ -204,7 +204,7 @@ class _ChatScreenState extends State<ChatScreen> {
           padding: EdgeInsets.all(12.0.h),
           child: Column(
             children: [
-              heightBox20,
+              heightBox30,
               // Updated CustomChatAppBar to use dynamic receiver details
               CustomChatAppBar(
                 name: widget.receiverName,

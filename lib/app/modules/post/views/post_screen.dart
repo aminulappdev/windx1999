@@ -227,7 +227,7 @@ class _PostScreenState extends State<PostScreen> {
                     child: ClipRRect(
                       borderRadius: const BorderRadius.all(Radius.circular(8)),
                       child: SizedBox(
-                        height: 60,
+                        height: 70,
                         width: MediaQuery.of(context).size.width,
                         child: Center(
                           child: Column(

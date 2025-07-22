@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:windx1999/app/modules/common/views/navigation_bar_screen.dart';
 import 'package:windx1999/app/modules/homepage/controller/report_controller.dart';
 import 'package:windx1999/app/modules/post/controller/all_post_controller.dart';
@@ -14,8 +13,12 @@ import 'package:windx1999/get_storage.dart';
 class FinalReportScreen extends StatefulWidget {
   final String reportId;
   final String reason;
+  final String reportType;
   const FinalReportScreen(
-      {super.key, required this.reportId, required this.reason});
+      {super.key,
+      required this.reportId,
+      required this.reason,
+      required this.reportType});
 
   @override
   State<FinalReportScreen> createState() => _FinalReportScreenState();
@@ -76,6 +79,7 @@ class _FinalReportScreenState extends State<FinalReportScreen> {
 
   Future<void> reportUser() async {
     final bool isSuccess = await reportUserController.reportkUser(
+        widget.reportType,
         widget.reportId,
         StorageUtil.getData(StorageUtil.userId),
         widget.reason);

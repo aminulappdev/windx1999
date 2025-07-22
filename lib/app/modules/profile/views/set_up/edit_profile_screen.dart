@@ -57,245 +57,244 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
 
-    return SafeArea(
-      child: Scaffold(
-        body: CustomBackground(
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    Container(
-                      height: 200.h,
-                      width: width,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: banner != null
-                              ? FileImage(banner!)
-                              : NetworkImage(profileController
-                                      .profileData?.banner ??
-                                  'https://fastly.picsum.photos/id/229/200/300.jpg?hmac=WD1_MXzGKrVpaJj2Utxv7FoijRJ6h4S4zrBj7wmsx1U'),
-                          fit: BoxFit.fill,
-                        ),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.all(12.0),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            CircleAvetareIconWidget(
-                              iconData: Icons.arrow_back,
-                              bgColor: Color.fromARGB(133, 255, 255, 255),
-                              iconColor: Colors.white,
-                              ontap: () {
-                                Get.back();
-                              },
-                            ),
-                            CircleAvetareIconWidget(
-                              iconData: Icons.photo_camera,
-                              bgColor: Color.fromARGB(133, 255, 255, 255),
-                              iconColor: Colors.white,
-                              ontap: () {
-                                _imagePickerHelper.showAlertDialog(context,
-                                    (File pickedImage) {
-                                  setState(() {
-                                    banner = pickedImage;
-                                  });
-                                });
-                              },
-                            ),
-                          ],
-                        ),
+    return Scaffold(
+      body: CustomBackground(
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              heightBox30,
+              Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  Container(
+                    height: 200.h,
+                    width: width,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: banner != null
+                            ? FileImage(banner!)
+                            : NetworkImage(profileController
+                                    .profileData?.banner ??
+                                'https://fastly.picsum.photos/id/229/200/300.jpg?hmac=WD1_MXzGKrVpaJj2Utxv7FoijRJ6h4S4zrBj7wmsx1U'),
+                        fit: BoxFit.fill,
                       ),
                     ),
-                    Positioned(
-                      bottom: -40.h,
-                      left: (width / 2) - (82.w / 2),
-                      child: Container(
-                        height: 82.h,
-                        width: 82.w,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(color: Colors.white)),
-                        child: CircleAvatar(
-                          backgroundImage: NetworkImage(profileController
-                                  .profileData?.photoUrl ??
-                              'https://fastly.picsum.photos/id/229/200/300.jpg?hmac=WD1_MXzGKrVpaJj2Utxv7FoijRJ6h4S4zrBj7wmsx1U'),
-                          radius: 40.r,
-                          child: image != null
-                              ? ClipOval(
-                                  child: Image.file(
-                                    image!,
-                                    width: 100.w,
-                                    height: 100.h,
-                                    fit: BoxFit.cover,
-                                  ),
-                                )
-                              : Container(),
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      bottom: 20.h,
-                      left: (width / 2) - (82.w / 2),
-                      child: ContainerCircleIcon(
-                        iconData: Icons.edit,
-                        bgColor: Color.fromARGB(146, 255, 255, 255),
-                        borderColor: Colors.white,
-                        containerSize: 30,
-                        iconColor: Colors.white,
-                        ontap: () {
-                          _imagePickerHelper.showAlertDialog(
-                            context,
-                            (File pickedImage) {
-                              setState(
-                                () {
-                                  image = pickedImage;
-                                },
-                              );
+                    child: Padding(
+                      padding: EdgeInsets.all(12.0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          CircleAvetareIconWidget(
+                            iconData: Icons.arrow_back,
+                            bgColor: Color.fromARGB(133, 255, 255, 255),
+                            iconColor: Colors.white,
+                            ontap: () {
+                              Get.back();
                             },
-                          );
+                          ),
+                          CircleAvetareIconWidget(
+                            iconData: Icons.photo_camera,
+                            bgColor: Color.fromARGB(133, 255, 255, 255),
+                            iconColor: Colors.white,
+                            ontap: () {
+                              _imagePickerHelper.showAlertDialog(context,
+                                  (File pickedImage) {
+                                setState(() {
+                                  banner = pickedImage;
+                                });
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    bottom: -40.h,
+                    left: (width / 2) - (82.w / 2),
+                    child: Container(
+                      height: 82.h,
+                      width: 82.w,
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Colors.white)),
+                      child: CircleAvatar(
+                        backgroundImage: NetworkImage(profileController
+                                .profileData?.photoUrl ??
+                            'https://fastly.picsum.photos/id/229/200/300.jpg?hmac=WD1_MXzGKrVpaJj2Utxv7FoijRJ6h4S4zrBj7wmsx1U'),
+                        radius: 40.r,
+                        child: image != null
+                            ? ClipOval(
+                                child: Image.file(
+                                  image!,
+                                  width: 100.w,
+                                  height: 100.h,
+                                  fit: BoxFit.cover,
+                                ),
+                              )
+                            : Container(),
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    bottom: 20.h,
+                    left: (width / 2) - (82.w / 2),
+                    child: ContainerCircleIcon(
+                      iconData: Icons.edit,
+                      bgColor: Color.fromARGB(146, 255, 255, 255),
+                      borderColor: Colors.white,
+                      containerSize: 30,
+                      iconColor: Colors.white,
+                      ontap: () {
+                        _imagePickerHelper.showAlertDialog(
+                          context,
+                          (File pickedImage) {
+                            setState(
+                              () {
+                                image = pickedImage;
+                              },
+                            );
+                          },
+                        );
+                      },
+                    ),
+                  )
+                ],
+              ),
+              heightBox50,
+              Padding(
+                padding: EdgeInsets.all(16.0.h),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Name',
+                        style:
+                            TextStyle(fontSize: 16.sp, color: Colors.white),
+                      ),
+                      heightBox10,
+                      TextFormField(
+                        controller: nameCtrl,
+                        decoration: InputDecoration(
+                          errorStyle: TextStyle(
+                              color: const Color.fromARGB(255, 237, 82, 82)),
+                        ),
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        keyboardType: TextInputType.emailAddress,
+                        validator: (String? value) {
+                          if (value!.isEmpty) {
+                            return 'Enter name';
+                          }
+                          return null;
                         },
                       ),
-                    )
-                  ],
-                ),
-                heightBox50,
-                Padding(
-                  padding: EdgeInsets.all(16.0.h),
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Name',
-                          style:
-                              TextStyle(fontSize: 16.sp, color: Colors.white),
+                      heightBox20,
+                      Text(
+                        'Username',
+                        style:
+                            TextStyle(fontSize: 16.sp, color: Colors.white),
+                      ),
+                      heightBox10,
+                      TextFormField(
+                       
+                        controller: usernameCtrl,
+                        decoration: InputDecoration(
+                          errorStyle: TextStyle(
+                              color: const Color.fromARGB(255, 237, 82, 82)),
                         ),
-                        heightBox10,
-                        TextFormField(
-                          controller: nameCtrl,
-                          decoration: InputDecoration(
-                            errorStyle: TextStyle(
-                                color: const Color.fromARGB(255, 237, 82, 82)),
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        keyboardType: TextInputType.emailAddress,
+                        validator: (String? value) {
+                          if (value!.isEmpty) {
+                            return 'Enter username';
+                          }
+                          return null;
+                        },
+                      ),
+                      heightBox20,
+                      Text(
+                        'Bio',
+                        style:
+                            TextStyle(fontSize: 16.sp, color: Colors.white),
+                      ),
+                      heightBox10,
+                      TextFormField(
+                        controller: bioCtrl,
+                        decoration: InputDecoration(
+                          hintText: 'Enter your bio',
+                          errorStyle: TextStyle(
+                              color: const Color.fromARGB(255, 237, 82, 82)),
+                        ),
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        keyboardType: TextInputType.emailAddress,
+                        maxLines: 2,
+                        validator: (String? value) {
+                          if (value!.isEmpty) {
+                            return 'Enter bio';
+                          }
+                          return null;
+                        },
+                      ),
+                      heightBox20,
+                      Text(
+                        'Gender',
+                        style:
+                            TextStyle(fontSize: 16.sp, color: Colors.white),
+                      ),
+                      heightBox10,
+                      DropdownButtonFormField<String>(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        validator: (String? value) {
+                          if (value!.isEmpty) {
+                            return 'Enter gender';
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                          hintText: 'Gander',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          keyboardType: TextInputType.emailAddress,
-                          validator: (String? value) {
-                            if (value!.isEmpty) {
-                              return 'Enter name';
-                            }
-                            return null;
-                          },
                         ),
-                        heightBox20,
-                        Text(
-                          'Username',
-                          style:
-                              TextStyle(fontSize: 16.sp, color: Colors.white),
-                        ),
-                        heightBox10,
-                        TextFormField(
-                          enabled: false,
-                          controller: usernameCtrl,
-                          decoration: InputDecoration(
-                            errorStyle: TextStyle(
-                                color: const Color.fromARGB(255, 237, 82, 82)),
-                          ),
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          keyboardType: TextInputType.emailAddress,
-                          validator: (String? value) {
-                            if (value!.isEmpty) {
-                              return 'Enter username';
-                            }
-                            return null;
-                          },
-                        ),
-                        heightBox20,
-                        Text(
-                          'Bio',
-                          style:
-                              TextStyle(fontSize: 16.sp, color: Colors.white),
-                        ),
-                        heightBox10,
-                        TextFormField(
-                          controller: bioCtrl,
-                          decoration: InputDecoration(
-                            hintText: 'Enter your bio',
-                            errorStyle: TextStyle(
-                                color: const Color.fromARGB(255, 237, 82, 82)),
-                          ),
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          keyboardType: TextInputType.emailAddress,
-                          maxLines: 2,
-                          validator: (String? value) {
-                            if (value!.isEmpty) {
-                              return 'Enter bio';
-                            }
-                            return null;
-                          },
-                        ),
-                        heightBox20,
-                        Text(
-                          'Gender',
-                          style:
-                              TextStyle(fontSize: 16.sp, color: Colors.white),
-                        ),
-                        heightBox10,
-                        DropdownButtonFormField<String>(
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          validator: (String? value) {
-                            if (value!.isEmpty) {
-                              return 'Enter gender';
-                            }
-                            return null;
-                          },
-                          decoration: InputDecoration(
-                            hintText: 'Gander',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
+                        value: selectedGender,
+                        items: ["Male", "Female"].map((String gender) {
+                          return DropdownMenuItem(
+                            value: gender,
+                            child: Text(
+                              gender,
+                              style: TextStyle(
+                                  color: Colors.black, fontSize: 14.sp),
                             ),
-                          ),
-                          value: selectedGender,
-                          items: ["Male", "Female"].map((String gender) {
-                            return DropdownMenuItem(
-                              value: gender,
-                              child: Text(
-                                gender,
-                                style: TextStyle(
-                                    color: Colors.black, fontSize: 14.sp),
-                              ),
-                            );
-                          }).toList(),
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              selectedGender = newValue;
-                            });
-                          },
-                        ),
-                      ],
-                    ),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            selectedGender = newValue;
+                          });
+                        },
+                      ),
+                    ],
                   ),
                 ),
-                heightBox12,
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      onTapToNextButton();
-                    },
-                    child: Text(
-                      'Update',
-                      style: TextStyle(color: Colors.white),
-                    ),
+              ),
+              heightBox12,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: ElevatedButton(
+                  onPressed: () {
+                    onTapToNextButton();
+                  },
+                  child: Text(
+                    'Update',
+                    style: TextStyle(color: Colors.white),
                   ),
-                )
-              ],
-            ),
+                ),
+              )
+            ],
           ),
         ),
       ),

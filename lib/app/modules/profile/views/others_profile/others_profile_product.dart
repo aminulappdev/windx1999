@@ -3,8 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:windx1999/app/modules/profile/widgets/product_listTile.dart';
 import 'package:windx1999/app/modules/wishlist/controller/all_others_wishlist_controller.dart';
-import 'package:windx1999/app/modules/wishlist/controller/all_wishlist_controller.dart';
-import 'package:windx1999/app/res/app_images/assets_path.dart';
 import 'package:windx1999/app/res/common_widgets/rectangle_button_with_icon.dart';
 import 'package:windx1999/app/res/custom_style/custom_size.dart';
 
@@ -17,8 +15,6 @@ class OthersProfileProduct extends StatefulWidget {
 }
 
 class _OthersProfileProductState extends State<OthersProfileProduct> {
-
-
   final AllOthersWishlistController allOthersWishlistController =
       Get.put(AllOthersWishlistController());
 
@@ -40,15 +36,18 @@ class _OthersProfileProductState extends State<OthersProfileProduct> {
             return Padding(
               padding: EdgeInsets.all(8.0.h),
               child: ListView.builder(
+                padding: EdgeInsets.zero,
                 itemCount: controller.allWishlistData?.length,
                 itemBuilder: (context, index) {
                   var wishlist = controller.allWishlistData?[index];
                   return Padding(
                     padding: const EdgeInsets.symmetric(vertical: 4),
                     child: ProductListTile(
-                      imagePath: AssetsPath.blackGirl,
-                      title: wishlist?.title ?? 'no title',
-                      subtitle: wishlist?.description ?? 'no description',
+                      imagePath: wishlist!.content.isNotEmpty
+                          ? wishlist.content[0]
+                          : 'https://fastly.picsum.photos/id/376/200/300.jpg?hmac=gH_OWo7cSHKwU34tPONXdcjJuObIx0_5IswQHBjTXxg',
+                      title: wishlist.title ?? 'no title',
+                      subtitle: wishlist.description ?? 'no description',
                       category: 'Wishlist',
                       trailingIcon: RectangleButtonWithIcon(
                         height: 30,
@@ -76,6 +75,4 @@ class _OthersProfileProductState extends State<OthersProfileProduct> {
       ],
     );
   }
-
-
 }

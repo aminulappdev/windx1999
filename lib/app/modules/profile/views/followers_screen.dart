@@ -110,22 +110,25 @@ class _FollowersScreenState extends State<FollowersScreen> {
     );
   }
 
-  Future<void> followRequest(String frindId) async {
-    final bool isSuccess = await followRequestController.followRequest(frindId);
+  Future<void> followRequest(String friendId) async {
+    final bool isSuccess =
+        await followRequestController.followRequest(friendId);
     if (isSuccess) {
-      allPostController.getAllPost();
+      allPostController.updateFollowStatus(friendId, true);
       addChatFriend(
-          userId: StorageUtil.getData(StorageUtil.userId), friendId: frindId);
+          userId: StorageUtil.getData(StorageUtil.userId) ?? '',
+          friendId: friendId);
       if (mounted) {
-        showSnackBarMessage(context, 'Follow successfully done');
+        showSnackBarMessage(context, 'Follow successfully completed');
       }
     } else {
       if (mounted) {
-        showSnackBarMessage(
-            context, followRequestController.errorMessage ?? 'failed', true);
+        showSnackBarMessage(context,
+            followRequestController.errorMessage ?? 'Failed to follow', true);
       }
     }
   }
+
 
   Future<void> addChatFriend(
       {required String userId, required String friendId}) async {

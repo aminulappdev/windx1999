@@ -6,7 +6,9 @@ import 'package:windx1999/app/modules/common/controllers/theme_controller.dart';
 import 'package:windx1999/app/modules/homepage/controller/all_users_controller.dart';
 import 'package:windx1999/app/modules/homepage/controller/follow_request_controller.dart';
 import 'package:windx1999/app/modules/homepage/controller/unFollow_request_controller.dart';
+import 'package:windx1999/app/modules/post/controller/all_post_controller.dart';
 import 'package:windx1999/app/res/app_images/assets_path.dart';
+import 'package:windx1999/app/res/common_widgets/custom_app_bar.dart';
 import 'package:windx1999/app/res/common_widgets/custom_background.dart';
 import 'package:windx1999/app/res/common_widgets/custom_rectangle_buttom.dart';
 import 'package:windx1999/app/res/common_widgets/image_container.dart';
@@ -33,6 +35,7 @@ class _SearchScreenState extends State<SearchScreen> {
   final UnFollowRequestController unFollowRequestController =
       Get.put(UnFollowRequestController());
   final AddChatController addChatController = Get.put(AddChatController());
+  AllPostController allPostController = Get.find<AllPostController>();
   String search = '';
 
   @override
@@ -78,21 +81,21 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   // Unfollow request function
+ 
   Future<void> unFollowRequest(String friendId) async {
     final bool isSuccess =
         await unFollowRequestController.unfollowRequest(friendId);
     if (isSuccess) {
-      allUsersController.getAllUsers();
+      allPostController.updateFollowStatus(friendId, false);
       if (mounted) {
-        showSnackBarMessage(context, 'Unfollow successfully done');
+        showSnackBarMessage(context, 'Unfollow successfully completed');
       }
     } else {
       if (mounted) {
         showSnackBarMessage(
-          context,
-          unFollowRequestController.errorMessage ?? 'Failed to unfollow',
-          true,
-        );
+            context,
+            unFollowRequestController.errorMessage ?? 'Failed to unfollow',
+            true);
       }
     }
   }
@@ -118,191 +121,184 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: CustomBackground(
-          child: Padding(
-            padding: EdgeInsets.all(20.0.h),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Search bar with theme support
-                GetBuilder<ThemeController>(builder: (controller) {
-                  return TextFormField(
-                    controller: searchCtrl,
-                    style: TextStyle(
-                        color: controller.isDarkMode == true
-                            ? Colors.white
-                            : Colors.black),
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(
-                        Icons.search,
+    return Scaffold(
+      body: CustomBackground(
+        child: Padding(
+          padding: EdgeInsets.all(20.0.h),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              heightBox30,
+              const CustomAppBar(title: 'Users'),
+              heightBox8,
+              GetBuilder<ThemeController>(builder: (controller) {
+                return TextFormField(
+                  controller: searchCtrl,
+                  style: TextStyle(
+                      color: controller.isDarkMode == true
+                          ? Colors.white
+                          : Colors.black),
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(
+                      Icons.search,
+                      color: controller.isDarkMode == true
+                          ? Color.fromARGB(255, 255, 255, 255)
+                          : Color.fromARGB(255, 0, 0, 0),
+                    ),
+                    contentPadding: EdgeInsets.symmetric(vertical: 8.h),
+                    hintText: 'Search',
+                    hintStyle: TextStyle(
+                        fontWeight: FontWeight.w300,
                         color: controller.isDarkMode == true
                             ? Color.fromARGB(255, 255, 255, 255)
-                            : Color.fromARGB(255, 0, 0, 0),
-                      ),
-                      contentPadding: EdgeInsets.symmetric(vertical: 8.h),
-                      hintText: 'Search',
-                      hintStyle: TextStyle(
-                          fontWeight: FontWeight.w300,
-                          color: controller.isDarkMode == true
-                              ? Color.fromARGB(255, 255, 255, 255)
-                              : Color.fromARGB(255, 0, 0, 0)),
-                      fillColor: Color.fromARGB(116, 255, 255, 255),
-                      filled: true,
-                      border: inputBorder(),
-                      enabledBorder: inputBorder(),
-                      focusedBorder: inputBorder(),
-                      errorBorder: inputBorder(),
-                    ),
-                  );
-                }),
-                heightBox20,
-                Text(
-                  'All users',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20.sp,
-                    fontWeight: FontWeight.w600,
+                            : Color.fromARGB(255, 0, 0, 0)),
+                    fillColor: Color.fromARGB(116, 255, 255, 255),
+                    filled: true,
+                    border: inputBorder(),
+                    enabledBorder: inputBorder(),
+                    focusedBorder: inputBorder(),
+                    errorBorder: inputBorder(),
                   ),
-                ),
-                heightBox12,
-                GetBuilder<AllUsersController>(
-                  builder: (controller) {
-                    if (controller.inProgress) {
-                      return Center(
-                        child: SizedBox(
-                          height: 20.h,
-                          width: 20.w,
-                          child: CircularProgressIndicator(
-                            valueColor:
-                                AlwaysStoppedAnimation<Color>(Colors.white),
-                          ),
+                );
+              }),
+              
+            
+              heightBox12,
+              GetBuilder<AllUsersController>(
+                builder: (controller) {
+                  if (controller.inProgress) {
+                    return Center(
+                      child: SizedBox(
+                        height: 20.h,
+                        width: 20.w,
+                        child: CircularProgressIndicator(
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Colors.white),
                         ),
-                      );
-                    }
-
-                    // Filter users based on search query
-                    final filteredUsers =
-                        controller.allUsersData?.where((user) {
-                              final name = user.name?.toLowerCase() ?? '';
-                              return search.isEmpty ||
-                                  name.contains(search.toLowerCase());
-                            }).toList() ??
-                            [];
-
-                    if (filteredUsers.isEmpty) {
-                      return Expanded(
-                        child: Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              ImageContainer(
-                                imagePath: AssetsPath.search,
-                                height: 80.h,
-                                width: 95.w,
-                                borderRadius: 10.r,
-                                borderColor: Colors.transparent,
-                              ),
-                              Text(
-                                'No results for "${search.isEmpty ? 'Shimul' : search}"',
-                                style: TextStyle(
-                                  fontSize: 20.sp,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 20.w),
-                                child: Text(
-                                  'We couldn’t find any matching results. Please refine your search or check back later.',
-                                  style: TextStyle(
-                                    fontSize: 16.sp,
-                                    color: Colors.white,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    }
-
-                    return Expanded(
-                      child: ListView.builder(
-                        padding: EdgeInsets.zero,
-                        itemCount: filteredUsers.length,
-                        itemBuilder: (context, index) {
-                          final user = filteredUsers[index];
-                          return ListTile(
-                            contentPadding: EdgeInsets.zero,
-                            leading: GestureDetector(
-                              onTap: () {
-                                // Navigate to profile
-                                Get.to(user.id ==
-                                        StorageUtil.getData(StorageUtil.userId)
-                                    ? ProfileScreen()
-                                    : OthersProfileScreen(
-                                        userId: user.id ?? ''));
-                              },
-                              child: CircleAvatar(
-                                backgroundImage:
-                                    AssetImage(AssetsPath.blackGirl),
-                                radius: 24.r,
-                              ),
-                            ),
-                            title: GestureDetector(
-                              onTap: () {
-                                // Navigate to profile
-                                Get.to(
-                                    OthersProfileScreen(userId: user.id ?? ''));
-                              },
-                              child: Text(
-                                user.name ?? 'Unknown',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ),
-                            subtitle: Text(
-                              user.status ?? 'No status',
-                              style: TextStyle(
-                                color: Colors.white.withOpacity(0.7),
-                                fontSize: 14.sp,
-                              ),
-                            ),
-                            trailing: SizedBox(
-                              width: 110.w,
-                              child: CustomRectangleButton(
-                                bgColor: const Color(0xff6CC7FE),
-                                height: 36.h,
-                                width: 80.w,
-                                radiusSize: 12.r,
-                                textColor: Colors.white,
-                                textSize: 12.sp,
-                                text: user.isFollowing == true
-                                    ? 'Unfollow'
-                                    : 'Follow',
-                                ontap: () {
-                                  if (user.isFollowing == true) {
-                                    unFollowRequest(user.id ?? '');
-                                  } else {
-                                    followRequest(user.id ?? '');
-                                  }
-                                },
-                              ),
-                            ),
-                          );
-                        },
                       ),
                     );
-                  },
-                ),
-              ],
-            ),
+                  }
+    
+                  // Filter users based on search query
+                  final filteredUsers =
+                      controller.allUsersData?.where((user) {
+                            final name = user.name?.toLowerCase() ?? '';
+                            return search.isEmpty ||
+                                name.contains(search.toLowerCase());
+                          }).toList() ??
+                          [];
+    
+                  if (filteredUsers.isEmpty) {
+                    return Expanded(
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ImageContainer(
+                              imagePath: AssetsPath.search,
+                              height: 80.h,
+                              width: 95.w,
+                              borderRadius: 10.r,
+                              borderColor: Colors.transparent,
+                            ),
+                            Text(
+                              'No results for "${search.isEmpty ? 'Shimul' : search}"',
+                              style: TextStyle(
+                                fontSize: 20.sp,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 20.w),
+                              child: Text(
+                                'We couldn’t find any matching results. Please refine your search or check back later.',
+                                style: TextStyle(
+                                  fontSize: 16.sp,
+                                  color: Colors.white,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  }
+    
+                  return Expanded(
+                    child: ListView.builder(
+                      padding: EdgeInsets.zero,
+                      itemCount: filteredUsers.length,
+                      itemBuilder: (context, index) {
+                        final user = filteredUsers[index];
+                        return ListTile(
+                          contentPadding: EdgeInsets.zero,
+                          leading: GestureDetector(
+                            onTap: () {
+                              // Navigate to profile
+                              Get.to(user.id ==
+                                      StorageUtil.getData(StorageUtil.userId)
+                                  ? ProfileScreen()
+                                  : OthersProfileScreen(
+                                      userId: user.id ?? ''));
+                            },
+                            child: CircleAvatar(
+                              backgroundImage:
+                                  AssetImage(AssetsPath.blackGirl),
+                              radius: 24.r,
+                            ),
+                          ),
+                          title: GestureDetector(
+                            onTap: () {
+                              // Navigate to profile
+                              Get.to(
+                                  OthersProfileScreen(userId: user.id ?? ''));
+                            },
+                            child: Text(
+                              user.name ?? 'Unknown',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                          subtitle: Text(
+                            user.status ?? 'No status',
+                            style: TextStyle(
+                              color: Colors.white.withOpacity(0.7),
+                              fontSize: 14.sp,
+                            ),
+                          ),
+                          trailing: SizedBox(
+                            width: 110.w,
+                            child: CustomRectangleButton(
+                              bgColor: const Color(0xff6CC7FE),
+                              height: 36.h,
+                              width: 80.w,
+                              radiusSize: 12.r,
+                              textColor: Colors.white,
+                              textSize: 12.sp,
+                              text: user.isFollowing == true
+                                  ? 'Unfollow'
+                                  : 'Follow',
+                              ontap: () {
+                                if (user.isFollowing == true) {
+                                  unFollowRequest(user.id ?? '');
+                                } else {
+                                  followRequest(user.id ?? '');
+                                }
+                              },
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                },
+              ),
+            ],
           ),
         ),
       ),

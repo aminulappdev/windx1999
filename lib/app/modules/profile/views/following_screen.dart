@@ -86,8 +86,11 @@ class _FollowingScreenState extends State<FollowingScreen> {
                               radiusSize: 8,
                               text: 'Following',
                               ontap: () {
-                                unFollowRequest(
-                                    controller.allFollowersData![index].following?.id ?? '');
+                                unFollowRequest(controller
+                                        .allFollowersData![index]
+                                        .following
+                                        ?.id ??
+                                    '');
                               },
                               textSize: 14,
                               borderColor: Colors.white,
@@ -110,8 +113,7 @@ class _FollowingScreenState extends State<FollowingScreen> {
     final bool isSuccess =
         await unFollowRequestController.unfollowRequest(frindId);
     if (isSuccess) {
-      setState(() {});
-      allPostController.getAllPost();
+      allFollowingController.getAllFollowing(widget.userId);
       if (mounted) {
         showSnackBarMessage(context, 'Unfollow successfully done');
       }

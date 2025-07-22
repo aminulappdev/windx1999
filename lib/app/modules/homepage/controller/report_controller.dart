@@ -15,7 +15,7 @@ class ReportUserController extends GetxController {
   String? get errorMessage => _errorMessage;
 
   Future<bool> reportkUser(
-      String reportId, String userId, String reason) async {
+      String reportType, String reportId, String userId, String reason) async {
     bool isSuccess = false;
 
     _inProgress = true;
@@ -23,8 +23,9 @@ class ReportUserController extends GetxController {
     update();
 
     Map<String, dynamic> requestBody = {
+      "modelType": reportType,
       "author": userId, // je report dibe
-      "profile": reportId, // kare report dibo
+      "refference": reportId, // kare report dibo
       "reason": reason
     }; // Replace your body data
 

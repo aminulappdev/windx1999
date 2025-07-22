@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -75,7 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void _loadMoreData() {
     if (scrollController.position.extentAfter < 500 &&
         !allPostController.inProgress) {
-          print('Load more data');
+      print('Load more data');
       allPostController.getAllPost();
     }
     {
@@ -302,9 +301,27 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   {
                                                     'icon': Icons
                                                         .smart_display_outlined,
+                                                    'name': 'Report Post',
+                                                    'ontap': () {
+                                                      Get.to(ReportScreen(
+                                                          reportType: post
+                                                                      .contentType ==
+                                                                  'feed'
+                                                              ? 'Feed'
+                                                              : post.contentType ==
+                                                                      'wishlist'
+                                                                  ? 'Wishlist'
+                                                                  : '',
+                                                          reportId:
+                                                              post.id ?? ''));
+                                                    }
+                                                  },
+                                                  {
+                                                    'icon': Icons.person,
                                                     'name': 'Report profile',
                                                     'ontap': () {
                                                       Get.to(ReportScreen(
+                                                          reportType: 'user',
                                                           reportId:
                                                               post.author?.id ??
                                                                   ''));
@@ -369,7 +386,7 @@ class _HomeScreenState extends State<HomeScreen> {
           userId: StorageUtil.getData(StorageUtil.userId) ?? '',
           friendId: friendId);
       if (mounted) {
-        // showSnackBarMessage(context, 'Follow successfully completed');
+        showSnackBarMessage(context, 'Follow successfully completed');
       }
     } else {
       if (mounted) {
@@ -385,7 +402,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if (isSuccess) {
       allPostController.updateFollowStatus(friendId, false);
       if (mounted) {
-        // showSnackBarMessage(context, 'Unfollow successfully completed');
+        showSnackBarMessage(context, 'Unfollow successfully completed');
       }
     } else {
       if (mounted) {
@@ -420,7 +437,7 @@ class _HomeScreenState extends State<HomeScreen> {
       saveAllPostController.getMySavePost();
       allPostController.updatePostSave(contentId, true);
       if (mounted) {
-        // showSnackBarMessage(context, 'Post saved successfully');
+        showSnackBarMessage(context, 'Post saved successfully');
       }
     } else {
       if (mounted) {
@@ -437,7 +454,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if (isSuccess) {
       saveAllPostController.getMySavePost();
       allPostController.updatePostUnSave(postId, false);
-      // showSnackBarMessage(context, 'unsaved successfully done');
+      showSnackBarMessage(context, 'unsaved successfully done');
     } else {
       Get.snackbar(
         backgroundColor: Colors.red,
@@ -513,4 +530,3 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 }
-

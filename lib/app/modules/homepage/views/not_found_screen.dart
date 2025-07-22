@@ -16,63 +16,63 @@ class NotFoundSearchScreen extends StatefulWidget {
 class _NotFoundSearchScreenState extends State<NotFoundSearchScreen> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
-      body: CustomBackground(
-        child: Padding(
-          padding: EdgeInsets.all(20.0.h),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return Scaffold(
+          body: CustomBackground(
+    child: Padding(
+      padding: EdgeInsets.all(20.0.h),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          heightBox30,
+          CustomSearchBar(),
+          heightBox50,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              CustomSearchBar(),
-              heightBox50,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Recent search history',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.w600),
-                  ),
-                  InkWell(
-                    onTap: () {},
-                    child: Text( 
-                      'Clear all',
-                      style: TextStyle(color: Colors.blue),
-                    ),
-                  )
-                ],
+              Text(
+                'Recent search history',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20.sp,
+                    fontWeight: FontWeight.w600),
               ),
-              heightBox100,
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  ImageContainer(
-                      imagePath: AssetsPath.search,
-                      height: 80.h,
-                      width: 95.w,
-                      borderRadius: 10.r,
-                      borderColor: Colors.transparent),
-                  Text(
-                    'No results for”Shimul”',
-                    style: TextStyle(fontSize: 20.sp, color: Colors.white),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.w),
-                    child: Text(
-                      'We couldn’t find any matching results. Please refine your search orcheck back later.”',
-                      style: TextStyle(fontSize: 16.h, color: Colors.white),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ],
+              InkWell(
+                onTap: () {},
+                child: Text( 
+                  'Clear all',
+                  style: TextStyle(color: Colors.blue),
+                ),
               )
             ],
           ),
-        ),
+          heightBox100,
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              ImageContainer(
+                  imagePath: AssetsPath.search,
+                  height: 80.h,
+                  width: 95.w,
+                  borderRadius: 10.r,
+                  borderColor: Colors.transparent),
+              Text(
+                'No results for”Shimul”',
+                style: TextStyle(fontSize: 20.sp, color: Colors.white),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                child: Text(
+                  'We couldn’t find any matching results. Please refine your search orcheck back later.”',
+                  style: TextStyle(fontSize: 16.h, color: Colors.white),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
+          )
+        ],
       ),
-    ));
+    ),
+          ),
+        );
   }
 }

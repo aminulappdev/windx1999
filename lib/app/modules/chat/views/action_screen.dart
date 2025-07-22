@@ -53,7 +53,8 @@ class _ActionScreenState extends State<ActionScreen> {
                 icon: Icons.sms,
                 name: 'Report profile',
                 ontap: () {
-                  Get.to(ReportScreen(reportId: widget.authorId));
+                  Get.to(ReportScreen(
+                      reportType: 'User', reportId: widget.authorId));
                 },
               ),
               heightBox20,

@@ -1,4 +1,3 @@
-
 // ignore_for_file: avoid_print
 import 'package:get/get.dart';
 import 'package:windx1999/app/modules/authentication/controllers/otp_verify_controller.dart';
@@ -79,8 +78,7 @@ class AllPostController extends GetxController {
 
   void updatePostLike(String postId, bool isLiked, int likeCount) {
     if (postList == null) return;
-    int index =
-        postList!.indexWhere((post) => post.contentMeta?.id == postId);
+    int index = postList!.indexWhere((post) => post.contentMeta?.id == postId);
     if (index != -1) {
       final post = postList![index];
       postList![index] = AllPostItemModel(
@@ -176,26 +174,74 @@ class AllPostController extends GetxController {
     }
   }
 
+  // void updateFollowStatus(String userId, bool isFollowingNow) {
+  //   print('Update follow status');
+  //   if (postList == null) return;
+  //   int index = postList!.indexWhere((post) => post.author?.id == userId);
+  //   if (index != -1) {
+  //     final post = postList![index];
+  //     postList![index] = AllPostItemModel(
+  //       id: post.id,
+  //       description: post.description,
+  //       content: post.content,
+  //       contentType: post.contentType,
+  //       contentMeta: post.contentMeta,
+  //       author: post.author,
+  //       isLiked: post.isLiked,
+  //       isWatchLater: post.isWatchLater,
+  //       isHide: post.isHide,
+  //       isFollowing: isFollowingNow,
+  //       createdAt: post.createdAt,
+  //       hideBy: [],
+  //     );
+  //     update();
+  //   }
+  // }
+
   void updateFollowStatus(String userId, bool isFollowingNow) {
-    if (postList == null) return;
-    int index = postList!.indexWhere((post) => post.author?.id == userId);
-    if (index != -1) {
+    print('Update follow status for userId: $userId');
+    if (postList == null || postList!.isEmpty) {
+      print('postList is null or empty');
+      return;
+    }
+
+    bool updated = false;
+    for (int index = 0; index < postList!.length; index++) {
       final post = postList![index];
-      postList![index] = AllPostItemModel(
-        id: post.id,
-        description: post.description,
-        content: post.content,
-        contentType: post.contentType,
-        contentMeta: post.contentMeta,
-        author: post.author,
-        isLiked: post.isLiked,
-        isWatchLater: post.isWatchLater,
-        isHide: post.isHide,
-        isFollowing: isFollowingNow,
-        createdAt: post.createdAt,
-        hideBy: [],
-      );
+      if (post.author?.id == userId) {
+        postList![index] = AllPostItemModel(
+          id: post.id,
+          description: post.description,
+          content: post.content,
+          contentType: post.contentType,
+          contentMeta: post.contentMeta,
+          author: post.author,
+          isLiked: post.isLiked,
+          isWatchLater: post.isWatchLater,
+          isHide: post.isHide,
+          isFollowing: isFollowingNow,
+          createdAt: post.createdAt,
+          hideBy: post.hideBy,
+          audience: post.audience,
+          isDeleted: post.isDeleted,
+          updatedAt: post.updatedAt,
+          v: post.v,
+          title: post.title,
+          link: post.link,
+          price: post.price,
+          token: post.token,
+          status: post.status,
+          reason: post.reason,
+        );
+        updated = true;
+      }
+    }
+
+    if (updated) {
+      print('Post(s) updated successfully for userId: $userId');
       update();
+    } else {
+      print('No posts found for userId: $userId');
     }
   }
 }

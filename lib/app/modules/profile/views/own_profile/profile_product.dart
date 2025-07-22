@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:windx1999/app/modules/profile/widgets/product_listTile.dart';
 import 'package:windx1999/app/modules/wishlist/controller/all_wishlist_controller.dart';
 import 'package:windx1999/app/modules/wishlist/views/add_wish_list_screen.dart';
-import 'package:windx1999/app/res/app_images/assets_path.dart';
 import 'package:windx1999/app/res/common_widgets/rectangle_button_with_icon.dart';
 import 'package:windx1999/app/res/custom_style/custom_size.dart';
 
@@ -19,12 +18,12 @@ class _ProfileProductState extends State<ProfileProduct> {
   final AllWishlistController allWishlistController =
       Get.put(AllWishlistController());
 
-   @override
+  @override
   void initState() {
     allWishlistController.getAllWishlist();
     super.initState();
-  }   
-  
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -46,7 +45,7 @@ class _ProfileProductState extends State<ProfileProduct> {
             ),
           ),
         ),
-        Expanded( 
+        Expanded(
           child: GetBuilder<AllWishlistController>(builder: (controller) {
             if (controller.inProgress) {
               return const Center(child: CircularProgressIndicator());
@@ -54,22 +53,27 @@ class _ProfileProductState extends State<ProfileProduct> {
             return Padding(
               padding: EdgeInsets.all(8.0.h),
               child: ListView.builder(
+                padding: EdgeInsets.zero,
                 itemCount: controller.allWishlistData?.length,
                 itemBuilder: (context, index) {
                   var wishlist = controller.allWishlistData?[index];
                   return Padding(
                     padding: const EdgeInsets.symmetric(vertical: 4),
                     child: ProductListTile(
-                      imagePath: AssetsPath.blackGirl,
-                      title: wishlist?.title ?? 'no title',
-                      subtitle: wishlist?.description ?? 'no description',
+                      imagePath: wishlist!.content.isNotEmpty
+                          ? wishlist.content[0]
+                          : 'https://fastly.picsum.photos/id/376/200/300.jpg?hmac=gH_OWo7cSHKwU34tPONXdcjJuObIx0_5IswQHBjTXxg',
+                      title: wishlist.title ?? 'no title',
+                      subtitle: wishlist.description ?? 'no description',
                       category: 'Wishlist',
                       trailingIcon: RectangleButtonWithIcon(
                         height: 30,
                         width: 70,
                         bgColor: Color(0xff6CC7FE),
                         borderRadius: 8,
-                        title: controller.allWishlistData?[index].price.toString() ?? 'no price',
+                        title: controller.allWishlistData?[index].price
+                                .toString() ??
+                            'no price',
                         titleColor: Colors.white,
                         titleSize: 12,
                         iconData: Icons.token_rounded,

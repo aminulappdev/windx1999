@@ -9,26 +9,49 @@ import 'package:windx1999/app/res/common_widgets/straight_liner.dart';
 import 'package:windx1999/app/res/custom_style/custom_size.dart';
 
 class ReportScreen extends StatefulWidget {
+  final String reportType;
   final String reportId;
 
-  const ReportScreen({super.key, required this.reportId});
+  const ReportScreen({
+    super.key,
+    required this.reportId,
+    required this.reportType,
+  });
 
   @override
   State<ReportScreen> createState() => _ReportScreenState();
 }
 
 class _ReportScreenState extends State<ReportScreen> {
-  final List<Map<String, dynamic>> reportReasons = [
-    {'label': 'Offensive Content', 'isSelected': false},
-    {'label': 'False Information', 'isSelected': false},
-    {'label': 'Unwanted content.', 'isSelected': false},
-    {'label': 'Harassment', 'isSelected': false},
-    {'label': 'Fake Profile', 'isSelected': false},
-    {'label': 'Something else', 'isSelected': false},
-  ];
+  final List<Map<String, dynamic>> reportReasons = [];
 
   // Variable to store the selected reason
   String? selectedReason;
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize reasons once
+    if (widget.reportType == "User") {
+      reportReasons.addAll([
+        {'label': 'Offensive Content', 'isSelected': false},
+        {'label': 'False Information', 'isSelected': false},
+        {'label': 'Unwanted content.', 'isSelected': false},
+        {'label': 'Harassment', 'isSelected': false},
+        {'label': 'Fake Profile', 'isSelected': false},
+        {'label': 'Something else', 'isSelected': false},
+      ]);
+    } else {
+      reportReasons.addAll([
+        {'label': 'Nudity or Sexual Content', 'isSelected': false},
+        {'label': 'Hate Speech or Symbols', 'isSelected': false},
+        {'label': 'Harassment or Bullying', 'isSelected': false},
+        {'label': 'Violence or Threatening Behavior', 'isSelected': false},
+        {'label': 'False Information or Scam', 'isSelected': false},
+        {'label': 'Spam or Irrelevant Content', 'isSelected': false},
+      ]);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,13 +89,12 @@ class _ReportScreenState extends State<ReportScreen> {
                             value: reportReasons[index]['isSelected'],
                             onChanged: (value) {
                               setState(() {
-                                // Deselect all reasons
+                                // Deselect all
                                 for (var reason in reportReasons) {
                                   reason['isSelected'] = false;
                                 }
-                                // Select the current reason
+                                // Select current
                                 reportReasons[index]['isSelected'] = value!;
-                                // Update selectedReason variable
                                 selectedReason = value
                                     ? reportReasons[index]['label']
                                     : null;
@@ -81,15 +103,20 @@ class _ReportScreenState extends State<ReportScreen> {
                             title: Text(
                               reportReasons[index]['label'],
                               style: TextStyle(
-                                  color: Colors.white, fontSize: 16.sp),
+                                color: Colors.white,
+                                fontSize: 16.sp,
+                              ),
                             ),
                             activeColor: Colors.blue,
                             checkColor: Colors.white,
-                            side: BorderSide(color: Colors.white, width: 2),
+                            side: const BorderSide(
+                              color: Colors.white,
+                              width: 2,
+                            ),
                           ),
                         ),
                         heightBox12,
-                        StraightLiner(),
+                        const StraightLiner(),
                       ],
                     );
                   },
@@ -98,15 +125,25 @@ class _ReportScreenState extends State<ReportScreen> {
               ElevatedButton(
                 onPressed: () {
                   if (selectedReason != null) {
-                    Get.to(FinalReportScreen(
-                        reason: selectedReason!, reportId: widget.reportId));
+                    Get.to(
+                      FinalReportScreen(
+                        reportType: widget.reportType,
+                        reason: selectedReason!,
+                        reportId: widget.reportId,
+                      ),
+                    );
                   } else {
-                    // Optional: Show a message if no reason is selected
-                    showSnackBarMessage(context,
-                        'Please select a reason before confirming.', true);
+                    showSnackBarMessage(
+                      context,
+                      'Please select a reason before confirming.',
+                      true,
+                    );
                   }
                 },
-                child: Text(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue,
+                ),
+                child: const Text(
                   'Confirm',
                   style: TextStyle(color: Colors.white),
                 ),

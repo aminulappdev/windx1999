@@ -9,7 +9,7 @@ import 'package:windx1999/get_storage.dart';
 class FriendController extends GetxController {
   final SocketService socketService = Get.put(SocketService());
 
-  // ✅ Fixed: Make inProgress reactive
+  // Reactive variables
   var inProgress = false.obs;
   var friends = AllFriendsModel().obs;
   var friendList = <AllFriendsItemModel>[].obs;
@@ -19,12 +19,6 @@ class FriendController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    getAllFriends();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
     getAllFriends();
   }
 
@@ -39,7 +33,7 @@ class FriendController extends GetxController {
       accesToken: await StorageUtil.getData(StorageUtil.userAccessToken),
     );
 
-    print('response data: ${response.responseData}');
+    print('Response data: ${response.responseData}');
 
     if (response.isSuccess) {
       friendList.clear();
@@ -57,8 +51,7 @@ class FriendController extends GetxController {
           "createdAt": friend.chat?.createdAt?.toIso8601String() ??
               DateTime.now().toIso8601String(),
           "lastMessage": friend.message?.text ?? '',
-          "lastMessageTime":
-              friend.message?.createdAt?.toIso8601String() ?? '',
+          "lastMessageTime": friend.message?.createdAt?.toIso8601String() ?? '',
           "isSeen": friend.message?.seen ?? false,
           "unreadMessageCount": friend.unreadMessageCount ?? 0,
         });

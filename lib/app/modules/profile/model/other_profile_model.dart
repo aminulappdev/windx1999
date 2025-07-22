@@ -2,7 +2,7 @@ class OtherProfileModel {
     OtherProfileModel({
         required this.success,
         required this.message,
-        required this.data,
+        required this.data, 
     });
 
     final bool? success;
