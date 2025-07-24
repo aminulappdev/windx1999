@@ -33,8 +33,7 @@ class ForgotEmailController extends GetxController {
     }; // Replace your body data
 
     final NetworkResponse response = await Get.find<NetworkCaller>()
-        .patchRequest(Urls.forgotEmailUrl,
-            body: requestBody); // Replace your api url
+        .postRequest(Urls.forgotEmailUrl, requestBody); // Replace your api url
 
     if (response.isSuccess) {
       forgotEmailResponseModel =

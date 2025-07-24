@@ -48,17 +48,17 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
             ),
             CurvedNavigationBarItem(
               child: Icon(Icons.chat, color: Colors.white, size: 30.h),
-              label: selectedPage == 1 ? 'Search' : '',
+              label: selectedPage == 1 ? 'Chat' : '',
               labelStyle: TextStyle(color: Colors.white),
             ),
             CurvedNavigationBarItem(
               child: Icon(Icons.control_point, color: Colors.white, size: 30.h),
-              label: selectedPage == 2 ? 'Chat' : '',
+              label: selectedPage == 2 ? 'Post' : '',
               labelStyle: TextStyle(color: Colors.white),
             ),
             CurvedNavigationBarItem(
               child: Icon(Icons.movie_edit, color: Colors.white, size: 30.h),
-              label: selectedPage == 3 ? 'Feed' : '',
+              label: selectedPage == 3 ? 'Reels' : '',
               labelStyle: TextStyle(color: Colors.white),
             ),
             CurvedNavigationBarItem(

@@ -64,8 +64,11 @@ class _FollowingScreenState extends State<FollowingScreen> {
                               children: [
                                 CircleAvatar(
                                   radius: 20.r,
-                                  backgroundImage:
-                                      AssetImage(AssetsPath.blackGirl),
+                                  backgroundImage: NetworkImage(controller
+                                          .allFollowersData![index]
+                                          .following
+                                          ?.photoUrl ??
+                                      'https://fastly.picsum.photos/id/51/200/300.jpg?hmac=w7933XDRbSqrql6BuyEfFBOeVsO60iU5N_OS5FbO6wQ'),
                                 ),
                                 widthBox8,
                                 Text(
@@ -84,7 +87,7 @@ class _FollowingScreenState extends State<FollowingScreen> {
                               height: 32,
                               width: 82,
                               radiusSize: 8,
-                              text: 'Following',
+                              text: 'Unfollow',
                               ontap: () {
                                 unFollowRequest(controller
                                         .allFollowersData![index]

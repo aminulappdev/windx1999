@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:windx1999/app/modules/authentication/views/log_in_screen.dart';
 import 'package:windx1999/app/modules/common/controllers/theme_controller.dart';
+import 'package:windx1999/app/modules/profile/controllers/content_controller.dart';
 import 'package:windx1999/app/modules/profile/controllers/delete_account_controller.dart';
 import 'package:windx1999/app/modules/profile/views/drawer/add_account.dart';
 import 'package:windx1999/app/modules/profile/views/drawer/block_account_screen.dart';
+import 'package:windx1999/app/modules/profile/views/drawer/content_screen.dart';
 import 'package:windx1999/app/modules/profile/views/drawer/save_items.dart';
 import 'package:windx1999/app/modules/profile/views/drawer/your_account.dart';
 import 'package:windx1999/app/modules/profile/widgets/feature_row.dart';
@@ -17,14 +20,27 @@ import 'package:windx1999/app/res/custom_style/custom_size.dart';
 import 'package:windx1999/get_storage.dart';
 
 // ignore: must_be_immutable
-class MyDrawer extends StatelessWidget {
-  MyDrawer({
+class MyDrawer extends StatefulWidget {
+  const MyDrawer({
     super.key,
   });
 
+  @override
+  State<MyDrawer> createState() => _MyDrawerState();
+}
+
+class _MyDrawerState extends State<MyDrawer> {
   ThemeController themeController = Get.find<ThemeController>();
+  ContentController contentController = Get.put(ContentController());
+
   final DeleteAccountController deleteAccountController =
       Get.put(DeleteAccountController());
+
+  @override
+  void initState() {
+    contentController.getContent();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,92 +54,122 @@ class MyDrawer extends StatelessWidget {
               : Color(0xffA386F0),
           child: ListView(
             children: <Widget>[
-              Padding(
-                padding: EdgeInsets.all(16.r),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    heightBox16,
-                    heightBox20,
-                    CustomAppBar(title: 'Settings'),
-                    heightBox40,
-                    costomRow(context, Icons.person, 'Your Account',
-                        Icons.arrow_forward_ios, () {
-                      showModalBottomSheet(
-                        scrollControlDisabledMaxHeightRatio: 0.6,
-                        context: context,
-                        shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.vertical(top: Radius.circular(20)),
-                        ),
-                        backgroundColor: controller.isDarkMode == true
-                            ? Color(0xff1B1B20)
-                            : Color(0xffA96CFF),
-                        builder: (context) {
-                          return Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [YourAccount()],
-                          );
+              GetBuilder<ContentController>(builder: (contentController) {
+                return Padding(
+                  padding: EdgeInsets.all(16.r),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      heightBox16,
+                      heightBox20,
+                      CustomAppBar(title: 'Settings'),
+                      heightBox40,
+                      costomRow(context, Icons.person, 'Your Account',
+                          Icons.arrow_forward_ios, () {
+                        showModalBottomSheet(
+                          scrollControlDisabledMaxHeightRatio: 0.6,
+                          context: context,
+                          shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.vertical(top: Radius.circular(20)),
+                          ),
+                          backgroundColor: controller.isDarkMode == true
+                              ? Color(0xff1B1B20)
+                              : Color(0xffA96CFF),
+                          builder: (context) {
+                            return Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [YourAccount()],
+                            );
+                          },
+                        );
+                      }),
+                      heightBox20,
+                      costomRow(context, Icons.bookmark, 'Saved',
+                          Icons.arrow_forward_ios, () {
+                        Get.to(SaveItemScreen());
+                      }),
+                      heightBox20,
+                      costomRow(context, Icons.person_off, 'Blocked',
+                          Icons.arrow_forward_ios, () {
+                        Get.to(BlockScreen());
+                      }),
+                      heightBox10,
+                      FeatureRow(
+                        title: 'Dark mode',
+                        isToggled: themeController.isDarkMode,
+                        onToggle: (value) {
+                          themeController.themeMode(value);
+                          themeController.update();
+                          print('Dark mode: $value');
                         },
-                      );
-                    }),
-                    heightBox20,
-                    costomRow(context, Icons.bookmark, 'Saved',
-                        Icons.arrow_forward_ios, () {
-                      Get.to(SaveItemScreen());
-                    }),
-                    heightBox20,
-                    costomRow(context, Icons.person_off, 'Blocked',
-                        Icons.arrow_forward_ios, () {
-                      Get.to(BlockScreen());
-                    }),
-                    heightBox10,
-                    FeatureRow(
-                      title: 'Dark mode',
-                      isToggled: themeController.isDarkMode,
-                      onToggle: (value) {
-                        themeController.themeMode(value);
-                        themeController.update();
-                        print('Dark mode: $value');
-                      },
-                    ),
-                    SizedBox(
-                      height: 50.h,
-                    ),
-                    costomRowWithoutArrow(context, Icons.person, 'Add Account',
-                        () {
-                      showModalBottomSheet(
-                        scrollControlDisabledMaxHeightRatio: 0.6,
-                        context: context,
-                        shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.vertical(top: Radius.circular(20)),
-                        ),
-                        backgroundColor: controller.isDarkMode == true
-                            ? Color(0xff1B1B20)
-                            : Color(0xffA96CFF),
-                        builder: (context) {
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [AddAccount()],
-                          );
-                        },
-                      );
-                    }),
-                    heightBox20,
-                    costomRowWithoutArrow(context, Icons.bookmark, 'Logout',
-                        () {
-                      _showLogoutDialog(context);
-                    }),
-                    heightBox20,
-                    costomRowWithoutArrow(
-                        context, Icons.person_off, 'Delete Account', () {
-                      _showDeleteAccountDialog(context);
-                    }),
-                  ],
-                ),
-              )
+                      ),
+                      SizedBox(
+                        height: 30.h,
+                      ),
+                      costomRowWithoutArrow(
+                          context, Icons.person_add, 'Add Account', () {
+                        showModalBottomSheet(
+                          scrollControlDisabledMaxHeightRatio: 0.6,
+                          context: context,
+                          shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.vertical(top: Radius.circular(20)),
+                          ),
+                          backgroundColor: controller.isDarkMode == true
+                              ? Color(0xff1B1B20)
+                              : Color(0xffA96CFF),
+                          builder: (context) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [AddAccount()],
+                            );
+                          },
+                        );
+                      }),
+                      heightBox20,
+                      costomRowWithoutArrow(
+                          context, Icons.help, 'Terms & Conditions', () {
+                        Get.to(ContentSreen(
+                          appBarTitle: 'Terms & Conditions',
+                          data: contentController
+                                  .contentlist![0].termsAndConditions ??
+                              '',
+                        ));
+                      }),
+                      heightBox20,
+                      costomRowWithoutArrow(context, Icons.person, 'About Us',
+                          () {
+                        Get.to(ContentSreen(
+                          appBarTitle: 'About Us',
+                          data: contentController.contentlist![0].aboutUs ?? '',
+                        ));
+                      }),
+                      heightBox20,
+                      costomRowWithoutArrow(
+                          context, Icons.security, 'Privacy Policy', () {
+                        Get.to(ContentSreen(
+                          appBarTitle: 'Privacy Policy',
+                          data:
+                              contentController.contentlist![0].privacyPolicy ??
+                                  '',
+                        ));
+                      }),
+                      heightBox20,
+                      costomRowWithoutArrow(context, Icons.logout, 'Logout',
+                          () {
+                        _showLogoutDialog(context);
+                      }),
+                      heightBox20,
+                      costomRowWithoutArrow(
+                          context, Icons.person_remove, 'Delete Account', () {
+                        _showDeleteAccountDialog(context);
+                      }),
+                    ],
+                  ),
+                );
+              })
             ],
           ),
         ),
@@ -203,10 +249,6 @@ class MyDrawer extends StatelessWidget {
                 ],
               ),
             ),
-            Icon(
-              icon,
-              color: Colors.white,
-            )
           ],
         ),
         heightBox8,

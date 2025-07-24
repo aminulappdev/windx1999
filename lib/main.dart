@@ -8,7 +8,7 @@ import 'package:windx1999/app/modules/onboarding/views/splash_screen.dart';
 import 'package:windx1999/app/res/app_binder/controller_binder.dart';
 import 'package:windx1999/app/res/app_colors/app_colors.dart';
 import 'package:windx1999/app/services/socket/socket_service.dart';
-
+ 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();

@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:windx1999/app/modules/post/controller/create_post_controller.dart';
 import 'package:windx1999/app/modules/post/views/post_audiences.dart';
 import 'package:windx1999/app/modules/post/widgets/post_dropdown_widget.dart';
+import 'package:windx1999/app/modules/profile/controllers/profile_controller.dart';
 import 'package:windx1999/app/res/app_images/assets_path.dart';
 import 'package:windx1999/app/res/common_widgets/custom_app_bar.dart';
 import 'package:windx1999/app/res/common_widgets/custom_background.dart';
@@ -26,10 +27,13 @@ class PostScreen extends StatefulWidget {
 
 class _PostScreenState extends State<PostScreen> {
   PlatformFile? _selectedFile; // Only one selected file
-  String? _selectedPostType = 'Feed'; // Initialize to match dropdown's initial value
+  String? _selectedPostType =
+      'Feed'; // Initialize to match dropdown's initial value
   final TextEditingController _statusController = TextEditingController();
-  final CreatePostController createPostController = Get.put(CreatePostController());
+  final CreatePostController createPostController =
+      Get.put(CreatePostController());
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final ProfileController profileController = Get.put(ProfileController());
 
   // Pick single file with validation for Reels
   Future<void> _pickFile() async {
@@ -67,7 +71,8 @@ class _PostScreenState extends State<PostScreen> {
       // Clear selected file if post type changes to Reels and the current file is not a video
       if (_selectedFile != null &&
           value == 'Reels' &&
-          !(_selectedFile!.extension == 'mp4' || _selectedFile!.extension == 'mov')) {
+          !(_selectedFile!.extension == 'mp4' ||
+              _selectedFile!.extension == 'mov')) {
         _selectedFile = null;
         showSnackBarMessage(context,
             'Selected file removed. Please upload a video for Reels', true);
@@ -81,6 +86,12 @@ class _PostScreenState extends State<PostScreen> {
   // Check if the post button should be enabled
   bool get _isPostButtonEnabled =>
       _statusController.text.trim().isNotEmpty || _selectedFile != null;
+
+  @override
+  void initState() {
+    profileController.getMyProfile();
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -128,11 +139,14 @@ class _PostScreenState extends State<PostScreen> {
                               'Post',
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,
-                                color: _isPostButtonEnabled ? Colors.white : Colors.grey,
+                                color: _isPostButtonEnabled
+                                    ? Colors.white
+                                    : Colors.grey,
                               ),
                             ),
                       color: Colors.blue,
-                      textColor: _isPostButtonEnabled ? Colors.white : Colors.grey,
+                      textColor:
+                          _isPostButtonEnabled ? Colors.white : Colors.grey,
                     );
                   },
                 ),
@@ -143,20 +157,25 @@ class _PostScreenState extends State<PostScreen> {
                     Row(
                       children: [
                         CircleAvatar(
-                          backgroundImage: const AssetImage(AssetsPath.blackGirl),
+                          backgroundImage:
+                              const AssetImage(AssetsPath.blackGirl),
                         ),
                         widthBox5,
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              'Nammi Fatema',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.white,
-                              ),
-                            ),
+                            GetBuilder<ProfileController>(
+                                builder: (controller) {
+                              if (controller.profileData == null) {}
+                              return Text(
+                                controller.profileData?.name ?? '',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white,
+                                ),
+                              );
+                            }),
                             heightBox4,
                             InkWell(
                               onTap: () {
@@ -346,7 +365,9 @@ class _PostScreenState extends State<PostScreen> {
       } else {
         if (mounted) {
           showSnackBarMessage(
-              context, createPostController.errorMessage ?? 'Failed to create post', true);
+              context,
+              createPostController.errorMessage ?? 'Failed to create post',
+              true);
         }
       }
     }

@@ -40,8 +40,8 @@ class _OnboardingViewState extends State<OnboardingView> {
                 children: [
                   OnboardingPageView(
                     showBackButton: false,
-                    imageWidth: 202,
-                    imageHeight: 308,
+                    imageWidth: 180,
+                    imageHeight: 280,
                     onBoardingRow: false,
                     title: "Let’s Connect with Everyone in the World",
                     subtitle:

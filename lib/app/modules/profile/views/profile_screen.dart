@@ -83,7 +83,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ontap: () {
                               _scaffoldKey.currentState?.openDrawer();
                             },
-                          ),
+                          ), 
                         ],
                       ),
                     ),

@@ -245,7 +245,7 @@ class _SearchScreenState extends State<SearchScreen> {
                             },
                             child: CircleAvatar(
                               backgroundImage:
-                                  AssetImage(AssetsPath.blackGirl),
+                                  NetworkImage(user.photoUrl ?? 'https://fastly.picsum.photos/id/408/200/300.jpg?hmac=WHLCqIpd4lzmPZlRRMknXp1aOoOr7_qdtEUwozDmIWQ'),
                               radius: 24.r,
                             ),
                           ),

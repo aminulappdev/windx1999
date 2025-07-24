@@ -57,7 +57,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                 ),
                 heightBox40,
                 Text(
-                  'Please enter the 4 digit code that was sent to xyz@gmail.com ',
+                  'Please enter the 6 digit code that was sent',
                   style: TextStyle(fontSize: 16.sp, color: Colors.white),
                   textAlign: TextAlign.center,
                 ),

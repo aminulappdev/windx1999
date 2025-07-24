@@ -37,17 +37,24 @@ class _TokenBarState extends State<TokenBar> {
 
   @override
   void initState() {
-    allPackageController.getAllPackage();
-    profileController.getMyProfile();
-    myOrderController.getMyOrders();
     super.initState();
+    _loadInitialData();
+  }
+
+  Future<void> _loadInitialData() async {
+    await Future.wait([
+      allPackageController.getAllPackage(),
+      profileController.getMyProfile(),
+      myOrderController.getMyOrders(),
+    ]);
+    setState(() {}); // UI refresh after data load
   }
 
   String formatDate(String? dateTimeStr) {
     if (dateTimeStr == null) return '';
     try {
       final dateTime = DateTime.parse(dateTimeStr);
-      return DateFormat('dd MMM yyyy').format(dateTime); // Example: 26 Jun 2025
+      return DateFormat('dd MMM yyyy').format(dateTime);
     } catch (e) {
       return dateTimeStr;
     }
@@ -57,7 +64,7 @@ class _TokenBarState extends State<TokenBar> {
     if (dateTimeStr == null) return '';
     try {
       final dateTime = DateTime.parse(dateTimeStr);
-      return DateFormat('hh:mm a').format(dateTime); // Example: 09:45 AM
+      return DateFormat('hh:mm a').format(dateTime);
     } catch (e) {
       return dateTimeStr;
     }
@@ -77,10 +84,11 @@ class _TokenBarState extends State<TokenBar> {
               heightBox50,
               GetBuilder<ProfileController>(builder: (controller) {
                 return TokenBarHeader(
-                  imagePath: AssetsPath.blackGirl,
+                  imagePath:
+                      'https://fastly.picsum.photos/id/51/200/300.jpg?hmac=w7933XDRbSqrql6BuyEfFBOeVsO60iU5N_OS5FbO6wQ',
                   token:
                       profileController.profileData?.tokenAmount.toString() ??
-                          'empty',
+                          '0',
                 );
               }),
               heightBox20,
@@ -96,10 +104,11 @@ class _TokenBarState extends State<TokenBar> {
                     width: 151,
                     radiusSize: 50,
                     text: 'Token history',
-                    ontap: () {
+                    ontap: () async {
                       setState(() {
                         tokenHistoryPage = true;
                       });
+                      await myOrderController.getMyOrders(); // Refresh data
                     },
                     textSize: 16,
                     borderColor: tokenHistoryPage
@@ -115,10 +124,12 @@ class _TokenBarState extends State<TokenBar> {
                     width: 151,
                     radiusSize: 50,
                     text: 'Buy token',
-                    ontap: () {
+                    ontap: () async {
                       setState(() {
                         tokenHistoryPage = false;
                       });
+                      await allPackageController
+                          .getAllPackage(); // Refresh data
                     },
                     textSize: 16,
                     borderColor: tokenHistoryPage
@@ -131,26 +142,19 @@ class _TokenBarState extends State<TokenBar> {
               tokenHistoryPage ? Container() : StraightLiner(),
               heightBox12,
               GetBuilder<AllPackageController>(builder: (controller) {
-                if (controller.inProgress) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
+                if (controller.inProgress || myOrderController.inProgress) {
+                  return const Center(child: CircularProgressIndicator());
                 }
 
                 return Expanded(
                   child: ListView.builder(
                     itemCount: tokenHistoryPage
-                        ? myOrderController.myOrdersData?.length
-                        : allPackageController.allPackageItemMOdel?.length,
+                        ? myOrderController.myOrdersData?.length ?? 0
+                        : allPackageController.allPackageItemMOdel?.length ?? 0,
                     itemBuilder: (context, index) {
                       return tokenHistoryPage
                           ? GetBuilder<MyOrderController>(
                               builder: (oController) {
-                                if (oController.inProgress) {
-                                  // return const Center(
-                                  //     child: CircularProgressIndicator());
-                                }
-
                                 final createdAt = oController
                                     .myOrdersData?[index].createdAt
                                     ?.toString();
@@ -161,7 +165,7 @@ class _TokenBarState extends State<TokenBar> {
                                   date: formatDate(createdAt),
                                   coin: oController.myOrdersData?[index].amount
                                           .toString() ??
-                                      'n',
+                                      '0',
                                   time: formatTime(createdAt),
                                 );
                               },
@@ -211,9 +215,6 @@ class _TokenBarState extends State<TokenBar> {
 
   @override
   void dispose() {
-    myOrderController.getMyOrders();
-    allPackageController.getAllPackage();
-    profileController.getMyProfile();
     super.dispose();
   }
 }

@@ -34,8 +34,9 @@ class Urls {
   static const String allBlockersUrl = '$_baseUrl/profile-block/my-block';
   static const String allUserssUrl = '$_baseUrl/users/public';
   static const String sendCommentUrl = '$_baseUrl/comments';
+  static const String contentUrl = '$_baseUrl/contents';
 
-  static String updateUserByUrl(
+   static String updateUserByUrl(
     String id,
   ) {
     return '$_baseUrl/users/update/$id';

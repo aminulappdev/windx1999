@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:windx1999/app/modules/authentication/controllers/create_user_controller.dart';
 import 'package:windx1999/app/modules/authentication/views/GDPR_screen.dart';
+import 'package:windx1999/app/modules/authentication/views/log_in_screen.dart';
 import 'package:windx1999/app/res/common_widgets/custom_background.dart';
 import 'package:windx1999/app/res/app_images/assets_path.dart';
 import 'package:windx1999/app/res/common_widgets/custom_app_bar.dart';
@@ -238,7 +239,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   fTextColor: Color.fromARGB(255, 255, 255, 255),
                   sTextName: 'Sign in',
                   sTextColor: Color(0xff6CC7FE),
-                  ontap: () {},
+                  ontap: () {
+                    Get.to(LogInScreen());
+                  },
                 ),
               ],
             ),
