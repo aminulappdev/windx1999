@@ -228,6 +228,7 @@ class _OthersProfileScreenState extends State<OthersProfileScreen> {
                     quantitySize: 16,
                     ontap: () {
                       Get.to(FollowersScreen(
+                        isMyPage: false,
                         userId: othersProfileController.otherProfileData!.id!,
                       ));
                     },
@@ -242,6 +243,7 @@ class _OthersProfileScreenState extends State<OthersProfileScreen> {
                     quantitySize: 16,
                     ontap: () {
                       Get.to(FollowingScreen(
+                        isMyPage: false,
                         userId: othersProfileController.otherProfileData!.id!,
                       ));
                     },

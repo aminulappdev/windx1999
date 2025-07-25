@@ -7,7 +7,7 @@ import 'package:windx1999/app/urls.dart';
 import 'package:windx1999/get_storage.dart';
 import 'package:http/http.dart' as http;
 
-class SetupProfileController extends GetxController {
+class  SetupProfileController extends GetxController {
   bool _inProgress = false;
   bool get inProgress => _inProgress;
 
@@ -33,7 +33,7 @@ class SetupProfileController extends GetxController {
         update();
         return false;
       }
-
+ 
       var uri = Uri.parse(Urls.userUpdateProfileUrl);
       var request = http.MultipartRequest('PUT', uri);
 

@@ -14,7 +14,9 @@ import 'package:windx1999/get_storage.dart';
 
 class FollowersScreen extends StatefulWidget {
   final String userId;
-  const FollowersScreen({super.key, required this.userId});
+  final bool isMyPage;
+  const FollowersScreen(
+      {super.key, required this.userId, required this.isMyPage});
 
   @override
   State<FollowersScreen> createState() => _FollowersScreenState();
@@ -82,20 +84,37 @@ class _FollowersScreenState extends State<FollowersScreen> {
                                 ),
                               ],
                             ),
-                            CustomRectangleButton(
-                              bgColor: Colors.lightBlue,
-                              height: 32,
-                              width: 90,
-                              radiusSize: 8,
-                              text: 'Follow back',
-                              ontap: () {
-                                followRequest(controller
-                                    .allFollowersData![index].follower!.id!);
-                              },
-                              textSize: 12,
-                              borderColor: Colors.lightBlue,
-                              textColor: Colors.white,
-                            )
+                            widget.isMyPage
+                                ? CustomRectangleButton(
+                                    bgColor: Colors.lightBlue,
+                                    height: 32,
+                                    width: 90,
+                                    radiusSize: 8,
+                                    text: 'Follow back',
+                                    ontap: () {
+                                      followRequest(controller
+                                          .allFollowersData![index]
+                                          .follower!
+                                          .id!);
+                                    },
+                                    textSize: 12,
+                                    borderColor: Colors.lightBlue,
+                                    textColor: Colors.white,
+                                  )
+                                : Opacity(
+                                    opacity: 0.5,
+                                    child: CustomRectangleButton(
+                                      bgColor: Colors.lightBlue,
+                                      height: 32,
+                                      width: 90,
+                                      radiusSize: 8,
+                                      text: 'Follow back',
+                                      ontap: () {},
+                                      textSize: 12,
+                                      borderColor: Colors.lightBlue,
+                                      textColor: Colors.white,
+                                    ),
+                                  )
                           ],
                         ),
                       );
@@ -128,7 +147,6 @@ class _FollowersScreenState extends State<FollowersScreen> {
       }
     }
   }
-
 
   Future<void> addChatFriend(
       {required String userId, required String friendId}) async {

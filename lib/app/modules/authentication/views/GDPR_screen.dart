@@ -11,14 +11,14 @@ import 'package:windx1999/app/res/common_widgets/custom_snackbar.dart';
 import 'package:windx1999/app/res/custom_style/custom_size.dart';
 
 class GDPRConsentScreen extends StatefulWidget {
-  const GDPRConsentScreen(
-      {super.key,
-      required this.email,
-      required this.password,
-      required this.confirmPassword,
-      required this.name});
+  const GDPRConsentScreen({
+    super.key,
+    required this.email,
+    required this.password,
+    required this.confirmPassword,
+    required this.name,
+  });
   final String name;
-
   final String email;
   final String password;
   final String confirmPassword;
@@ -28,7 +28,7 @@ class GDPRConsentScreen extends StatefulWidget {
 }
 
 class _GDPRConsentScreenState extends State<GDPRConsentScreen> {
-  final CreateUserController createUserController = CreateUserController();
+  final CreateUserController createUserController = Get.put(CreateUserController());
 
   bool isChecked01 = false;
   bool isChecked02 = false;
@@ -59,8 +59,7 @@ class _GDPRConsentScreenState extends State<GDPRConsentScreen> {
                 ),
                 heightBox12,
                 ConditionCheckerCheckbox(
-                  text:
-                      'I consent to data processing for personalized experience',
+                  text: 'I consent to data processing for personalized experience',
                   isChecked: isChecked01,
                   onChanged: (bool? value) {
                     setState(() {
@@ -69,8 +68,7 @@ class _GDPRConsentScreenState extends State<GDPRConsentScreen> {
                   },
                 ),
                 ConditionCheckerCheckbox(
-                  text:
-                      'I allow my data to be used for analytics and improvements',
+                  text: 'I allow my data to be used for analytics and improvements',
                   isChecked: isChecked02,
                   onChanged: (bool? value) {
                     setState(() {
@@ -88,40 +86,42 @@ class _GDPRConsentScreenState extends State<GDPRConsentScreen> {
                   },
                 ),
                 heightBox14,
-                if (isChecked01 == true &&
-                    isChecked02 == true &&
-                    isChecked03) ...{
-                  CustomRectangleButton(
-                    text: 'Accept',
-                    height: 48,
-                    width: MediaQuery.of(context).size.width,
-                    bgColor: Color(0xff6CC7FE),
-                    radiusSize: 50,
-                    ontap: () {
-                      print('Register information ........................');
-                      print(widget.name);
-                      signUpnBTN(
-                          widget.name,
-                       
-                          widget.email,
-                          widget.password,
-                          widget.confirmPassword);
-                    },
-                  ),
-                } else ...{
-                  CustomRectangleButton(
-                    text: 'Accept',
-                    height: 48,
-                    width: MediaQuery.of(context).size.width,
-                    bgColor: Color.fromARGB(178, 108, 198, 254),
-                    radiusSize: 50,
-                    ontap: () {
-                     
-                      print('Register information ........................');
-                      print(widget.name);
-                    },
-                  ),
-                }
+                GetBuilder<CreateUserController>(
+                  builder: (controller) {
+                    return CustomRectangleButton(
+                      text: controller.inProgress ? '' : 'Accept',
+                      height: 48,
+                      width: MediaQuery.of(context).size.width,
+                      bgColor: isChecked01 && isChecked02 && isChecked03
+                          ? const Color(0xff6CC7FE)
+                          : const Color.fromARGB(178, 108, 198, 254),
+                      radiusSize: 50,
+                      ontap: isChecked01 && isChecked02 && isChecked03 && !controller.inProgress
+                          ? () {
+                              signUpnBTN(
+                                widget.name,
+                                widget.email,
+                                widget.password,
+                                widget.confirmPassword,
+                              );
+                            }
+                          : () {
+                              print('Register information ........................');
+                              print(widget.name);
+                            },
+                      child: controller.inProgress
+                          ? const SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 2,
+                              ),
+                            )
+                          : null,
+                    );
+                  },
+                ),
               ],
             ),
           ),
@@ -130,24 +130,23 @@ class _GDPRConsentScreenState extends State<GDPRConsentScreen> {
     );
   }
 
-  Future<void> signUpnBTN(String name, String email,
-      String password, String cPassword) async {
-    final bool isSuccess = await createUserController.createUser(name,
-          email, password, cPassword);
+  Future<void> signUpnBTN(String name, String email, String password, String cPassword) async {
+    final bool isSuccess = await createUserController.createUser(name, email, password, cPassword);
 
     if (isSuccess) {
       if (mounted) {
         var token = createUserController.userData?.otpToken?.token;
-        print('Otp token F:  $token');
+        print('Otp token F: $token');
         showSnackBarMessage(context, 'Register successfully done');
-        Get.to(EmailVerificationScreen(
-          accessToken: token ?? 'Empty token',
-        ));
+        Get.to(() => EmailVerificationScreen(
+              email: email,
+              accessToken: token ?? 'Empty token',
+            ));
       }
     } else {
       if (mounted) {
         showSnackBarMessage(
-            context, createUserController.errorMessage ?? 'Login failed', true);
+            context, createUserController.errorMessage ?? 'Registration failed', true);
       }
     }
   }

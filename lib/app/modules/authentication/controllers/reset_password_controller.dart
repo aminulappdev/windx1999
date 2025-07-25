@@ -15,7 +15,7 @@ class ResetPasswordController extends GetxController {
   String? get errorMessage => _errorMessage;
 
   Future<bool> resetPassword(
-      String password, String cPassword, String token) async {
+      String email, String password, String cPassword, String token) async {
     bool isSuccess = false;
 
     _inProgress = true;
@@ -23,13 +23,16 @@ class ResetPasswordController extends GetxController {
     update();
 
     Map<String, dynamic> requestBody = {
+      "email": email,
       "newPassword": password,
       "confirmPassword": cPassword
     }; // Replace your body data
     print('Controller er token : $token');
     final NetworkResponse response = await Get.find<NetworkCaller>()
-        .patchRequestWithToken(Urls.resetPasswordUrl,
-            accesToken: token, body: requestBody); // Replace your api url
+        .postRequest(
+            Urls.resetPasswordUrl,
+            accesToken: token,
+            requestBody); // Replace your api url
 
     if (response.isSuccess) {
       _errorMessage = null;

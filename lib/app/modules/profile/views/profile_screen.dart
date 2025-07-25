@@ -54,11 +54,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              
               Stack(
                 clipBehavior: Clip.none,
                 children: [
-                  
                   Container(
                     height: 200.h,
                     width: width,
@@ -67,11 +65,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         image: controller.profileData?.banner != null
                             ? NetworkImage(controller.profileData!.banner!)
                             : const AssetImage(AssetsPath.blackGirl),
-                        fit: BoxFit.fill,
+                        fit: BoxFit.cover,
                       ),
                     ),
                     child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20.w,vertical: 36.h),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 20.w, vertical: 36.h),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.end,
@@ -83,7 +82,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ontap: () {
                               _scaffoldKey.currentState?.openDrawer();
                             },
-                          ), 
+                          ),
                         ],
                       ),
                     ),
@@ -121,6 +120,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     quantitySize: 16,
                     ontap: () {
                       Get.to(() => FollowersScreen(
+                            isMyPage: true,
                             userId: StorageUtil.getData(StorageUtil.userId),
                           ));
                     },
@@ -133,6 +133,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     quantitySize: 16,
                     ontap: () {
                       Get.to(() => FollowingScreen(
+                            isMyPage: true,
                             userId: StorageUtil.getData(StorageUtil.userId),
                           ));
                     },

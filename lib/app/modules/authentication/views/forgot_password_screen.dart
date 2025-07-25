@@ -20,7 +20,8 @@ class ForgotpasswordScreen extends StatefulWidget {
 class _ForgotpasswordScreenState extends State<ForgotpasswordScreen> {
   final TextEditingController emailCtrl = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final ForgotEmailController forgotEmailController = Get.put(ForgotEmailController());
+  final ForgotEmailController forgotEmailController =
+      Get.put(ForgotEmailController());
 
   @override
   Widget build(BuildContext context) {
@@ -117,13 +118,14 @@ class _ForgotpasswordScreenState extends State<ForgotpasswordScreen> {
         var token = forgotEmailController.forgotData?.token ?? 'Empty';
         print('Token is $token');
         Get.to(() => ForgotEmailVerificationScreen(
+              email: email,
               accessToken: token,
             ));
       }
     } else {
       if (mounted) {
-        showSnackBarMessage(
-            context, forgotEmailController.errorMessage ?? 'Failed to send OTP', true);
+        showSnackBarMessage(context,
+            forgotEmailController.errorMessage ?? 'Failed to send OTP', true);
       }
     }
   }

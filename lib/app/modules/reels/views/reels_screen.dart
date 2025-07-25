@@ -200,7 +200,7 @@ class _ReelsScreenState extends State<ReelsScreen> {
                           bottom: 30.h,
                           left: 10.h,
                           child: ReelsDetails(
-                            follow: allReelsController.followStatus[reel.author?.id ?? ''] == true
+                            follow: allReelsController.allReelsData?[index].isFollowing == true
                                 ? 'Unfollow'
                                 : 'Follow',
                             imagePath: reel.author?.photoUrl ??

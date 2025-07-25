@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -17,7 +19,9 @@ import 'package:windx1999/app/res/custom_style/custom_size.dart';
 
 class ForgotEmailVerificationScreen extends StatefulWidget {
   final String accessToken;
-  const ForgotEmailVerificationScreen({super.key, required this.accessToken});
+  final String email;
+  const ForgotEmailVerificationScreen(
+      {super.key, required this.accessToken, required this.email});
 
   @override
   State<ForgotEmailVerificationScreen> createState() =>
@@ -32,7 +36,7 @@ class _ForgotEmailVerificationScreenState
   final CreateUserController createUserController =
       Get.find<CreateUserController>();
   final ForgotOtpVerifyController forgotOtpVerifyController =
-      ForgotOtpVerifyController();
+      Get.put(ForgotOtpVerifyController());
   final ResendOtpController resendOtpController = ResendOtpController();
 
   RxInt remainingTime = 60.obs;
@@ -73,7 +77,7 @@ class _ForgotEmailVerificationScreenState
     );
 
     // Assuming forgotEmailController has a method to resend OTP
-    final bool isSuccess = await resendOtpController.resendOtp('');
+    final bool isSuccess = await resendOtpController.resendOtp(widget.email);
 
     if (isSuccess) {
       if (mounted) {
@@ -82,9 +86,8 @@ class _ForgotEmailVerificationScreenState
       }
     } else {
       if (mounted) {
-        showSnackBarMessage(
-            context, forgotEmailController.errorMessage ?? 'Failed to resend OTP',
-            true);
+        showSnackBarMessage(context,
+            resendOtpController.errorMessage ?? 'Failed to resend OTP', true);
       }
     }
   }
@@ -141,7 +144,8 @@ class _ForgotEmailVerificationScreenState
                                 activeFillColor: Colors.white,
                                 inactiveFillColor: Colors.white,
                                 selectedFillColor: Colors.white),
-                            animationDuration: const Duration(milliseconds: 300),
+                            animationDuration:
+                                const Duration(milliseconds: 300),
                             backgroundColor: Colors.transparent,
                             enableActiveFill: true,
                             appContext: context,
@@ -200,11 +204,24 @@ class _ForgotEmailVerificationScreenState
                     ),
                   ),
                   heightBox24,
-                  ElevatedButton(
-                    onPressed: otpCtrl.text.length == 6
-                        ? () => otpBTN(otpCtrl.text)
-                        : null, // Disable button if OTP is not 6 digits
-                    child: Text('Confirm'),
+                  GetBuilder<ForgotOtpVerifyController>(
+                    builder: (controller) {
+                      return ElevatedButton(
+                        onPressed: otpCtrl.text.length == 6 && !controller.inProgress
+                            ? () => otpBTN(otpCtrl.text)
+                            : null, // Disable button if OTP is not 6 digits or inProgress is true
+                        child: controller.inProgress
+                            ? const SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : const Text('Confirm'),
+                      );
+                    },
                   ),
                 ],
               );
@@ -226,15 +243,16 @@ class _ForgotEmailVerificationScreenState
       if (mounted) {
         showSnackBarMessage(context, 'Successfully done');
         var otpVerifyToken =
-            forgotOtpVerifyController.otpData!.token ?? 'empty';
-        Get.to(ResetPasswordScreen(
-          otpToken: otpVerifyToken,
-        ));
+            forgotOtpVerifyController.otpData?.token ?? 'empty';
+        Get.to(() => ResetPasswordScreen(
+              email: widget.email,
+              otpToken: otpVerifyToken,
+            ));
       }
     } else {
       if (mounted) {
         showSnackBarMessage(
-            context, forgotOtpVerifyController.errorMessage ?? 'failed', true);
+            context, forgotOtpVerifyController.errorMessage ?? 'Verification failed', true);
       }
     }
   }

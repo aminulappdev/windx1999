@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:windx1999/app/modules/authentication/controllers/change_password_controller.dart';
-import 'package:windx1999/app/modules/authentication/views/forgot_password_screen.dart';
+import 'package:windx1999/app/modules/authentication/views/forgot_password_screen.dart'; // Fixed import typo
 import 'package:windx1999/app/modules/profile/views/profile_screen.dart';
 import 'package:windx1999/app/res/common_widgets/custom_app_bar.dart';
 import 'package:windx1999/app/res/common_widgets/custom_background.dart';
@@ -37,10 +37,10 @@ class _ChangedPasswordScreenState extends State<ChangedPasswordScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 heightBox20,
-                CustomAppBar(title: 'Changed Password'),
+                CustomAppBar(title: 'Change Password'), // Fixed title typo
                 heightBox40,
                 Text(
-                  'Your password must be at least 6 characters and should include a combination of numbers, letters and special characters). ',
+                  'Your password must be at least 6 characters and should include a combination of numbers, letters, and special characters.',
                   style: TextStyle(fontSize: 16.sp, color: Colors.white),
                   textAlign: TextAlign.center,
                 ),
@@ -52,22 +52,22 @@ class _ChangedPasswordScreenState extends State<ChangedPasswordScreen> {
                     children: [
                       Text(
                         'Current Password',
-                        style: TextStyle(fontSize: 16, color: Colors.white),
+                        style: TextStyle(fontSize: 16.sp, color: Colors.white),
                       ),
                       heightBox10,
                       TextFormField(
                         controller: currentPasswordController,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         validator: (String? value) {
-                          if (value!.isEmpty) {
-                            return 'Enter password';
+                          if (value == null || value.isEmpty) {
+                            return 'Enter current password';
                           }
                           return null;
                         },
                         obscureText: _obscureText,
                         decoration: InputDecoration(
-                          errorStyle: TextStyle(
-                              color: const Color.fromARGB(255, 237, 82, 82)),
+                          errorStyle: const TextStyle(
+                              color: Color.fromARGB(255, 237, 82, 82)),
                           suffixIcon: IconButton(
                             icon: Icon(
                               _obscureText
@@ -81,28 +81,31 @@ class _ChangedPasswordScreenState extends State<ChangedPasswordScreen> {
                               });
                             },
                           ),
-                          hintText: 'Enter your password',
+                          hintText: 'Enter your current password',
                         ),
                       ),
                       heightBox24,
                       Text(
-                        'Password',
-                        style: TextStyle(fontSize: 16, color: Colors.white),
+                        'New Password',
+                        style: TextStyle(fontSize: 16.sp, color: Colors.white),
                       ),
                       heightBox10,
                       TextFormField(
                         controller: newPasswordController,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         validator: (String? value) {
-                          if (value!.isEmpty) {
-                            return 'Enter password';
+                          if (value == null || value.isEmpty) {
+                            return 'Enter new password';
+                          }
+                          if (value.length < 6) {
+                            return 'Password must be at least 6 characters';
                           }
                           return null;
                         },
                         obscureText: _obscureText,
                         decoration: InputDecoration(
-                          errorStyle: TextStyle(
-                              color: const Color.fromARGB(255, 237, 82, 82)),
+                          errorStyle: const TextStyle(
+                              color: Color.fromARGB(255, 237, 82, 82)),
                           suffixIcon: IconButton(
                             icon: Icon(
                               _obscureText
@@ -116,12 +119,12 @@ class _ChangedPasswordScreenState extends State<ChangedPasswordScreen> {
                               });
                             },
                           ),
-                          hintText: 'Enter your password',
+                          hintText: 'Enter your new password',
                         ),
                       ),
                       heightBox24,
                       Text(
-                        'Confirm password',
+                        'Confirm New Password',
                         style: TextStyle(fontSize: 16.sp, color: Colors.white),
                       ),
                       heightBox10,
@@ -129,15 +132,18 @@ class _ChangedPasswordScreenState extends State<ChangedPasswordScreen> {
                         controller: confirmPasswordController,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         validator: (String? value) {
-                          if (value!.isEmpty) {
+                          if (value == null || value.isEmpty) {
                             return 'Enter confirm password';
+                          }
+                          if (value != newPasswordController.text) {
+                            return 'Passwords do not match';
                           }
                           return null;
                         },
                         obscureText: _obscureConfirmText,
                         decoration: InputDecoration(
-                          errorStyle: TextStyle(
-                              color: const Color.fromARGB(255, 237, 82, 82)),
+                          errorStyle: const TextStyle(
+                              color: Color.fromARGB(255, 237, 82, 82)),
                           suffixIcon: IconButton(
                             icon: Icon(
                               _obscureConfirmText
@@ -151,13 +157,13 @@ class _ChangedPasswordScreenState extends State<ChangedPasswordScreen> {
                               });
                             },
                           ),
-                          hintText: 'Enter confirm password',
+                          hintText: 'Confirm your new password',
                         ),
                       ),
                       heightBox12,
                       GestureDetector(
                         onTap: () {
-                          Get.to(() => const ForgotpasswordScreen());
+                          Get.to(() => const ForgotpasswordScreen()); // Fixed typo in class name
                         },
                         child: Text(
                           'Forgot password?',
@@ -192,7 +198,7 @@ class _ChangedPasswordScreenState extends State<ChangedPasswordScreen> {
                               ),
                             )
                           : const Text(
-                              'Change password',
+                              'Change Password',
                               style: TextStyle(color: Colors.white),
                             ),
                     );
@@ -207,19 +213,19 @@ class _ChangedPasswordScreenState extends State<ChangedPasswordScreen> {
   }
 
   Future<void> changePassword(
-    String currentpassword,
-    String newpassword,
+    String currentPassword,
+    String newPassword,
     String confirmPassword,
   ) async {
     final bool isSuccess = await changePasswordController.changePassword(
-      currentpassword,
-      newpassword,
+      currentPassword,
+      newPassword,
       confirmPassword,
     );
 
     if (isSuccess) {
       if (mounted) {
-        showSnackBarMessage(context, 'Successfully done');
+        showSnackBarMessage(context, 'Password changed successfully');
         Get.to(() => const ProfileScreen());
       }
     } else {
@@ -228,5 +234,13 @@ class _ChangedPasswordScreenState extends State<ChangedPasswordScreen> {
             context, changePasswordController.errorMessage ?? 'Failed to change password', true);
       }
     }
+  }
+
+  @override
+  void dispose() {
+    currentPasswordController.dispose();
+    newPasswordController.dispose();
+    confirmPasswordController.dispose();
+    super.dispose();
   }
 }

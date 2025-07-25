@@ -7,7 +7,6 @@ import 'package:windx1999/app/modules/profile/controllers/image_picker.dart';
 import 'package:windx1999/app/modules/profile/controllers/profile_controller.dart';
 import 'package:windx1999/app/modules/profile/controllers/profile_setup_controller.dart';
 import 'package:windx1999/app/modules/profile/views/profile_screen.dart';
-import 'package:windx1999/app/res/app_images/assets_path.dart';
 import 'package:windx1999/app/res/common_widgets/circle_aveture_icon.dart';
 import 'package:windx1999/app/res/common_widgets/container_circle_icon.dart';
 import 'package:windx1999/app/res/common_widgets/custom_background.dart';
@@ -29,13 +28,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final TextEditingController nameCtrl = TextEditingController();
   final TextEditingController usernameCtrl = TextEditingController();
   final TextEditingController bioCtrl = TextEditingController();
-  final TextEditingController gendeCtrl = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final SetupProfileController setupProfileController =
-      SetupProfileController();
+      Get.put(SetupProfileController());
   final ProfileController profileController = Get.put(ProfileController());
-
-  bool showProductList = false;
 
   @override
   void initState() {
@@ -74,21 +70,22 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       image: DecorationImage(
                         image: banner != null
                             ? FileImage(banner!)
-                            : NetworkImage(profileController
-                                    .profileData?.banner ??
-                                'https://fastly.picsum.photos/id/229/200/300.jpg?hmac=WD1_MXzGKrVpaJj2Utxv7FoijRJ6h4S4zrBj7wmsx1U'),
+                            : NetworkImage(
+                                profileController.profileData?.banner ??
+                                    'https://fastly.picsum.photos/id/229/200/300.jpg?hmac=WD1_MXzGKrVpaJj2Utxv7FoijRJ6h4S4zrBj7wmsx1U',
+                              ) as ImageProvider,
                         fit: BoxFit.fill,
                       ),
                     ),
                     child: Padding(
-                      padding: EdgeInsets.all(12.0),
+                      padding: const EdgeInsets.all(12.0),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           CircleAvetareIconWidget(
                             iconData: Icons.arrow_back,
-                            bgColor: Color.fromARGB(133, 255, 255, 255),
+                            bgColor: const Color.fromARGB(133, 255, 255, 255),
                             iconColor: Colors.white,
                             ontap: () {
                               Get.back();
@@ -96,7 +93,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           ),
                           CircleAvetareIconWidget(
                             iconData: Icons.photo_camera,
-                            bgColor: Color.fromARGB(133, 255, 255, 255),
+                            bgColor: const Color.fromARGB(133, 255, 255, 255),
                             iconColor: Colors.white,
                             ontap: () {
                               _imagePickerHelper.showAlertDialog(context,
@@ -118,23 +115,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       height: 82.h,
                       width: 82.w,
                       decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(color: Colors.white)),
+                        shape: BoxShape.circle,
+                        border: Border.all(color: Colors.white),
+                      ),
                       child: CircleAvatar(
-                        backgroundImage: NetworkImage(profileController
-                                .profileData?.photoUrl ??
-                            'https://fastly.picsum.photos/id/229/200/300.jpg?hmac=WD1_MXzGKrVpaJj2Utxv7FoijRJ6h4S4zrBj7wmsx1U'),
+                        backgroundImage: image != null
+                            ? FileImage(image!) as ImageProvider
+                            : NetworkImage(
+                                profileController.profileData?.photoUrl ??
+                                    'https://fastly.picsum.photos/id/229/200/300.jpg?hmac=WD1_MXzGKrVpaJj2Utxv7FoijRJ6h4S4zrBj7wmsx1U',
+                              ) as ImageProvider,
                         radius: 40.r,
-                        child: image != null
-                            ? ClipOval(
-                                child: Image.file(
-                                  image!,
-                                  width: 100.w,
-                                  height: 100.h,
-                                  fit: BoxFit.cover,
-                                ),
-                              )
-                            : Container(),
                       ),
                     ),
                   ),
@@ -143,24 +134,20 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     left: (width / 2) - (82.w / 2),
                     child: ContainerCircleIcon(
                       iconData: Icons.edit,
-                      bgColor: Color.fromARGB(146, 255, 255, 255),
+                      bgColor: const Color.fromARGB(146, 255, 255, 255),
                       borderColor: Colors.white,
                       containerSize: 30,
                       iconColor: Colors.white,
                       ontap: () {
-                        _imagePickerHelper.showAlertDialog(
-                          context,
-                          (File pickedImage) {
-                            setState(
-                              () {
-                                image = pickedImage;
-                              },
-                            );
-                          },
-                        );
+                        _imagePickerHelper.showAlertDialog(context,
+                            (File pickedImage) {
+                          setState(() {
+                            image = pickedImage;
+                          });
+                        });
                       },
                     ),
-                  )
+                  ),
                 ],
               ),
               heightBox50,
@@ -173,20 +160,20 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     children: [
                       Text(
                         'Name',
-                        style:
-                            TextStyle(fontSize: 16.sp, color: Colors.white),
+                        style: TextStyle(fontSize: 16.sp, color: Colors.white),
                       ),
                       heightBox10,
                       TextFormField(
                         controller: nameCtrl,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
+                          hintText: 'Enter your name',
                           errorStyle: TextStyle(
-                              color: const Color.fromARGB(255, 237, 82, 82)),
+                              color: Color.fromARGB(255, 237, 82, 82)),
                         ),
                         autovalidateMode: AutovalidateMode.onUserInteraction,
-                        keyboardType: TextInputType.emailAddress,
+                        keyboardType: TextInputType.name,
                         validator: (String? value) {
-                          if (value!.isEmpty) {
+                          if (value == null || value.isEmpty) {
                             return 'Enter name';
                           }
                           return null;
@@ -195,21 +182,20 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       heightBox20,
                       Text(
                         'Username',
-                        style:
-                            TextStyle(fontSize: 16.sp, color: Colors.white),
+                        style: TextStyle(fontSize: 16.sp, color: Colors.white),
                       ),
                       heightBox10,
                       TextFormField(
-                       
                         controller: usernameCtrl,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
+                          hintText: 'Enter your username',
                           errorStyle: TextStyle(
-                              color: const Color.fromARGB(255, 237, 82, 82)),
+                              color: Color.fromARGB(255, 237, 82, 82)),
                         ),
                         autovalidateMode: AutovalidateMode.onUserInteraction,
-                        keyboardType: TextInputType.emailAddress,
+                        keyboardType: TextInputType.text,
                         validator: (String? value) {
-                          if (value!.isEmpty) {
+                          if (value == null || value.isEmpty) {
                             return 'Enter username';
                           }
                           return null;
@@ -218,22 +204,21 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       heightBox20,
                       Text(
                         'Bio',
-                        style:
-                            TextStyle(fontSize: 16.sp, color: Colors.white),
+                        style: TextStyle(fontSize: 16.sp, color: Colors.white),
                       ),
                       heightBox10,
                       TextFormField(
                         controller: bioCtrl,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           hintText: 'Enter your bio',
                           errorStyle: TextStyle(
-                              color: const Color.fromARGB(255, 237, 82, 82)),
+                              color: Color.fromARGB(255, 237, 82, 82)),
                         ),
                         autovalidateMode: AutovalidateMode.onUserInteraction,
-                        keyboardType: TextInputType.emailAddress,
+                        keyboardType: TextInputType.multiline,
                         maxLines: 2,
                         validator: (String? value) {
-                          if (value!.isEmpty) {
+                          if (value == null || value.isEmpty) {
                             return 'Enter bio';
                           }
                           return null;
@@ -242,22 +227,21 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       heightBox20,
                       Text(
                         'Gender',
-                        style:
-                            TextStyle(fontSize: 16.sp, color: Colors.white),
+                        style: TextStyle(fontSize: 16.sp, color: Colors.white),
                       ),
                       heightBox10,
                       DropdownButtonFormField<String>(
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         validator: (String? value) {
-                          if (value!.isEmpty) {
-                            return 'Enter gender';
+                          if (value == null || value.isEmpty) {
+                            return 'Select gender';
                           }
                           return null;
                         },
-                        decoration: InputDecoration(
-                          hintText: 'Gander',
+                        decoration: const InputDecoration(
+                          hintText: 'Select gender',
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
                           ),
                         ),
                         value: selectedGender,
@@ -284,16 +268,35 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               heightBox12,
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: ElevatedButton(
-                  onPressed: () {
-                    onTapToNextButton();
+                child: GetBuilder<SetupProfileController>(
+                  id: 'update_profile', // Added unique ID for GetBuilder
+                  builder: (controller) {
+                    return ElevatedButton(
+                      onPressed: controller.inProgress
+                          ? null
+                          : () async {
+                              if (_formKey.currentState!.validate()) {
+                                await onTapToNextButton();
+                              }
+                            },
+                      child: controller.inProgress
+                          ? const SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 2,
+                              ),
+                            )
+                          : const Text(
+                              'Update',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                    );
                   },
-                  child: Text(
-                    'Update',
-                    style: TextStyle(color: Colors.white),
-                  ),
                 ),
-              )
+              ),
+              heightBox20,
             ],
           ),
         ),
@@ -304,32 +307,36 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Future<void> onTapToNextButton() async {
     if (_formKey.currentState!.validate()) {
       final bool isSuccess = await setupProfileController.updateProfile(
-          nameCtrl.text,
-          usernameCtrl.text,
-          bioCtrl.text,
-          selectedGender ?? 'male',
-          image,
-          banner: banner);
+        nameCtrl.text,
+        usernameCtrl.text,
+        bioCtrl.text,
+        selectedGender ?? 'Male',
+        image,
+        banner: banner,
+      );
 
       if (isSuccess) {
         if (mounted) {
-          profileController.getMyProfile();
-          showSnackBarMessage(context, 'Profile updated');
-          Get.to(ProfileScreen());
-          
-        } else {
-          if (mounted) {
-            showSnackBarMessage(
-                context, setupProfileController.errorMessage!, true);
-          }
+          await profileController.getMyProfile();
+          // showSnackBarMessage(context, 'Profile updated successfully');
+          Get.to(() => const ProfileScreen());
         }
       } else {
         if (mounted) {
-          // print('Error show ----------------------------------');
           showSnackBarMessage(
-              context, setupProfileController.errorMessage!, true);
+              context,
+              setupProfileController.errorMessage ?? 'Failed to update profile',
+              true);
         }
       }
     }
+  }
+
+  @override
+  void dispose() {
+    nameCtrl.dispose();
+    usernameCtrl.dispose();
+    bioCtrl.dispose();
+    super.dispose();
   }
 }

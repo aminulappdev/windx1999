@@ -188,7 +188,7 @@ class _MyDrawerState extends State<MyDrawer> {
           yesOntap: () {
             StorageUtil.deleteData(StorageUtil.userAccessToken);
             StorageUtil.deleteData(StorageUtil.userId);
-            Get.to(LogInScreen());
+            Get.offAll(LogInScreen());
           },
           iconData: Icons.logout,
           subtitle: 'Do you want to log out this profile?',
@@ -302,7 +302,7 @@ class _MyDrawerState extends State<MyDrawer> {
     if (isSuccess) {
       StorageUtil.deleteData(StorageUtil.userAccessToken);
       StorageUtil.deleteData(StorageUtil.userId);
-      Get.to(LogInScreen());
+      Get.offAll(LogInScreen());
     } else {
       Get.snackbar(
         backgroundColor: Colors.red,

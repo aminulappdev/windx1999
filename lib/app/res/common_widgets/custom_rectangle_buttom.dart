@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -11,9 +10,12 @@ class CustomRectangleButton extends StatelessWidget {
     required this.radiusSize,
     required this.text,
     this.borderColor = const Color(0xff6CC7FE),
-     this.textSize = 18,
-    this.textColor = const Color.fromARGB(255, 0, 0, 0), required this.ontap,
+    this.textSize = 18,
+    this.textColor = const Color.fromARGB(255, 0, 0, 0),
+    required this.ontap,
+    this.child,
   });
+
   final Color borderColor;
   final Color bgColor;
   final double height;
@@ -23,6 +25,7 @@ class CustomRectangleButton extends StatelessWidget {
   final Color textColor;
   final VoidCallback ontap;
   final double textSize;
+  final Widget? child;
 
   @override
   Widget build(BuildContext context) {
@@ -32,15 +35,20 @@ class CustomRectangleButton extends StatelessWidget {
         height: height.h,
         width: width.w,
         decoration: BoxDecoration(
-            border: Border.all(color: borderColor),
-            borderRadius: BorderRadius.circular(radiusSize),
-            color: bgColor),
+          border: Border.all(color: borderColor),
+          borderRadius: BorderRadius.circular(radiusSize),
+          color: bgColor,
+        ),
         child: Center(
-          child: Text(
-            text,
-            style: TextStyle(
-                fontSize: textSize.sp, fontWeight: FontWeight.w600, color: textColor),
-          ),
+          child: child ??
+              Text(
+                text,
+                style: TextStyle(
+                  fontSize: textSize.sp,
+                  fontWeight: FontWeight.w600,
+                  color: textColor,
+                ),
+              ),
         ),
       ),
     );

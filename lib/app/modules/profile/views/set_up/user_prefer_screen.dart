@@ -49,7 +49,7 @@ class _UserPreferencesScreenState extends State<UserPreferencesScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     FeatureRow(
-                      title: 'Dark mode',
+                      title: 'Dark Mode',
                       isToggled: themeController.isDarkMode,
                       onToggle: (value) {
                         themeController.themeMode(value);
@@ -82,11 +82,29 @@ class _UserPreferencesScreenState extends State<UserPreferencesScreen> {
                   ],
                 ),
                 heightBox24,
-                ElevatedButton(
-                  onPressed: () {
-                    onTapToNextButton();
+                GetBuilder<UserPreferenceController>(
+                  builder: (controller) {
+                    return ElevatedButton(
+                      onPressed: controller.inProgress
+                          ? null
+                          : () async {
+                              await onTapToNextButton();
+                            },
+                      child: controller.inProgress
+                          ? const SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 2,
+                              ),
+                            )
+                          : const Text(
+                              'Save Preferences',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                    );
                   },
-                  child: Text('Save Preferences'),
                 ),
               ],
             ),
@@ -104,13 +122,16 @@ class _UserPreferencesScreenState extends State<UserPreferencesScreen> {
 
     if (isSuccess) {
       if (mounted) {
-        showSnackBarMessage(context, 'Profile updated successfully');
-        Get.to(() => BottomNavBarScreen());
+        showSnackBarMessage(context, 'Preferences updated successfully');
+        Get.offAll(() => const BottomNavBarScreen());
       }
     } else {
       if (mounted) {
         showSnackBarMessage(
-            context, userPreferenceController.errorMessage!, true);
+            context,
+            userPreferenceController.errorMessage ??
+                'Failed to update preferences',
+            true);
       }
     }
   }

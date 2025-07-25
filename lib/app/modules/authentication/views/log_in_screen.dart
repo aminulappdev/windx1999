@@ -196,7 +196,7 @@ class _LogInScreenState extends State<LogInScreen> {
       final bool isSuccess = await resendOtpController.resendOtp(email);
       var token = resendOtpController.resendOtpData?.token ?? 'Empty';
       print('ResendOtp: $token');
-      Get.to(() => EmailVerificationScreen(accessToken: token));
+      Get.to(() => EmailVerificationScreen(accessToken: token,email: email,));
     } else if (isSuccess) {
       await profileController.getMyProfile();
       print('User verified');

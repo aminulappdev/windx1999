@@ -206,7 +206,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                   ),
                 ),
                 heightBox24,
-                ElevatedButton(
+                ElevatedButton( 
                     onPressed: () {
                       onTapToNextButton();
                     },

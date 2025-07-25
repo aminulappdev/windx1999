@@ -40,7 +40,7 @@ class TokekDetailsScreen extends StatelessWidget {
                   children: [
                     CircleAvatar(
                       radius: 17.r,
-                      backgroundImage: AssetImage(AssetsPath.blackGirl),
+                      backgroundImage: NetworkImage(imagePath),
                     ),
                     widthBox5,
                     Column(

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/get_navigation.dart';
+import 'package:get/get.dart';
 import 'package:windx1999/app/modules/profile/controllers/setup_address_controller.dart';
 import 'package:windx1999/app/modules/profile/views/set_up/user_prefer_screen.dart';
 import 'package:windx1999/app/res/app_images/assets_path.dart';
@@ -12,9 +11,7 @@ import 'package:windx1999/app/res/common_widgets/custom_snackbar.dart';
 import 'package:windx1999/app/res/custom_style/custom_size.dart';
 
 class AddressScreen extends StatefulWidget {
-  const AddressScreen({
-    super.key,
-  });
+  const AddressScreen({super.key});
 
   @override
   State<AddressScreen> createState() => _AddressScreenState();
@@ -28,7 +25,7 @@ class _AddressScreenState extends State<AddressScreen> {
   final TextEditingController zipCodeNameCtrl = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final SetupAddressController setupAddressController =
-      SetupAddressController();
+      Get.put(SetupAddressController());
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +38,8 @@ class _AddressScreenState extends State<AddressScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 heightBox20,
-                CustomAppBar(title: 'Set up your Adress'),
+                CustomAppBar(
+                    title: 'Set Up Your Address'), // Fixed title capitalization
                 heightBox40,
                 SvgPicture.asset(
                   AssetsPath.address,
@@ -55,7 +53,7 @@ class _AddressScreenState extends State<AddressScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Country name',
+                        'Country Name',
                         style: TextStyle(fontSize: 16.sp, color: Colors.white),
                       ),
                       heightBox10,
@@ -63,13 +61,14 @@ class _AddressScreenState extends State<AddressScreen> {
                         controller: countryNameCtrl,
                         decoration: InputDecoration(
                           hintText: 'Enter country name',
-                          errorStyle: TextStyle(
-                              color: const Color.fromARGB(255, 237, 82, 82)),
+                          errorStyle: const TextStyle(
+                              color: Color.fromARGB(255, 237, 82, 82)),
                         ),
                         autovalidateMode: AutovalidateMode.onUserInteraction,
-                        keyboardType: TextInputType.emailAddress,
+                        keyboardType:
+                            TextInputType.text, // Changed to TextInputType.text
                         validator: (String? value) {
-                          if (value!.isEmpty) {
+                          if (value == null || value.isEmpty) {
                             return 'Enter country name';
                           }
                           return null;
@@ -85,13 +84,14 @@ class _AddressScreenState extends State<AddressScreen> {
                         controller: addresseCtrl,
                         decoration: InputDecoration(
                           hintText: 'Enter your address',
-                          errorStyle: TextStyle(
-                              color: const Color.fromARGB(255, 237, 82, 82)),
+                          errorStyle: const TextStyle(
+                              color: Color.fromARGB(255, 237, 82, 82)),
                         ),
                         autovalidateMode: AutovalidateMode.onUserInteraction,
-                        keyboardType: TextInputType.emailAddress,
+                        keyboardType: TextInputType
+                            .streetAddress, // Changed to streetAddress
                         validator: (String? value) {
-                          if (value!.isEmpty) {
+                          if (value == null || value.isEmpty) {
                             return 'Enter address';
                           }
                           return null;
@@ -107,13 +107,14 @@ class _AddressScreenState extends State<AddressScreen> {
                         controller: cityCtrl,
                         decoration: InputDecoration(
                           hintText: 'Enter your city',
-                          errorStyle: TextStyle(
-                              color: const Color.fromARGB(255, 237, 82, 82)),
+                          errorStyle: const TextStyle(
+                              color: Color.fromARGB(255, 237, 82, 82)),
                         ),
                         autovalidateMode: AutovalidateMode.onUserInteraction,
-                        keyboardType: TextInputType.emailAddress,
+                        keyboardType:
+                            TextInputType.text, // Changed to TextInputType.text
                         validator: (String? value) {
-                          if (value!.isEmpty) {
+                          if (value == null || value.isEmpty) {
                             return 'Enter city';
                           }
                           return null;
@@ -131,24 +132,25 @@ class _AddressScreenState extends State<AddressScreen> {
                                 Text(
                                   'State',
                                   style: TextStyle(
-                                      fontSize: 16, color: Colors.white),
+                                      fontSize: 16.sp, color: Colors.white),
                                 ),
                                 heightBox10,
                                 TextFormField(
                                   controller: stateNameCtrl,
                                   decoration: InputDecoration(
                                     hintText: 'Enter your state',
-                                    errorStyle: TextStyle(
-                                        color: const Color.fromARGB(
-                                            255, 237, 82, 82)),
+                                    errorStyle: const TextStyle(
+                                        color:
+                                            Color.fromARGB(255, 237, 82, 82)),
                                   ),
                                   autovalidateMode:
                                       AutovalidateMode.onUserInteraction,
+                                  keyboardType: TextInputType
+                                      .text, // Changed to TextInputType.text
                                   validator: (String? value) {
-                                    if (value!.isEmpty) {
+                                    if (value == null || value.isEmpty) {
                                       return 'Enter state';
                                     }
-
                                     return null;
                                   },
                                 ),
@@ -170,41 +172,59 @@ class _AddressScreenState extends State<AddressScreen> {
                                   controller: zipCodeNameCtrl,
                                   decoration: InputDecoration(
                                     hintText: 'Enter your zip code',
-                                    errorStyle: TextStyle(
-                                        color: const Color.fromARGB(
-                                            255, 237, 82, 82)),
+                                    errorStyle: const TextStyle(
+                                        color:
+                                            Color.fromARGB(255, 237, 82, 82)),
                                   ),
                                   autovalidateMode:
                                       AutovalidateMode.onUserInteraction,
                                   keyboardType: TextInputType.number,
                                   validator: (String? value) {
-                                    if (value!.isEmpty) {
+                                    if (value == null || value.isEmpty) {
                                       return 'Enter zip code';
                                     }
-
                                     return null;
                                   },
                                 ),
                               ],
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ],
                   ),
                 ),
                 heightBox24,
-                ElevatedButton(
-                    onPressed: () {
-                      onTapToNextButton(
-                          '',
-                          countryNameCtrl.text,
-                          addresseCtrl.text,
-                          cityCtrl.text,
-                          stateNameCtrl.text,
-                          zipCodeNameCtrl.text);
-                    },
-                    child: Text('Save'))
+                GetBuilder<SetupAddressController>(
+                  builder: (controller) {
+                    return ElevatedButton(
+                      onPressed: controller.inProgress
+                          ? null
+                          : () async {
+                              if (_formKey.currentState!.validate()) {
+                                await onTapToNextButton(
+                                  '',
+                                  countryNameCtrl.text,
+                                  addresseCtrl.text,
+                                  cityCtrl.text,
+                                  stateNameCtrl.text,
+                                  zipCodeNameCtrl.text,
+                                );
+                              }
+                            },
+                      child: controller.inProgress
+                          ? const SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 2,
+                              ),
+                            )
+                          : const Text('Save'),
+                    );
+                  },
+                ),
               ],
             ),
           ),
@@ -220,14 +240,26 @@ class _AddressScreenState extends State<AddressScreen> {
 
     if (isSuccess) {
       if (mounted) {
-        showSnackBarMessage(context, 'Successfully done');
-        Get.to(UserPreferencesScreen());
+        showSnackBarMessage(context, 'Address updated successfully');
+        Get.to(() => const UserPreferencesScreen());
       }
     } else {
       if (mounted) {
         showSnackBarMessage(
-            context, setupAddressController.errorMessage ?? 'failed', true);
+            context,
+            setupAddressController.errorMessage ?? 'Failed to update address',
+            true);
       }
     }
+  }
+
+  @override
+  void dispose() {
+    countryNameCtrl.dispose();
+    addresseCtrl.dispose();
+    cityCtrl.dispose();
+    stateNameCtrl.dispose();
+    zipCodeNameCtrl.dispose();
+    super.dispose();
   }
 }

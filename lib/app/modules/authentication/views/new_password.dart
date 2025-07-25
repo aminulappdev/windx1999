@@ -11,8 +11,10 @@ import 'package:windx1999/app/res/common_widgets/custom_snackbar.dart';
 import 'package:windx1999/app/res/custom_style/custom_size.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
+  final String email;
   final String otpToken;
-  const ResetPasswordScreen({super.key, required this.otpToken});
+  const ResetPasswordScreen(
+      {super.key, required this.otpToken, required this.email});
 
   @override
   State<ResetPasswordScreen> createState() => _ResetPasswordScreenState();
@@ -151,9 +153,12 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     );
   }
 
-  Future<void> resetPasswordBTN(String password, String confirmPassword,) async {
-    final bool isSuccess =
-        await resetPasswordController.resetPassword(password, confirmPassword, widget.otpToken);
+  Future<void> resetPasswordBTN(
+    String password,
+    String confirmPassword,
+  ) async {
+    final bool isSuccess = await resetPasswordController.resetPassword(
+        widget.email, password, confirmPassword, widget.otpToken);
 
     if (isSuccess) {
       if (mounted) {

@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:windx1999/app/modules/homepage/controller/unFollow_request_controller.dart';
 import 'package:windx1999/app/modules/post/controller/all_post_controller.dart';
 import 'package:windx1999/app/modules/profile/controllers/all_following_controller.dart';
-import 'package:windx1999/app/res/app_images/assets_path.dart';
 import 'package:windx1999/app/res/common_widgets/custom_app_bar.dart';
 import 'package:windx1999/app/res/common_widgets/custom_background.dart';
 import 'package:windx1999/app/res/common_widgets/custom_rectangle_buttom.dart';
@@ -12,8 +11,10 @@ import 'package:windx1999/app/res/common_widgets/custom_snackbar.dart';
 import 'package:windx1999/app/res/custom_style/custom_size.dart';
 
 class FollowingScreen extends StatefulWidget {
+  final bool isMyPage;
   final String userId;
-  const FollowingScreen({super.key, required this.userId});
+  const FollowingScreen(
+      {super.key, required this.userId, required this.isMyPage});
 
   @override
   State<FollowingScreen> createState() => _FollowingScreenState();
@@ -82,22 +83,36 @@ class _FollowingScreenState extends State<FollowingScreen> {
                                 ),
                               ],
                             ),
-                            CustomRectangleButton(
-                              bgColor: Colors.white,
-                              height: 32,
-                              width: 82,
-                              radiusSize: 8,
-                              text: 'Unfollow',
-                              ontap: () {
-                                unFollowRequest(controller
-                                        .allFollowersData![index]
-                                        .following
-                                        ?.id ??
-                                    '');
-                              },
-                              textSize: 14,
-                              borderColor: Colors.white,
-                            )
+                            widget.isMyPage
+                                ? CustomRectangleButton(
+                                    bgColor: Colors.white,
+                                    height: 32,
+                                    width: 82,
+                                    radiusSize: 8,
+                                    text: 'Unfollow',
+                                    ontap: () {
+                                      unFollowRequest(controller
+                                              .allFollowersData![index]
+                                              .following
+                                              ?.id ??
+                                          '');
+                                    },
+                                    textSize: 14,
+                                    borderColor: Colors.white,
+                                  )
+                                : Opacity(
+                                  opacity: 0.50,
+                                  child: CustomRectangleButton(
+                                      bgColor: Colors.white,
+                                      height: 32,
+                                      width: 82,
+                                      radiusSize: 8,
+                                      text: 'Unfollow',
+                                      ontap: () {},
+                                      textSize: 14,
+                                      borderColor: Colors.white,
+                                    ),
+                                )
                           ],
                         ),
                       );
