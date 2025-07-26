@@ -321,7 +321,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     'name': 'Report profile',
                                                     'ontap': () {
                                                       Get.to(ReportScreen(
-                                                          reportType: 'user',
+                                                          reportType: 'User',
                                                           reportId:
                                                               post.author?.id ??
                                                                   ''));
