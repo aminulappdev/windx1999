@@ -1,5 +1,4 @@
-// ignore_for_file: avoid_print
-
+// CreateWishListController.dart
 import 'dart:convert';
 import 'package:file_picker/file_picker.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
@@ -21,15 +20,16 @@ class CreateWishListController extends GetxController {
 
   /// 🔁 Create Post Function (with optional contentFile)
   Future<bool> createWishList(String authorId, String title, String description,
-      String link, dynamic price,
+      String link, dynamic price, dynamic token,
       {PlatformFile? contentFile}) async {
     bool isSuccess = false;
     _inProgress = true;
     update();
+    print('Total tokens are : $token');
 
     try {
-      String? token = StorageUtil.getData(StorageUtil.userAccessToken);
-      if (token == null || token.isEmpty) {
+      String? accessToken = StorageUtil.getData(StorageUtil.userAccessToken);
+      if (accessToken == null || accessToken.isEmpty) {
         _errorMessage = "User not authenticated";
         _inProgress = false;
         update();
@@ -40,7 +40,7 @@ class CreateWishListController extends GetxController {
       var request = http.MultipartRequest('POST', uri);
 
       // ✅ Authorization header
-      request.headers['Authorization'] = token;
+      request.headers['Authorization'] = accessToken;
 
       // ✅ Set request fields
       Map<String, dynamic> jsonFields = {
@@ -48,7 +48,8 @@ class CreateWishListController extends GetxController {
         "title": title,
         "description": description,
         "link": link,
-        "price": int.parse(price)
+        "price": price.isNotEmpty ? int.tryParse(price) ?? 0 : 0, // Handle price safely
+        "token": token, // Include totalTokens in the request
       };
 
       request.fields['data'] = jsonEncode(jsonFields);
@@ -56,8 +57,7 @@ class CreateWishListController extends GetxController {
       // ✅ Add content file (image or video)
       if (contentFile != null && contentFile.path != null) {
         String filePath = contentFile.path!;
-        String? mimeType =
-            lookupMimeType(filePath) ?? 'application/octet-stream';
+        String? mimeType = lookupMimeType(filePath) ?? 'application/octet-stream';
 
         request.files.add(
           await http.MultipartFile.fromPath(

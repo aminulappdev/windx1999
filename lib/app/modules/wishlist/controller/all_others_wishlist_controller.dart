@@ -12,7 +12,7 @@ class AllOthersWishlistController extends GetxController {
   bool get inProgress => _inProgress;
 
   String? _errorMessage;
-  String? get errorMessage => _errorMessage;
+  String? get errorMessage => _errorMessage; 
 
   AllWishlistModel? allWishlistModel;
   List<AllWishlistItemModel>? get allWishlistData => allWishlistModel?.data;
