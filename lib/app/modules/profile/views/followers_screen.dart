@@ -5,6 +5,7 @@ import 'package:windx1999/app/modules/chat/controllers/add_chat_controller.dart'
 import 'package:windx1999/app/modules/homepage/controller/follow_request_controller.dart';
 import 'package:windx1999/app/modules/post/controller/all_post_controller.dart';
 import 'package:windx1999/app/modules/profile/controllers/all_followers_controller.dart';
+import 'package:windx1999/app/modules/profile/views/others_profile/others_profile_screen.dart';
 import 'package:windx1999/app/res/common_widgets/custom_app_bar.dart';
 import 'package:windx1999/app/res/common_widgets/custom_background.dart';
 import 'package:windx1999/app/res/common_widgets/custom_rectangle_buttom.dart';
@@ -50,77 +51,99 @@ class _FollowersScreenState extends State<FollowersScreen> {
               heightBox12,
               GetBuilder<AllFollowersController>(builder: (controller) {
                 if (controller.inProgress) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-                return Expanded(
-                  child: ListView.builder(
-                    padding: EdgeInsets.zero,
-                    itemCount: controller.allFollowersData?.length ?? 0,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: EdgeInsets.all(8.0.h),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                CircleAvatar(
-                                  radius: 20.r,
-                                  backgroundImage: NetworkImage(controller
-                                          .allFollowersData![index]
-                                          .follower
-                                          ?.photoUrl ??
-                                      ''),
+                  return SizedBox(
+                      height: 700,
+                      child: const Center(child: CircularProgressIndicator()));
+                } else if (controller.allFollowersData!.isEmpty) {
+                  return SizedBox(
+                      height: 700,
+                      width: double.infinity,
+                      child: Center(
+                          child: Text(
+                        'No followers available',
+                        style: TextStyle(color: Colors.white),
+                      )));
+                } else {
+                  return Expanded(
+                    child: ListView.builder(
+                      padding: EdgeInsets.zero,
+                      itemCount: controller.allFollowersData?.length ?? 0,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: EdgeInsets.all(8.0.h),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  Get.to(OthersProfileScreen(
+                                      userId: controller
+                                              .allFollowersData![index]
+                                              .follower!
+                                              .id ??
+                                          ''));
+                                },
+                                child: Row(
+                                  children: [
+                                    CircleAvatar(
+                                      radius: 20.r,
+                                      backgroundImage: NetworkImage(controller
+                                              .allFollowersData![index]
+                                              .follower
+                                              ?.photoUrl ??
+                                          ''),
+                                    ),
+                                    widthBox8,
+                                    Text(
+                                      controller.allFollowersData![index]
+                                              .follower!.name ??
+                                          '',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 16.sp,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  ],
                                 ),
-                                widthBox8,
-                                Text(
-                                  controller.allFollowersData![index].follower!
-                                          .name ??
-                                      '',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              ],
-                            ),
-                            widget.isMyPage
-                                ? CustomRectangleButton(
-                                    bgColor: Colors.lightBlue,
-                                    height: 32,
-                                    width: 90,
-                                    radiusSize: 8,
-                                    text: 'Follow back',
-                                    ontap: () {
-                                      followRequest(controller
-                                          .allFollowersData![index]
-                                          .follower!
-                                          .id!);
-                                    },
-                                    textSize: 12,
-                                    borderColor: Colors.lightBlue,
-                                    textColor: Colors.white,
-                                  )
-                                : Opacity(
-                                    opacity: 0.5,
-                                    child: CustomRectangleButton(
+                              ),
+                              widget.isMyPage
+                                  ? CustomRectangleButton(
                                       bgColor: Colors.lightBlue,
                                       height: 32,
                                       width: 90,
                                       radiusSize: 8,
                                       text: 'Follow back',
-                                      ontap: () {},
+                                      ontap: () {
+                                        followRequest(controller
+                                            .allFollowersData![index]
+                                            .follower!
+                                            .id!);
+                                      },
                                       textSize: 12,
                                       borderColor: Colors.lightBlue,
                                       textColor: Colors.white,
-                                    ),
-                                  )
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                );
+                                    )
+                                  : Opacity(
+                                      opacity: 0.5,
+                                      child: CustomRectangleButton(
+                                        bgColor: Colors.lightBlue,
+                                        height: 32,
+                                        width: 90,
+                                        radiusSize: 8,
+                                        text: 'Follow back',
+                                        ontap: () {},
+                                        textSize: 12,
+                                        borderColor: Colors.lightBlue,
+                                        textColor: Colors.white,
+                                      ),
+                                    )
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                }
               })
             ],
           ),

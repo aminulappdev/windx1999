@@ -181,16 +181,15 @@ class _HomeScreenState extends State<HomeScreen> {
                         return Center(child: CircularProgressIndicator());
                       }
 
-                      if (allPostController.postList == null ||
-                          allPostController.postList!.isEmpty) {
+                      if (allPostController.postList.isEmpty) {
                         return Center(child: Text('No posts available'));
                       }
                       return ListView.builder(
                         controller: scrollController,
                         padding: EdgeInsets.zero,
-                        itemCount: allPostController.postList?.length ?? 0,
-                        itemBuilder: (context, index) {
-                          final post = allPostController.postList![index];
+                        itemCount: allPostController.postList.length,
+                        itemBuilder: (context, index) { 
+                          final post = allPostController.postList[index];
                           final dateFormatter =
                               DateFormatter(post.createdAt ?? DateTime.now());
                           return post.isHide == false
@@ -471,7 +470,7 @@ class _HomeScreenState extends State<HomeScreen> {
       int index = allPostController.postList
               ?.indexWhere((post) => post.contentMeta?.id == postId) ??
           -1;
-      if (index != -1 && allPostController.postList != null) {
+      if (index != -1) {
         int currentLikes =
             allPostController.postList![index].contentMeta?.like ?? 0;
         allPostController.updatePostLike(postId, true, currentLikes + 1);
@@ -491,9 +490,8 @@ class _HomeScreenState extends State<HomeScreen> {
     final bool isSuccess = await disReactPostController.disReactPost(postId);
     if (isSuccess) {
       int index = allPostController.postList
-              ?.indexWhere((post) => post.contentMeta?.id == postId) ??
-          -1;
-      if (index != -1 && allPostController.postList != null) {
+          .indexWhere((post) => post.contentMeta?.id == postId);
+      if (index != -1) {
         int currentLikes =
             allPostController.postList![index].contentMeta?.like ?? 0;
         allPostController.updatePostLike(

@@ -105,6 +105,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                       ),
                       heightBox10,
                       TextFormField(
+                        maxLength: 30,
                         controller: nameCtrl,
                         decoration: InputDecoration(
                           hintText: 'Enter your name',
@@ -127,6 +128,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                       ),
                       heightBox10,
                       TextFormField(
+                        maxLength: 20,
                         controller: usernameCtrl,
                         decoration: InputDecoration(
                           hintText: 'username',
@@ -149,6 +151,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                       ),
                       heightBox10,
                       TextFormField(
+                        maxLength: 150,
                         controller: bioCtrl,
                         decoration: InputDecoration(
                           hintText: 'Enter your bio',
@@ -180,7 +183,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                           return null;
                         },
                         decoration: InputDecoration(
-                          hintText: 'Gander',
+                          hintText: 'Gender',
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),

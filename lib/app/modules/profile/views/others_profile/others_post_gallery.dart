@@ -48,7 +48,13 @@ class _OthersPostGalleryState extends State<OthersPostGallery> {
             final feedData = controller.allFeedData;
 
             if (feedData == null || feedData.isEmpty) {
-              return const Center(child: Text('No media available', style: TextStyle(color: Colors.white)));
+              return SizedBox(
+                  height: 250,
+                  child: const Center(
+                      child: Text(
+                    'No media available',
+                    style: TextStyle(color: Colors.white),
+                  )));
             }
 
             return Expanded(

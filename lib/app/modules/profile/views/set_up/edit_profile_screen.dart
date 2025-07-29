@@ -44,6 +44,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           nameCtrl.text = profileController.profileData?.name ?? '';
           usernameCtrl.text = profileController.profileData?.username ?? '';
           bioCtrl.text = profileController.profileData?.bio ?? '';
+          // Set selectedGender from API response
+          // selectedGender = profileController.profileData?. ?? 'Male'; // Default to 'Male' if null
         });
       }
     });
@@ -59,7 +61,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              heightBox30,
               Stack(
                 clipBehavior: Clip.none,
                 children: [
@@ -74,11 +75,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                 profileController.profileData?.banner ??
                                     'https://fastly.picsum.photos/id/229/200/300.jpg?hmac=WD1_MXzGKrVpaJj2Utxv7FoijRJ6h4S4zrBj7wmsx1U',
                               ) as ImageProvider,
-                        fit: BoxFit.fill,
+                        fit: BoxFit.cover,
                       ),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.all(12.0),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 40, horizontal: 12),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -164,6 +166,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       ),
                       heightBox10,
                       TextFormField(
+                        maxLength: 30,
                         controller: nameCtrl,
                         decoration: const InputDecoration(
                           hintText: 'Enter your name',
@@ -186,6 +189,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       ),
                       heightBox10,
                       TextFormField(
+                        maxLength: 20,
                         controller: usernameCtrl,
                         decoration: const InputDecoration(
                           hintText: 'Enter your username',
@@ -208,6 +212,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       ),
                       heightBox10,
                       TextFormField(
+                        maxLength: 150,
                         controller: bioCtrl,
                         decoration: const InputDecoration(
                           hintText: 'Enter your bio',
@@ -269,7 +274,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: GetBuilder<SetupProfileController>(
-                  id: 'update_profile', // Added unique ID for GetBuilder
+                  id: 'update_profile',
                   builder: (controller) {
                     return ElevatedButton(
                       onPressed: controller.inProgress
@@ -319,7 +324,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         if (mounted) {
           await profileController.getMyProfile();
           // showSnackBarMessage(context, 'Profile updated successfully');
-          Get.to(() => const ProfileScreen());
+          Get.back();
         }
       } else {
         if (mounted) {

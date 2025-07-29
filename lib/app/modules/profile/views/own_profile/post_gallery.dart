@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:windx1999/app/modules/homepage/widgets/image_container.dart';
-import 'package:windx1999/app/modules/homepage/widgets/post_card.dart';
 import 'package:windx1999/app/modules/profile/controllers/all_feed_controller.dart';
-import 'package:windx1999/app/modules/profile/widgets/profile_dropdown.dart';
 import 'package:windx1999/app/res/custom_style/custom_size.dart';
 import 'package:windx1999/get_storage.dart';
 
@@ -55,14 +53,6 @@ class _PostGalleryState extends State<PostGallery> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // FilterDropdown(
-          //   selectedOption: selectedOption,
-          //   onOptionChanged: (String? newValue) {
-          //     setState(() {
-          //       selectedOption = newValue ?? 'All'; // Handle null value
-          //     });
-          //   },
-          // ),
           Text('All images and videos', style: TextStyle(color: Colors.white, fontSize: 18.sp,fontWeight: FontWeight.w600)),
           heightBox12,
           GetBuilder<AllFeedController>(builder: (controller) {
@@ -74,7 +64,9 @@ class _PostGalleryState extends State<PostGallery> {
             final filteredData = _filterFeedData(controller.allFeedData);
 
             if (filteredData.isEmpty) {
-              return const Center(child: Text('No media available'));
+              return SizedBox(
+                height: 250,
+                child: const Center(child: Text('No media available',style: TextStyle(color: Colors.white),)));
             }
 
             return Expanded(

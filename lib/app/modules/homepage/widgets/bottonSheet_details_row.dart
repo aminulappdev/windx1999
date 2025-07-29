@@ -17,25 +17,29 @@ class ButtonSheetDetailsRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        GestureDetector(
+        InkWell(
           onTap: ontap,
-          child: Row(
-            children: [
-              Icon(
-                icon,
-                size: 24.h,
-                color: Colors.white,
-              ),
-              widthBox14,
-              Text(
-                name,
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w500),
-              )
-            ],
+          child: SizedBox(
+            width: 350,
+            child: Row(
+              children: [
+                Icon(
+                  icon,
+                  size: 24.h,
+                  color: Colors.white,
+                ),
+                widthBox14,
+                Text(
+                  name,
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w500),
+                )
+              ],
+            ),
           ),
         ),
         heightBox4,

@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:windx1999/app/modules/authentication/views/changed_password.dart';
-import 'package:windx1999/app/modules/authentication/views/two_factor_screen.dart';
 import 'package:windx1999/app/res/common_widgets/straight_liner.dart';
 import 'package:windx1999/app/res/custom_style/custom_size.dart';
 
-class YourAccount extends StatefulWidget {
+class YourAccount extends StatefulWidget { 
   const YourAccount({super.key});
 
   @override
@@ -24,13 +23,15 @@ class _YourAccountState extends State<YourAccount> {
           Center(child: Text('Your Account',style: TextStyle(color: Colors.white,fontSize: 16),)),
           heightBox20,
           StraightLiner(),
-          heightBox50,
+          heightBox20,
           InkWell(
             onTap: () {
               Get.to(ChangedPasswordScreen());
             },
-            child: Text('Changed password',style: TextStyle(color: Colors.white,fontSize: 14),)),
-          heightBox20,
+            child: SizedBox(
+              width: 350,
+              child: Text('Changed password',style: TextStyle(color: Colors.white,fontSize: 14),))),
+          heightBox10,
           StraightLiner(),
          
           heightBox100

@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:windx1999/app/modules/common/controllers/save_my_post_controller.dart';
 import 'package:windx1999/app/modules/homepage/controller/delete_save_post_controller.dart';
-import 'package:windx1999/app/res/app_images/assets_path.dart';
+import 'package:windx1999/app/modules/post/views/post_details_page.dart';
 import 'package:windx1999/app/res/common_widgets/custom_app_bar.dart';
 import 'package:windx1999/app/res/common_widgets/custom_background.dart';
 import 'package:windx1999/app/res/common_widgets/custom_dialoge.dart';
@@ -43,7 +43,19 @@ class _SaveItemScreenState extends State<SaveItemScreen> {
               heightBox16,
               GetBuilder<SaveAllPostController>(builder: (controller) {
                 if (controller.inProgress) {
-                  return const Center(child: CircularProgressIndicator());
+                  return SizedBox(
+                      height: 700,
+                      child: const Center(child: CircularProgressIndicator()));
+                }
+                if (controller.savePostData!.isEmpty) {
+                  return SizedBox(
+                      height: 700,
+                      width: double.infinity,
+                      child: Center(
+                          child: Text(
+                        'No save data available',
+                        style: TextStyle(color: Colors.white),
+                      )));
                 }
                 return Expanded(
                   child: ListView.builder(
@@ -55,62 +67,72 @@ class _SaveItemScreenState extends State<SaveItemScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Row(
-                              children: [
-                                controller.savePostData![index].content!.content
-                                        .isEmpty
-                                    ? const SizedBox()
-                                    : ImageContainer(
-                                        imagePath: controller
-                                                .savePostData![index]
-                                                .content
-                                                ?.content[0] ??
-                                            '',
-                                        height: 62,
-                                        width: 60,
-                                        borderRadius: 8,
-                                        borderColor: Colors.transparent),
-                                widthBox8,
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(
-                                      width: controller.savePostData![index]
-                                              .content!.content.isEmpty
-                                          ? 300.w
-                                          : 235.w,
-                                      child: Text(
-                                        controller.savePostData![index].content
-                                                ?.description ??
-                                            '',
-                                        style: TextStyle(
-                                            fontSize: 16.sp,
-                                            fontWeight: FontWeight.w600,
-                                            color: Colors.white),
-                                      ),
-                                    ),
-                                    heightBox4,
-                                    Row(
-                                      children: [
-                                        CircleAvatar(
-                                          radius: 3.h,
-                                          backgroundColor: Colors.blue,
-                                        ),
-                                        widthBox8,
-                                        Text(
-                                          controller
-                                              .savePostData![index].modelType
-                                              .toString(),
+                            InkWell(
+                              onTap: () {
+                                Get.to(PostDetailsPage(
+                                  contentId: controller
+                                          .savePostData![index].content?.id ??
+                                      '',
+                                ));
+                              },
+                              child: Row(
+                                children: [
+                                  controller.savePostData![index].content!
+                                          .content.isEmpty
+                                      ? const SizedBox()
+                                      : ImageContainer(
+                                          imagePath: controller
+                                                  .savePostData![index]
+                                                  .content
+                                                  ?.content[0] ??
+                                              '',
+                                          height: 62,
+                                          width: 60,
+                                          borderRadius: 8,
+                                          borderColor: Colors.transparent),
+                                  widthBox8,
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
+                                        width: controller.savePostData![index]
+                                                .content!.content.isEmpty
+                                            ? 300.w
+                                            : 235.w,
+                                        child: Text(
+                                          controller.savePostData![index]
+                                                  .content?.description ??
+                                              '',
                                           style: TextStyle(
-                                              fontSize: 12.sp,
+                                              fontSize: 16.sp,
                                               fontWeight: FontWeight.w600,
                                               color: Colors.white),
                                         ),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                              ],
+                                      ),
+                                      heightBox4,
+                                      Row(
+                                        children: [
+                                          CircleAvatar(
+                                            radius: 3.h,
+                                            backgroundColor: Colors.blue,
+                                          ),
+                                          widthBox8,
+                                          Text(
+                                            controller
+                                                .savePostData![index].modelType
+                                                .toString(),
+                                            style: TextStyle(
+                                                fontSize: 12.sp,
+                                                fontWeight: FontWeight.w600,
+                                                color: Colors.white),
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
                             IconButton(
                               onPressed: () {

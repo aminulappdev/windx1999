@@ -67,6 +67,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                           heightBox10,
                           TextFormField(
+                            maxLength: 30,
                             controller: nameCtrl,
                             decoration: InputDecoration(
                               hintText: 'full name',
@@ -85,7 +86,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                         ],
                       ),
-                      heightBox24,
+                      heightBox10,
                       Text(
                         'Email',
                         style: TextStyle(fontSize: 16.sp, color: Colors.white),
@@ -146,40 +147,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                       ),
                       heightBox24,
-                      // Text(
-                      //   'Confirm password',
-                      //   style: TextStyle(fontSize: 16.sp, color: Colors.white),
-                      // ),
-                      // heightBox10,
-                      // TextFormField(
-                      //   controller: confirmPasswordCtrl,
-                      //   autovalidateMode: AutovalidateMode.onUserInteraction,
-                      //   validator: (String? value) {
-                      //     if (value!.isEmpty) {
-                      //       return 'Enter confirm password';
-                      //     }
-                      //     return null;
-                      //   },
-                      //   obscureText: _obscureConfirmText,
-                      //   decoration: InputDecoration(
-                      //     errorStyle: TextStyle(
-                      //         color: const Color.fromARGB(255, 237, 82, 82)),
-                      //     suffixIcon: IconButton(
-                      //       icon: Icon(
-                      //         _obscureConfirmText
-                      //             ? Icons.visibility_off
-                      //             : Icons.visibility,
-                      //         color: Colors.grey,
-                      //       ),
-                      //       onPressed: () {
-                      //         setState(() {
-                      //           _obscureConfirmText = !_obscureConfirmText;
-                      //         });
-                      //       },
-                      //     ),
-                      //     hintText: 'Enter confirm password',
-                      //   ),
-                      // ),
+                     
                     ],
                   ),
                 ),

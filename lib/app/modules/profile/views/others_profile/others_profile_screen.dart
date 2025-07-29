@@ -108,7 +108,7 @@ class _OthersProfileScreenState extends State<OthersProfileScreen> {
                           othersProfileController.otherProfileData?.banner ??
                               'https://fastly.picsum.photos/id/17/200/300.jpg?hmac=a_Eowf7JMfHVEQi6MENyokjh5hhzVOqoXH6pUXxYKtU',
                         ),
-                        fit: BoxFit.fill,
+                        fit: BoxFit.cover,
                       ),
                     ),
                     child: Padding(

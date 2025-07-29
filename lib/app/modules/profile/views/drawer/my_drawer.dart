@@ -56,12 +56,11 @@ class _MyDrawerState extends State<MyDrawer> {
             children: <Widget>[
               GetBuilder<ContentController>(builder: (contentController) {
                 return Padding(
-                  padding: EdgeInsets.all(16.r),
+                  padding: EdgeInsets.symmetric(vertical: 0, horizontal: 16.r),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      heightBox16,
-                      heightBox20,
+                      heightBox10,
                       CustomAppBar(title: 'Settings'),
                       heightBox40,
                       costomRow(context, Icons.person, 'Your Account',
@@ -225,31 +224,31 @@ class _MyDrawerState extends State<MyDrawer> {
     VoidCallback navigator,
   ) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            GestureDetector(
-              onTap: navigator,
-              child: Row(
-                children: [
-                  Icon(
-                    size: 24.h,
-                    circleIcon,
-                    color: Colors.white,
-                  ),
-                  widthBox12,
-                  Text(
-                    name,
-                    style: GoogleFonts.notoSansMyanmar(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.white),
-                  )
-                ],
-              ),
+        InkWell(
+          onTap: navigator,
+          child: SizedBox(
+            width: 250,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Icon(
+                  size: 24.h,
+                  circleIcon,
+                  color: Colors.white,
+                ),
+                widthBox12,
+                Text(
+                  name,
+                  style: GoogleFonts.notoSansMyanmar(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.white),
+                )
+              ],
             ),
-          ],
+          ),
         ),
         heightBox8,
         StraightLiner()
@@ -264,31 +263,31 @@ class _MyDrawerState extends State<MyDrawer> {
     VoidCallback navigator,
   ) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            GestureDetector(
-              onTap: navigator,
-              child: Row(
-                children: [
-                  Icon(
-                    size: 24.h,
-                    circleIcon,
-                    color: Colors.white,
-                  ),
-                  widthBox12,
-                  Text(
-                    name,
-                    style: GoogleFonts.notoSansMyanmar(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.white),
-                  )
-                ],
-              ),
+        InkWell(
+          onTap: navigator,
+          child: SizedBox(
+            width: 250,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Icon(
+                  size: 24.h,
+                  circleIcon,
+                  color: Colors.white,
+                ),
+                widthBox12,
+                Text(
+                  name,
+                  style: GoogleFonts.notoSansMyanmar(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.white),
+                )
+              ],
             ),
-          ],
+          ),
         ),
         heightBox8,
         StraightLiner()

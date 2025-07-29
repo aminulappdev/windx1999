@@ -36,7 +36,7 @@ class Urls {
   static const String sendCommentUrl = '$_baseUrl/comments';
   static const String contentUrl = '$_baseUrl/contents';
 
-   static String updateUserByUrl(
+  static String updateUserByUrl(
     String id,
   ) {
     return '$_baseUrl/users/update/$id';
@@ -46,6 +46,12 @@ class Urls {
     String id,
   ) {
     return '$_baseUrl/comments/content/$id';
+  }
+
+  static String postDetailsById(
+    String id,
+  ) {
+    return '$_baseUrl/feeds/$id';
   }
 
   static String allFollowersById(

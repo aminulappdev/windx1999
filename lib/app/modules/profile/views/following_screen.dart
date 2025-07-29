@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:windx1999/app/modules/homepage/controller/unFollow_request_controller.dart';
 import 'package:windx1999/app/modules/post/controller/all_post_controller.dart';
 import 'package:windx1999/app/modules/profile/controllers/all_following_controller.dart';
+import 'package:windx1999/app/modules/profile/views/others_profile/others_profile_screen.dart';
 import 'package:windx1999/app/res/common_widgets/custom_app_bar.dart';
 import 'package:windx1999/app/res/common_widgets/custom_background.dart';
 import 'package:windx1999/app/res/common_widgets/custom_rectangle_buttom.dart';
@@ -48,7 +49,19 @@ class _FollowingScreenState extends State<FollowingScreen> {
               heightBox12,
               GetBuilder<AllFollowingController>(builder: (controller) {
                 if (allFollowingController.inProgress) {
-                  return const Center(child: CircularProgressIndicator());
+                  return SizedBox(
+                      height: 700,
+                      child: const Center(child: CircularProgressIndicator()));
+                }
+                if (controller.allFollowersData!.isEmpty) {
+                  return SizedBox(
+                      height: 700,
+                      width: double.infinity,
+                      child: Center(
+                          child: Text(
+                        'No following available',
+                        style: TextStyle(color: Colors.white),
+                      )));
                 }
                 return Expanded(
                   child: ListView.builder(
@@ -61,27 +74,35 @@ class _FollowingScreenState extends State<FollowingScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Row(
-                              children: [
-                                CircleAvatar(
-                                  radius: 20.r,
-                                  backgroundImage: NetworkImage(controller
-                                          .allFollowersData![index]
-                                          .following
-                                          ?.photoUrl ??
-                                      'https://fastly.picsum.photos/id/51/200/300.jpg?hmac=w7933XDRbSqrql6BuyEfFBOeVsO60iU5N_OS5FbO6wQ'),
-                                ),
-                                widthBox8,
-                                Text(
-                                  controller.allFollowersData![index].following
-                                          ?.name ??
-                                      '',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              ],
+                            InkWell(
+                              onTap: () {
+                                Get.to(OthersProfileScreen(
+                                    userId: controller.allFollowersData![index]
+                                            .following!.id ??
+                                        ''));
+                              },
+                              child: Row(
+                                children: [
+                                  CircleAvatar(
+                                    radius: 20.r,
+                                    backgroundImage: NetworkImage(controller
+                                            .allFollowersData![index]
+                                            .following
+                                            ?.photoUrl ??
+                                        'https://fastly.picsum.photos/id/51/200/300.jpg?hmac=w7933XDRbSqrql6BuyEfFBOeVsO60iU5N_OS5FbO6wQ'),
+                                  ),
+                                  widthBox8,
+                                  Text(
+                                    controller.allFollowersData![index]
+                                            .following?.name ??
+                                        '',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                ],
+                              ),
                             ),
                             widget.isMyPage
                                 ? CustomRectangleButton(
@@ -101,8 +122,8 @@ class _FollowingScreenState extends State<FollowingScreen> {
                                     borderColor: Colors.white,
                                   )
                                 : Opacity(
-                                  opacity: 0.50,
-                                  child: CustomRectangleButton(
+                                    opacity: 0.50,
+                                    child: CustomRectangleButton(
                                       bgColor: Colors.white,
                                       height: 32,
                                       width: 82,
@@ -112,7 +133,7 @@ class _FollowingScreenState extends State<FollowingScreen> {
                                       textSize: 14,
                                       borderColor: Colors.white,
                                     ),
-                                )
+                                  )
                           ],
                         ),
                       );

@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:get_storage/get_storage.dart';
-
 import 'package:windx1999/app/modules/onboarding/views/splash_screen.dart';
 import 'package:windx1999/app/res/app_binder/controller_binder.dart';
 import 'package:windx1999/app/res/app_colors/app_colors.dart';

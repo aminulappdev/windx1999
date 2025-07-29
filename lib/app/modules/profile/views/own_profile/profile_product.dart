@@ -48,7 +48,19 @@ class _ProfileProductState extends State<ProfileProduct> {
         Expanded(
           child: GetBuilder<AllWishlistController>(builder: (controller) {
             if (controller.inProgress) {
-              return const Center(child: CircularProgressIndicator());
+              return SizedBox(
+                  height: 250,
+                  child: const Center(child: CircularProgressIndicator()));
+            }
+            if (controller.allWishlistData!.isEmpty) {
+              return SizedBox(
+                  height: 250,
+                  width: double.infinity,
+                  child: Center(
+                      child: Text(
+                    'No wishlist available',
+                    style: TextStyle(color: Colors.white),
+                  )));
             }
             return Padding(
               padding: EdgeInsets.all(8.0.h),
