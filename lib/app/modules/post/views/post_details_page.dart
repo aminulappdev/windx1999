@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:windx1999/app/modules/chat/controllers/add_chat_controller.dart';
 import 'package:windx1999/app/modules/common/controllers/save_my_post_controller.dart';
@@ -12,7 +13,9 @@ import 'package:windx1999/app/modules/homepage/controller/unFollow_request_contr
 import 'package:windx1999/app/modules/homepage/controller/un_saved_post_controller.dart';
 import 'package:windx1999/app/modules/homepage/views/botton_sheet_screen.dart';
 import 'package:windx1999/app/modules/homepage/views/comment_screen.dart';
+import 'package:windx1999/app/modules/homepage/widgets/image_container.dart';
 import 'package:windx1999/app/modules/homepage/widgets/post_card.dart';
+import 'package:windx1999/app/modules/homepage/widgets/post_card_header.dart';
 import 'package:windx1999/app/modules/post/controller/all_post_controller.dart';
 import 'package:windx1999/app/modules/post/controller/post_details_controller.dart';
 import 'package:windx1999/app/modules/profile/controllers/profile_controller.dart';
@@ -85,129 +88,69 @@ class _PostDetailsPageState extends State<PostDetailsPage> {
                   heightBox30,
                   CustomAppBar(title: 'Post details'),
                   heightBox10,
-                  PostCard(
-                    isLiked: post?.isLiked == true ? true : false,
-                    // isLiked: post.isLiked == true ? true : false,
-                    aboutProfileTap: () {
-                      Get.to(post?.author?.id ==
-                              StorageUtil.getData(StorageUtil.userId)
-                          ? ProfileScreen()
-                          : OthersProfileScreen(userId: post?.author?.id ?? ''));
-                    },
-                    reactOntap: () {
-                      post?.isLiked == true
-                          ? disReactPost(post?.contentMeta!.id ?? '')
-                          : reactPost(post?.contentMeta!.id! ?? '');
-                    },
-                    iSVisibleWishlist: post?.contentType == 'wishlist',
-                    bgColor: themeContoller.isDarkMode
-                        ? Color(0xffAFAFAF)
-                        : Color(0xffAF7CF8),
-                    name: post?.author?.name ?? 'Unknown',
-                    profilePath: post?.author?.photoUrl ??
-                        'https://fastly.picsum.photos/id/1/200/300.jpg',
-                    activeStatus: dateFormatter.getRelativeTimeFormat(),
-                    addFriendOnTap: () {},
-                    wishListOnTap: () {
-                      Get.to(ShowWishlistScreen(wishlistId: post?.id ?? ''));
-                    },
-                    moreVertOntap: () {
-                      showModalBottomSheet(
-                        scrollControlDisabledMaxHeightRatio: 0.6,
-                        context: context,
-                        shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.vertical(top: Radius.circular(20)),
-                        ),
-                        backgroundColor: Color(0xffA96CFF),
-                        builder: (context) {
-                          return Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              ButtonSheetDetailsScreen(
-                                buttonSheetDetailsList: [
-                                  {
-                                    'icon': Icons.visibility_off,
-                                    'name': 'Hide post',
-                                    'ontap': () {
-                                      hidePost(
-                                          post?.id ?? '', post?.contentType ?? '');
-                                    }
-                                  },
-                                  {
-                                    'icon': post?.isFollowing == true
-                                        ? Icons.person_remove
-                                        : Icons.person_add,
-                                    'name': post?.isFollowing == true
-                                        ? 'Unfollow'
-                                        : 'Follow',
-                                    'ontap': () {
-                                      if (post?.isFollowing == true) {
-                                        unFollowRequest(post?.author?.id ?? '');
-                                      } else {
-                                        followRequest(post?.author?.id ?? '');
-                                      }
-                                    }
-                                  },
-                                  {
-                                    'icon': Icons.person_off,
-                                    'name': 'Block',
-                                    'ontap': () {
-                                      Get.to(() => BlockUserScreen(
-                                            userId: post?.author?.id ?? '',
-                                            userName: post?.author?.name ?? '',
-                                            userImage: post?.author?.photoUrl ?? '',
-                                          ));
-                                    }
-                                  },
-                                  {
-                                    'icon': Icons.smart_display_outlined,
-                                    'name': 'Report Post',
-                                    'ontap': () {
-                                      Get.to(ReportScreen(
-                                          reportType: post?.contentType == 'feed'
-                                              ? 'Feed'
-                                              : post?.contentType == 'wishlist'
-                                                  ? 'Wishlist'
-                                                  : '',
-                                          reportId: post?.id ?? ''));
-                                    }
-                                  },
-                                  {
-                                    'icon': Icons.person,
-                                    'name': 'Report profile',
-                                    'ontap': () {
-                                      Get.to(ReportScreen(
-                                          reportType: 'User',
-                                          reportId: post?.author?.id ?? ''));
-                                    }
-                                  },
-                                ],
-                              )
-                            ],
-                          );
-                        },
-                      );
-                    },
-                    text: post?.description ?? '',
-                    comment: post?.contentMeta?.comment.toString() ?? '0',
-                    react: post?.contentMeta?.like.toString() ?? '0',
-                    share: post?.contentMeta?.share.toString() ?? '0',
-                    isSaved: post?.isWatchLater ?? false,
-                    imagePath:
-                        post?.content.isNotEmpty == true ? post?.content[0] : null,
-                    bookmarkOntap: () {
-                      post?.isWatchLater == true
-                          ? unSavePost(post?.id ?? '')
-                          : savePost(StorageUtil.getData(StorageUtil.userId) ?? '',
-                              post?.contentType ?? '', post?.id ?? '');
-                    },
-                    commentOnTap: () {
-                      Get.to(CommentScreen(
-                          postId: post?.id ?? '',
-                          postType: post?.contentType ?? ''));
-                    },
-                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: themeContoller.isDarkMode
+                          ? Color(0xffAFAFAF)
+                          : Color(0xffAF7CF8),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.all(8.0.h),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              Get.to(post?.author?.id ==
+                                      StorageUtil.getData(StorageUtil.userId)
+                                  ? ProfileScreen()
+                                  : OthersProfileScreen(
+                                      userId: post?.author?.id ?? ''));
+                            },
+                            child: PostCardHeader(
+                              isShowWishlist: post?.contentType == 'wishlist',
+                              profilePath: post?.author?.photoUrl ??
+                                  'https://fastly.picsum.photos/id/1/200/300.jpg',
+                              name: post?.author?.name ?? 'Unknown',
+                              addFriendOnTap: () {},
+                              activeStatus:
+                                  dateFormatter.getRelativeTimeFormat(),
+                              wishListOnTap: () {
+                                Get.to(ShowWishlistScreen(
+                                    wishlistId: post?.id ?? ''));
+                              },
+                             
+                            ),
+                          ),
+                          heightBox8,
+                          Text(
+                            post?.description ?? '',
+                            style: TextStyle(color: Colors.white),
+                            textAlign: TextAlign.justify,
+                          ),
+                          heightBox12,
+                          // ignore: unnecessary_null_comparison
+                          post?.content.isNotEmpty == true
+                              // ignore: unnecessary_null_comparison
+                              ? post!.content[0] != null
+                                  ? MediaContainer(
+                                      mediaPath: post.content.isNotEmpty == true
+                                          ? post.content[0]
+                                          : '',
+                                      height: 220.h,
+                                      width: MediaQuery.of(context).size.width,
+                                      borderColor: Colors.white,
+                                      borderRadius: 12.r,
+                                    )
+                                  : Container()
+                              : Container(),
+                          heightBox8,
+                        ],
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),
@@ -309,7 +252,7 @@ class _PostDetailsPageState extends State<PostDetailsPage> {
     final bool isSuccess = await reactPostController.reactPost(postId);
     if (isSuccess) {
       int index = allPostController.postList
-              ?.indexWhere((post) => post.contentMeta?.id == postId) ??
+              .indexWhere((post) => post.contentMeta?.id == postId) ??
           -1;
       if (index != -1) {
         int currentLikes =
@@ -369,3 +312,4 @@ class _PostDetailsPageState extends State<PostDetailsPage> {
     }
   }
 }
+

@@ -10,7 +10,7 @@ class PostCardHeader extends StatelessWidget {
     required this.addFriendOnTap,
     required this.activeStatus,
     required this.wishListOnTap,
-    required this.moreVertOntap,
+    this.moreVertOntap,
     required this.isShowWishlist,
   });
 
@@ -20,47 +20,44 @@ class PostCardHeader extends StatelessWidget {
   final VoidCallback addFriendOnTap;
   final String activeStatus;
   final VoidCallback wishListOnTap;
-  final VoidCallback moreVertOntap;
+  final VoidCallback? moreVertOntap;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Container(
-          // color: Colors.blueGrey,
-          child: SizedBox(
-            width: 160.w,
-            child: Row(
-              children: [
-                CircleAvatar(
-                  radius: 22.r,
-                  backgroundImage: NetworkImage(profilePath),
-                ),
-                widthBox5,
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: 100.w,
-                      child: Text(
-                        overflow: TextOverflow.ellipsis,
-                        name,
-                        style: TextStyle(
-                            fontSize: 16.sp,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600),
-                      ),
+        SizedBox(
+          width: 160.w,
+          child: Row(
+            children: [
+              CircleAvatar(
+                radius: 22.r,
+                backgroundImage: NetworkImage(profilePath),
+              ),
+              widthBox5,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: 100.w,
+                    child: Text(
+                      overflow: TextOverflow.ellipsis,
+                      name,
+                      style: TextStyle(
+                          fontSize: 16.sp,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600),
                     ),
-                    widthBox12,
-                    Text(
-                      activeStatus,
-                      style: TextStyle(color: Colors.white, fontSize: 12.sp),
-                    )
-                  ],
-                ),
-              ],
-            ),
+                  ),
+                  widthBox12,
+                  Text(
+                    activeStatus,
+                    style: TextStyle(color: Colors.white, fontSize: 12.sp),
+                  )
+                ],
+              ),
+            ],
           ),
         ),
         Row(
@@ -101,11 +98,13 @@ class PostCardHeader extends StatelessWidget {
                 : Container(),
             GestureDetector(
               onTap: moreVertOntap,
-              child: Icon(
-                Icons.more_vert,
-                size: 30.h,
-                color: Colors.white,
-              ),
+              child: moreVertOntap == null
+                  ? Container()
+                  : Icon(
+                      Icons.more_vert,
+                      size: 30.h,
+                      color: Colors.white,
+                    ),
             ),
           ],
         )

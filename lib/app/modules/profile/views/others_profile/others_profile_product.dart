@@ -32,12 +32,12 @@ class _OthersProfileProductState extends State<OthersProfileProduct> {
           child: GetBuilder<AllOthersWishlistController>(builder: (controller) {
             if (controller.inProgress) {
               return SizedBox(
-                  height: 250,
+                  height: 220,
                   child: const Center(child: CircularProgressIndicator()));
             }
             if (controller.allWishlistData!.isEmpty) {
               return SizedBox(
-                  height: 250,
+                  height: 220,
                   width: double.infinity,
                   child: Center(
                       child: Text(

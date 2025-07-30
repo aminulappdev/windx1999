@@ -65,7 +65,7 @@ class _PostGalleryState extends State<PostGallery> {
 
             if (filteredData.isEmpty) {
               return SizedBox(
-                height: 250,
+                height: 220,
                 child: const Center(child: Text('No media available',style: TextStyle(color: Colors.white),)));
             }
 

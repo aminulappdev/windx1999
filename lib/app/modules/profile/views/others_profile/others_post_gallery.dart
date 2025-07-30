@@ -49,7 +49,7 @@ class _OthersPostGalleryState extends State<OthersPostGallery> {
 
             if (feedData == null || feedData.isEmpty) {
               return SizedBox(
-                  height: 250,
+                  height: 220,
                   child: const Center(
                       child: Text(
                     'No media available',

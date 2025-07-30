@@ -52,11 +52,11 @@ class _FollowersScreenState extends State<FollowersScreen> {
               GetBuilder<AllFollowersController>(builder: (controller) {
                 if (controller.inProgress) {
                   return SizedBox(
-                      height: 700,
+                      height: 630,
                       child: const Center(child: CircularProgressIndicator()));
                 } else if (controller.allFollowersData!.isEmpty) {
                   return SizedBox(
-                      height: 700,
+                      height: 630,
                       width: double.infinity,
                       child: Center(
                           child: Text(

@@ -49,12 +49,12 @@ class _ProfileProductState extends State<ProfileProduct> {
           child: GetBuilder<AllWishlistController>(builder: (controller) {
             if (controller.inProgress) {
               return SizedBox(
-                  height: 250,
+                  height: 220,
                   child: const Center(child: CircularProgressIndicator()));
             }
             if (controller.allWishlistData!.isEmpty) {
               return SizedBox(
-                  height: 250,
+                  height: 220,
                   width: double.infinity,
                   child: Center(
                       child: Text(

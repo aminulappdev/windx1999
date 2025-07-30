@@ -50,12 +50,12 @@ class _FollowingScreenState extends State<FollowingScreen> {
               GetBuilder<AllFollowingController>(builder: (controller) {
                 if (allFollowingController.inProgress) {
                   return SizedBox(
-                      height: 700,
+                      height: 630,
                       child: const Center(child: CircularProgressIndicator()));
                 }
                 if (controller.allFollowersData!.isEmpty) {
                   return SizedBox(
-                      height: 700,
+                      height: 630,
                       width: double.infinity,
                       child: Center(
                           child: Text(

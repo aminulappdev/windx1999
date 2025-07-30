@@ -1,3 +1,4 @@
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -6,7 +7,6 @@ import 'package:get/get.dart';
 import 'package:windx1999/app/modules/profile/controllers/image_picker.dart';
 import 'package:windx1999/app/modules/profile/controllers/profile_controller.dart';
 import 'package:windx1999/app/modules/profile/controllers/profile_setup_controller.dart';
-import 'package:windx1999/app/modules/profile/views/profile_screen.dart';
 import 'package:windx1999/app/res/common_widgets/circle_aveture_icon.dart';
 import 'package:windx1999/app/res/common_widgets/container_circle_icon.dart';
 import 'package:windx1999/app/res/common_widgets/custom_background.dart';
@@ -45,7 +45,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           usernameCtrl.text = profileController.profileData?.username ?? '';
           bioCtrl.text = profileController.profileData?.bio ?? '';
           // Set selectedGender from API response
-          // selectedGender = profileController.profileData?. ?? 'Male'; // Default to 'Male' if null
+          selectedGender = profileController.profileData?.gender ?? 'Male'; // Default to 'Male' if null
         });
       }
     });
@@ -278,24 +278,36 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   builder: (controller) {
                     return ElevatedButton(
                       onPressed: controller.inProgress
-                          ? null
+                          ? null // Disable button during API call
                           : () async {
                               if (_formKey.currentState!.validate()) {
                                 await onTapToNextButton();
                               }
                             },
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: Size(double.infinity, 50.h), // Full-width button
+                        backgroundColor: Colors.blue, // Adjust to match theme
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.r),
+                        ),
+                      ),
                       child: controller.inProgress
-                          ? const SizedBox(
-                              height: 20,
-                              width: 20,
+                          ? SizedBox(
+                              height: 24.h,
+                              width: 24.h,
                               child: CircularProgressIndicator(
                                 color: Colors.white,
-                                strokeWidth: 2,
+                                strokeWidth: 3.w,
+                                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                               ),
                             )
-                          : const Text(
+                          : Text(
                               'Update',
-                              style: TextStyle(color: Colors.white),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                     );
                   },

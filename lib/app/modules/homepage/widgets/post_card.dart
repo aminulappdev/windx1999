@@ -84,7 +84,7 @@ class PostCard extends StatelessWidget {
             imagePath != null
                 ? MediaContainer(
                     mediaPath: imagePath!,
-                    height: 250.h,
+                    height: 220.h,
                     width: MediaQuery.of(context).size.width,
                     borderColor: Colors.white,
                     borderRadius: 12.r,

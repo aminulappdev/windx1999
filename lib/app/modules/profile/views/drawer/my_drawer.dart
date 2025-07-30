@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:windx1999/app/modules/authentication/views/log_in_screen.dart';
 import 'package:windx1999/app/modules/common/controllers/theme_controller.dart';
@@ -16,6 +15,7 @@ import 'package:windx1999/app/modules/profile/widgets/feature_row.dart';
 import 'package:windx1999/app/res/common_widgets/custom_app_bar.dart';
 import 'package:windx1999/app/res/common_widgets/custom_dialoge.dart';
 import 'package:windx1999/app/res/common_widgets/straight_liner.dart';
+import 'package:windx1999/app/res/common_widgets/toogle_button.dart';
 import 'package:windx1999/app/res/custom_style/custom_size.dart';
 import 'package:windx1999/get_storage.dart';
 
@@ -93,19 +93,48 @@ class _MyDrawerState extends State<MyDrawer> {
                           Icons.arrow_forward_ios, () {
                         Get.to(BlockScreen());
                       }),
-                      heightBox10,
-                      FeatureRow(
-                        title: 'Dark mode',
-                        isToggled: themeController.isDarkMode,
-                        onToggle: (value) {
-                          themeController.themeMode(value);
-                          themeController.update();
-                          print('Dark mode: $value');
-                        },
+                      heightBox20,
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            width: 250,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(
+                                      size: 24.h,
+                                      Icons.sunny,
+                                      color: Colors.white,
+                                    ),
+                                    widthBox12,
+                                    Text(
+                                      'Dark mode',
+                                      style: GoogleFonts.notoSansMyanmar(
+                                          fontSize: 16.sp,
+                                          fontWeight: FontWeight.w400,
+                                          color: Colors.white),
+                                    ),
+                                  ],
+                                ),
+                                ToggleButton(
+                                  isToggled: themeController.isDarkMode,
+                                  onToggle: (value) {
+                                    themeController.themeMode(value);
+                                    themeController.update();
+                                    print('Dark mode: $value');
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                          heightBox8,
+                          StraightLiner()
+                        ],
                       ),
-                      SizedBox(
-                        height: 30.h,
-                      ),
+                      heightBox20,
                       costomRowWithoutArrow(
                           context, Icons.person_add, 'Add Account', () {
                         showModalBottomSheet(
