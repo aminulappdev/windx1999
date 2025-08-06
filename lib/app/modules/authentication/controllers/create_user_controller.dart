@@ -30,7 +30,7 @@ class CreateUserController extends GetxController {
     update();
 
     Map<String, dynamic> requestBody = {
-      "name": name,
+      "name": name, 
       "email": email,
       "password": password,
     }; // Replace your body data

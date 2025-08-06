@@ -168,12 +168,12 @@ class _AddressScreenState extends State<AddressScreen> {
                                   autovalidateMode: AutovalidateMode.onUserInteraction,
                                   keyboardType: TextInputType.number,
                                   validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Enter zip code';
-                                    }
-                                    if (!RegExp(r'^\d{4,6}\$').hasMatch(value)) {
-                                      return 'Enter valid zip code';
-                                    }
+                                    // if (value == null || value.isEmpty) {
+                                    //   return 'Enter zip code';
+                                    // }
+                                    // if (!RegExp(r'^\d{4,6}\$').hasMatch(value)) {
+                                    //   return 'Enter valid zip code';
+                                    // }
                                     return null;
                                   },
                                 ),

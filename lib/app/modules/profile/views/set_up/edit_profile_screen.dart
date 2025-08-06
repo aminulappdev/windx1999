@@ -310,7 +310,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               ),
                             ),
                     );
-                  },
+                  }, 
                 ),
               ),
               heightBox20,
