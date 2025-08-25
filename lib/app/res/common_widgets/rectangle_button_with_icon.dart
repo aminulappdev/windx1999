@@ -13,7 +13,7 @@ class RectangleButtonWithIcon extends StatelessWidget {
   final String title;
   final double titleSize;
   final Color titleColor;
-  final Widget space;
+
   final VoidCallback ontap;
 
   const RectangleButtonWithIcon({
@@ -27,7 +27,7 @@ class RectangleButtonWithIcon extends StatelessWidget {
     required this.title,
     required this.titleSize,
     required this.titleColor,
-    required this.space,
+  
     this.borderRadius = 12, required this.ontap,
   });
 
@@ -48,7 +48,7 @@ class RectangleButtonWithIcon extends StatelessWidget {
               size: iconSize.h,
               color: iconColor,
             ),
-            space,
+            
             Text(
               title,
               style: TextStyle(

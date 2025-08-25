@@ -50,7 +50,7 @@ class PostDetailsData {
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final int? v;
-  final bool? isLiked;
+  late final bool? isLiked;
   final bool? isFollowing;
   final bool? isVisible;
   final bool? isHide;
@@ -119,7 +119,7 @@ class ContentMeta {
   });
 
   final String? id;
-  final int? like;
+  late final int? like;
   final List<String> likeBy;
   final int? comment;
   final int? share;

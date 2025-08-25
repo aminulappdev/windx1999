@@ -38,8 +38,13 @@ class _CommentScreenState extends State<CommentScreen> {
 
   @override
   void initState() {
-    profileController.getMyProfile();
-    commentController.getAllComment(widget.postId);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      profileController.getMyProfile();
+      commentController.getAllComment(widget.postId);
+      print('PostId: ${widget.postId}');
+      print('PostType: ${widget.postType}');
+    });
+
     super.initState();
   }
 
@@ -75,12 +80,13 @@ class _CommentScreenState extends State<CommentScreen> {
                     }
 
                     return ListView.builder(
-                      padding:  EdgeInsets.zero,
+                      padding: EdgeInsets.zero,
                       itemCount: cController.commentData?.length,
                       itemBuilder: (context, index) {
                         final comment = cController.commentData![index];
                         return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 4, vertical: 6),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -121,7 +127,8 @@ class _CommentScreenState extends State<CommentScreen> {
                                               physics:
                                                   NeverScrollableScrollPhysics(),
                                               itemCount: comment.reply.length,
-                                              itemBuilder: (context, replyIndex) {
+                                              itemBuilder:
+                                                  (context, replyIndex) {
                                                 final reply =
                                                     comment.reply[replyIndex];
                                                 return Padding(
@@ -131,11 +138,14 @@ class _CommentScreenState extends State<CommentScreen> {
                                                     mainAxisAlignment:
                                                         MainAxisAlignment.start,
                                                     crossAxisAlignment:
-                                                        CrossAxisAlignment.start,
+                                                        CrossAxisAlignment
+                                                            .start,
                                                     children: [
                                                       CircleAvatar(
                                                         radius: 15,
-                                                        backgroundColor: Color.fromARGB(255, 255, 255, 255),
+                                                        backgroundColor:
+                                                            Color.fromARGB(255,
+                                                                255, 255, 255),
                                                         child: CircleAvatar(
                                                           radius: 14,
                                                           backgroundImage:
@@ -155,23 +165,25 @@ class _CommentScreenState extends State<CommentScreen> {
                                                             reply.user?.name ??
                                                                 '',
                                                             style: TextStyle(
-                                                                color:
-                                                                    Colors.white,
+                                                                color: Colors
+                                                                    .white,
                                                                 fontSize: 16,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w600),
                                                           ),
                                                           Text(
-                                                            reply.comment ?? '',
-                                                            style: GoogleFonts.poppins(
-                                                              color: Colors.white,
-                                                              fontSize: 13,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400,
-                                                            )
-                                                          ),
+                                                              reply.comment ??
+                                                                  '',
+                                                              style: GoogleFonts
+                                                                  .poppins(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: 13,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400,
+                                                              )),
                                                         ],
                                                       ),
                                                     ],
@@ -189,8 +201,11 @@ class _CommentScreenState extends State<CommentScreen> {
                                             });
                                           },
                                           child: Text(
-                                            'Reply...',
-                                            style: TextStyle(color: const Color.fromARGB(255, 228, 226, 226),fontSize: 14.sp),
+                                            'Reply',
+                                            style: TextStyle(
+                                                color: const Color.fromARGB(
+                                                    255, 228, 226, 226),
+                                                fontSize: 14.sp),
                                           ),
                                         ),
                                       ],
@@ -248,7 +263,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                   fillColor: Colors.transparent,
                                   hintText: selectedCommentIndex == null
                                       ? 'Write a comment'
-                                      : 'Write a reply...',
+                                      : 'Write a reply',
                                   contentPadding: EdgeInsets.all(10.h),
                                 ),
                               ),
@@ -262,9 +277,11 @@ class _CommentScreenState extends State<CommentScreen> {
                                       contentId: widget.postId,
                                       modelType: widget.postType == 'feed'
                                           ? 'Feed'
-                                          : widget.postType == 'reels'
-                                              ? 'Reels'
-                                              : 'Wishlist',
+                                          : widget.postType == 'Feed'
+                                              ? 'Feed'
+                                              : widget.postType == 'Reels'
+                                                  ? 'Reels'
+                                                  : 'Wishlist',
                                       comment: commentCtrl.text,
                                       isReply: false,
                                       userId: StorageUtil.getData(
@@ -276,9 +293,11 @@ class _CommentScreenState extends State<CommentScreen> {
                                       contentId: widget.postId,
                                       modelType: widget.postType == 'feed'
                                           ? 'Feed'
-                                          : widget.postType == 'reels'
-                                              ? 'Reels'
-                                              : 'Wishlist',
+                                          : widget.postType == 'Feed'
+                                              ? 'Feed'
+                                              : widget.postType == 'Reels'
+                                                  ? 'Reels'
+                                                  : 'Wishlist',
                                       comment: commentCtrl.text,
                                       isReply: true,
                                       userId: StorageUtil.getData(

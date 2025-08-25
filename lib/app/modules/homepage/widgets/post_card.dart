@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart'; // Add this import if not already present
 import 'package:windx1999/app/modules/homepage/widgets/image_container.dart';
 import 'package:windx1999/app/modules/homepage/widgets/post_card_footer.dart';
 import 'package:windx1999/app/modules/homepage/widgets/post_card_header.dart';
 import 'package:windx1999/app/res/custom_style/custom_size.dart';
+import 'package:windx1999/photo_view.dart';
+// Import the new widget
 
 class PostCard extends StatelessWidget {
   final bool isSaved;
@@ -74,7 +77,7 @@ class PostCard extends StatelessWidget {
                 moreVertOntap: moreVertOntap,
               ),
             ),
-            heightBox8,
+            heightBox8, 
             Text(
               text,
               style: TextStyle(color: Colors.white),
@@ -82,12 +85,17 @@ class PostCard extends StatelessWidget {
             ),
             heightBox12,
             imagePath != null
-                ? MediaContainer(
-                    mediaPath: imagePath!,
-                    height: 220.h,
-                    width: MediaQuery.of(context).size.width,
-                    borderColor: Colors.white,
-                    borderRadius: 12.r,
+                ? GestureDetector(
+                    onTap: () {
+                      Get.to(() => FullScreenImageViewer(imageUrl: imagePath!));
+                    },
+                    child: MediaContainer(
+                      mediaPath: imagePath!,
+                      height: 220.h,
+                      width: MediaQuery.of(context).size.width,
+                      borderColor: Colors.white,
+                      borderRadius: 12.r,
+                    ),
                   )
                 : Container(),
             heightBox8,
@@ -99,7 +107,7 @@ class PostCard extends StatelessWidget {
                   ontap: reactOntap,
                   quantity: react,
                 ),
-                PostCardFoterFeature(
+                PostCardFoterFeature( 
                   icon: Icons.sms,
                   ontap: commentOnTap,
                   quantity: comment,

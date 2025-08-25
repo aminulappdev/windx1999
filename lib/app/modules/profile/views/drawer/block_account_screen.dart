@@ -44,6 +44,16 @@ class _BlockScreenState extends State<BlockScreen> {
                 if (allBlockersController.inProgress) {
                   return const Center(child: CircularProgressIndicator());
                 }
+                if (controller.allBlockersData!.isEmpty) {
+                  return SizedBox(
+                    height: 500,
+                    child: Center(
+                        child: Text(
+                      'No blocked account',
+                      style: TextStyle(color: Colors.white),
+                    )),
+                  );
+                }
                 return Expanded(
                     child: ListView.builder(
                   padding: EdgeInsets.zero,

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:windx1999/app/res/custom_style/custom_size.dart';
+import 'package:windx1999/photo_view.dart';
 
 class ReelsDetails extends StatelessWidget {
   final String imagePath;
@@ -20,7 +23,8 @@ class ReelsDetails extends StatelessWidget {
     required this.addFriendOnTap,
     required this.followOnTap,
     required this.caption,
-    required this.musicName, required this.follow,
+    required this.musicName,
+    required this.follow,
   });
 
   @override
@@ -35,9 +39,14 @@ class ReelsDetails extends StatelessWidget {
               width: 190.w,
               child: Row(
                 children: [
-                  CircleAvatar(
-                    radius: 22.r,
-                    backgroundImage: NetworkImage(imagePath),
+                  GestureDetector(
+                    onTap: () {
+                      Get.to(() => FullScreenImageViewer(imageUrl: imagePath));
+                    },
+                    child: CircleAvatar(
+                      radius: 22.r,
+                      backgroundImage: NetworkImage(imagePath),
+                    ),
                   ),
                   widthBox5,
                   Column(

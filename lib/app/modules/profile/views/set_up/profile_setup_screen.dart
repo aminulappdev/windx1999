@@ -42,7 +42,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                heightBox20,
+                heightBox30,
                 CustomAppBar(title: 'Profile Set-up'),
                 heightBox40,
                 Stack(

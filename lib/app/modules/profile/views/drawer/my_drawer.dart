@@ -11,22 +11,21 @@ import 'package:windx1999/app/modules/profile/views/drawer/block_account_screen.
 import 'package:windx1999/app/modules/profile/views/drawer/content_screen.dart';
 import 'package:windx1999/app/modules/profile/views/drawer/save_items.dart';
 import 'package:windx1999/app/modules/profile/views/drawer/your_account.dart';
-import 'package:windx1999/app/modules/profile/widgets/feature_row.dart';
 import 'package:windx1999/app/res/common_widgets/custom_app_bar.dart';
 import 'package:windx1999/app/res/common_widgets/custom_dialoge.dart';
 import 'package:windx1999/app/res/common_widgets/straight_liner.dart';
 import 'package:windx1999/app/res/common_widgets/toogle_button.dart';
 import 'package:windx1999/app/res/custom_style/custom_size.dart';
 import 'package:windx1999/get_storage.dart';
-
+ 
 // ignore: must_be_immutable
 class MyDrawer extends StatefulWidget {
-  const MyDrawer({
+  const MyDrawer({ 
     super.key,
   });
 
   @override
-  State<MyDrawer> createState() => _MyDrawerState();
+  State<MyDrawer> createState() => _MyDrawerState(); 
 }
 
 class _MyDrawerState extends State<MyDrawer> {

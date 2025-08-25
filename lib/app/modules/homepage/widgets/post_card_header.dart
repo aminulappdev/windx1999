@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:windx1999/app/res/custom_style/custom_size.dart';
+import 'package:windx1999/photo_view.dart';
 
 class PostCardHeader extends StatelessWidget {
   const PostCardHeader({
@@ -31,9 +34,14 @@ class PostCardHeader extends StatelessWidget {
           width: 160.w,
           child: Row(
             children: [
-              CircleAvatar(
-                radius: 22.r,
-                backgroundImage: NetworkImage(profilePath),
+              GestureDetector(
+                onTap: () {
+                   Get.to(() => FullScreenImageViewer(imageUrl: profilePath));
+                },
+                child: CircleAvatar(
+                  radius: 22.r,
+                  backgroundImage: NetworkImage(profilePath),
+                ),
               ),
               widthBox5,
               Column(

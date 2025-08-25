@@ -12,6 +12,7 @@ import 'package:windx1999/app/res/common_widgets/custom_rectangle_buttom.dart';
 import 'package:windx1999/app/res/common_widgets/custom_snackbar.dart';
 import 'package:windx1999/app/res/custom_style/custom_size.dart';
 import 'package:windx1999/get_storage.dart';
+import 'package:windx1999/photo_view.dart';
 
 class FollowersScreen extends StatefulWidget {
   final String userId;
@@ -85,13 +86,23 @@ class _FollowersScreenState extends State<FollowersScreen> {
                                 },
                                 child: Row(
                                   children: [
-                                    CircleAvatar(
-                                      radius: 20.r,
-                                      backgroundImage: NetworkImage(controller
-                                              .allFollowersData![index]
-                                              .follower
-                                              ?.photoUrl ??
-                                          ''),
+                                    GestureDetector(
+                                      onTap: () {
+                                        Get.to(() => FullScreenImageViewer(
+                                            imageUrl: controller
+                                                    .allFollowersData![index]
+                                                    .follower
+                                                    ?.photoUrl ??
+                                                ''));
+                                      },
+                                      child: CircleAvatar(
+                                        radius: 20.r,
+                                        backgroundImage: NetworkImage(controller
+                                                .allFollowersData![index]
+                                                .follower
+                                                ?.photoUrl ??
+                                            ''),
+                                      ),
                                     ),
                                     widthBox8,
                                     Text(

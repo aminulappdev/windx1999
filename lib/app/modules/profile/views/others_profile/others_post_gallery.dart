@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:windx1999/app/modules/homepage/widgets/image_container.dart';
-import 'package:windx1999/app/modules/homepage/widgets/post_card.dart';
 import 'package:windx1999/app/modules/profile/controllers/all_feed_controller.dart';
 import 'package:windx1999/app/res/custom_style/custom_size.dart';
-import 'package:video_player/video_player.dart';
+import 'package:windx1999/photo_view.dart';
 
 class OthersPostGallery extends StatefulWidget {
   final String userId;
@@ -69,19 +68,25 @@ class _OthersPostGalleryState extends State<OthersPostGallery> {
                   final item = feedData[index];
 
                   // Check if content is null or empty
-                  if (item != null && item.content.isNotEmpty) {
+                  if (item.content.isNotEmpty) {
                     final mediaUrl = item.content[0];
 
                     // Check if mediaUrl is valid
                     if (mediaUrl.isNotEmpty) {
-                      return MediaContainer(
-                        mediaPath: mediaUrl,
-                        height: 100.h,
-                        width: 100.w,
-                        borderRadius: 0,
-                        borderColor: Colors.transparent,
-                        child: const Align(
-                          alignment: Alignment.topRight,
+                      return GestureDetector(
+                        onTap: () {
+                          Get.to(
+                              () => FullScreenImageViewer(imageUrl: mediaUrl));
+                        },
+                        child: MediaContainer(
+                          mediaPath: mediaUrl,
+                          height: 100.h,
+                          width: 100.w,
+                          borderRadius: 0,
+                          borderColor: Colors.transparent,
+                          child: const Align(
+                            alignment: Alignment.topRight,
+                          ),
                         ),
                       );
                     }

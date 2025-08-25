@@ -295,7 +295,7 @@ class _OthersProfileScreenState extends State<OthersProfileScreen> {
                             : 'Follow',
                     titleSize: 14,
                     titleColor: Colors.white,
-                    space: widthBox8,
+                   
                     ontap: () {
                       othersProfileController.otherProfileData?.isFollowing ==
                               true
@@ -317,7 +317,7 @@ class _OthersProfileScreenState extends State<OthersProfileScreen> {
                     title: 'Message',
                     titleSize: 14,
                     titleColor: Colors.white,
-                    space: widthBox8,
+                  
                     ontap: () async {
                       if (chatId == null) {
                         // No existing chat, create a new one

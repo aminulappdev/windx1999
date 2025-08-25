@@ -39,7 +39,7 @@ class CommentSection extends StatelessWidget {
             InkWell(
               onTap: replyOntap,
               child: Text(
-                'Reply..',
+                'Reply',
                 style: TextStyle(color: Colors.white),
               ),
             ),

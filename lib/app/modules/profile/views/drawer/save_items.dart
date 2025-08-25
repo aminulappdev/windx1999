@@ -72,8 +72,8 @@ class _SaveItemScreenState extends State<SaveItemScreen> {
                       final mediaPath = hasValidContent
                           ? content.content[0]
                           : null; // No fallback URL when content is empty
-                      final isVideo =
-                          hasValidContent && mediaPath!.toLowerCase().contains('/videos/');
+                      final isVideo = hasValidContent &&
+                          mediaPath!.toLowerCase().contains('/videos/');
 
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -83,9 +83,12 @@ class _SaveItemScreenState extends State<SaveItemScreen> {
                             InkWell(
                               onTap: () {
                                 Get.to(PostDetailsPage(
-                                  contentId:
-                                      controller.savePostData![index].content?.id ??
-                                          '',
+                                  contentType: controller
+                                      .savePostData![index].modelType
+                                      .toString(),
+                                  contentId: controller
+                                          .savePostData![index].content?.id ??
+                                      '',
                                 ));
                               },
                               child: Row(

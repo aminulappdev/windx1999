@@ -6,10 +6,10 @@ import 'package:windx1999/app/modules/chat/controllers/all_friend_controller.dar
 import 'package:windx1999/app/modules/chat/views/chat_screen.dart';
 import 'package:windx1999/app/modules/common/controllers/theme_controller.dart';
 import 'package:windx1999/app/res/common_widgets/custom_background.dart';
-import 'package:windx1999/app/res/common_widgets/search_bar.dart';
 import 'package:windx1999/app/res/custom_style/custom_size.dart';
 import 'package:windx1999/app/services/socket/socket_service.dart';
 import 'package:windx1999/get_storage.dart';
+import 'package:windx1999/photo_view.dart';
 
 class ChatListScreen extends StatefulWidget {
   const ChatListScreen({super.key});
@@ -71,10 +71,10 @@ class _ChatListScreenState extends State<ChatListScreen> {
             "name": participant?['name'] ?? 'No Name',
             "email": participant?['email'] ?? '',
             "profileImage": participant?['photoUrl'] ?? '',
-            "createdAt":
-                chat['createdAt'] ?? DateTime.now().toIso8601String(),
-            "lastMessage":
-                message != null ? message['text'] ?? 'No Message' : 'No Message',
+            "createdAt": chat['createdAt'] ?? DateTime.now().toIso8601String(),
+            "lastMessage": message != null
+                ? message['text'] ?? 'No Message'
+                : 'No Message',
             "lastMessageTime": message != null
                 ? message['createdAt'] ?? DateTime.now().toIso8601String()
                 : DateTime.now().toIso8601String(),
@@ -96,8 +96,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
         "name": participant?['name'] ?? 'No Name',
         "email": participant?['email'] ?? '',
         "profileImage": participant?['photoUrl'] ?? '',
-        "createdAt":
-            chat?['createdAt'] ?? DateTime.now().toIso8601String(),
+        "createdAt": chat?['createdAt'] ?? DateTime.now().toIso8601String(),
         "lastMessage":
             message != null ? message['text'] ?? 'No Message' : 'No Message',
         "lastMessageTime": message != null
@@ -256,13 +255,19 @@ class _ChatListScreenState extends State<ChatListScreen> {
                         },
                         child: ListTile(
                           contentPadding: EdgeInsets.zero,
-                          leading: CircleAvatar(
-                            radius: 24.r,
-                            backgroundImage: receiverImage.isNotEmpty
-                                ? NetworkImage(receiverImage)
-                                : const AssetImage(
-                                        'assets/images/default_user.png')
-                                    as ImageProvider,
+                          leading: GestureDetector(
+                            onTap: () {
+                              Get.to(() => FullScreenImageViewer(
+                                  imageUrl: receiverImage));
+                            },
+                            child: CircleAvatar(
+                              radius: 24.r,
+                              backgroundImage: receiverImage.isNotEmpty
+                                  ? NetworkImage(receiverImage)
+                                  : const AssetImage(
+                                          'assets/images/default_user.png')
+                                      as ImageProvider,
+                            ),
                           ),
                           title: Text(
                             receiverName,

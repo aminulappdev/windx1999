@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:windx1999/app/modules/profile/views/others_profile/others_profile_screen.dart';
 import 'package:windx1999/app/res/custom_style/custom_size.dart';
+import 'package:windx1999/photo_view.dart';
 
 class CustomChatAppBar extends StatefulWidget {
   final String name;
@@ -56,10 +57,16 @@ class _CustomChatAppBarState extends State<CustomChatAppBar> {
               },
               child: Row(
                 children: [
-                  CircleAvatar(
-                    backgroundColor: Colors.transparent,
-                    backgroundImage: NetworkImage(widget.imagePath),
-                    radius: 24.r,
+                  GestureDetector(
+                    onTap: () {
+                      Get.to(() =>
+                          FullScreenImageViewer(imageUrl: widget.imagePath));
+                    },
+                    child: CircleAvatar(
+                      backgroundColor: Colors.transparent,
+                      backgroundImage: NetworkImage(widget.imagePath),
+                      radius: 24.r,
+                    ),
                   ),
                   widthBox5,
                   Column(

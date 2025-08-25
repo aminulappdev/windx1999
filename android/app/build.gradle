@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.windx1999"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = flutter.compileSdkVersion 
     ndkVersion = flutter.ndkVersion
 
     compileOptions {

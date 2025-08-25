@@ -13,6 +13,8 @@ import 'package:windx1999/app/res/app_images/assets_path.dart';
 import 'package:windx1999/app/modules/profile/views/drawer/my_drawer.dart';
 import 'package:windx1999/app/res/common_widgets/circle_aveture_icon.dart';
 import 'package:windx1999/app/res/common_widgets/custom_background.dart';
+import 'package:windx1999/app/res/common_widgets/custom_dialoge.dart';
+import 'package:windx1999/app/res/common_widgets/custom_refund_dialog.dart';
 import 'package:windx1999/app/res/common_widgets/straight_liner.dart';
 import 'package:windx1999/app/res/custom_style/custom_size.dart';
 import 'package:windx1999/get_storage.dart';
@@ -63,7 +65,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     decoration: BoxDecoration(
                       image: DecorationImage(
                         image: controller.profileData?.banner != null
-                            ? NetworkImage(controller.profileData!.banner!)
+                            ? NetworkImage(controller.profileData!.banner!) 
                             : const AssetImage(AssetsPath.blackGirl),
                         fit: BoxFit.cover,
                       ),
@@ -212,4 +214,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       }),
     );
   }
+
+
 }

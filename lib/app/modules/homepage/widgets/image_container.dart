@@ -7,7 +7,7 @@ class MediaContainer extends StatefulWidget {
   final String mediaPath;
   final double height;
   final double width;
-  final Color borderColor;
+  final Color borderColor; 
   final double borderRadius;
   final Widget? child;
 

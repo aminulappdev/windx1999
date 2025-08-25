@@ -11,17 +11,15 @@ import 'package:windx1999/app/modules/homepage/controller/react_controller.dart'
 import 'package:windx1999/app/modules/homepage/controller/save_post_controller.dart';
 import 'package:windx1999/app/modules/homepage/controller/unFollow_request_controller.dart';
 import 'package:windx1999/app/modules/homepage/controller/un_saved_post_controller.dart';
-import 'package:windx1999/app/modules/homepage/views/botton_sheet_screen.dart';
 import 'package:windx1999/app/modules/homepage/views/comment_screen.dart';
 import 'package:windx1999/app/modules/homepage/widgets/image_container.dart';
-import 'package:windx1999/app/modules/homepage/widgets/post_card.dart';
+import 'package:windx1999/app/modules/homepage/widgets/post_card_footer.dart';
 import 'package:windx1999/app/modules/homepage/widgets/post_card_header.dart';
 import 'package:windx1999/app/modules/post/controller/all_post_controller.dart';
 import 'package:windx1999/app/modules/post/controller/post_details_controller.dart';
+import 'package:windx1999/app/modules/post/model/post_details_model.dart';
 import 'package:windx1999/app/modules/profile/controllers/profile_controller.dart';
 import 'package:windx1999/app/modules/profile/views/others_profile/others_profile_screen.dart';
-import 'package:windx1999/app/modules/profile/views/own_profile/block_user.dart';
-import 'package:windx1999/app/modules/profile/views/own_profile/report_screen.dart';
 import 'package:windx1999/app/modules/profile/views/profile_screen.dart';
 import 'package:windx1999/app/modules/wishlist/views/show_wishlist_screen.dart';
 import 'package:windx1999/app/res/common_widgets/custom_app_bar.dart';
@@ -32,8 +30,10 @@ import 'package:windx1999/app/res/custom_style/custom_size.dart';
 import 'package:windx1999/get_storage.dart';
 
 class PostDetailsPage extends StatefulWidget {
+  final String contentType;
   final String contentId;
-  const PostDetailsPage({super.key, required this.contentId});
+  const PostDetailsPage(
+      {super.key, required this.contentId, required this.contentType});
 
   @override
   State<PostDetailsPage> createState() => _PostDetailsPageState();
@@ -72,7 +72,7 @@ class _PostDetailsPageState extends State<PostDetailsPage> {
     return Scaffold(
       body: GetBuilder<PostDetailsController>(builder: (controller) {
         if (controller.inProgress == true) {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         }
@@ -93,8 +93,8 @@ class _PostDetailsPageState extends State<PostDetailsPage> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
                       color: themeContoller.isDarkMode
-                          ? Color(0xffAFAFAF)
-                          : Color(0xffAF7CF8),
+                          ? const Color(0xffAFAFAF)
+                          : const Color(0xffAF7CF8),
                     ),
                     child: Padding(
                       padding: EdgeInsets.all(8.0.h),
@@ -121,17 +121,15 @@ class _PostDetailsPageState extends State<PostDetailsPage> {
                                 Get.to(ShowWishlistScreen(
                                     wishlistId: post?.id ?? ''));
                               },
-                             
                             ),
                           ),
                           heightBox8,
                           Text(
                             post?.description ?? '',
-                            style: TextStyle(color: Colors.white),
+                            style: const TextStyle(color: Colors.white),
                             textAlign: TextAlign.justify,
                           ),
                           heightBox12,
-                          // ignore: unnecessary_null_comparison
                           post?.content.isNotEmpty == true
                               // ignore: unnecessary_null_comparison
                               ? post!.content[0] != null
@@ -147,6 +145,35 @@ class _PostDetailsPageState extends State<PostDetailsPage> {
                                   : Container()
                               : Container(),
                           heightBox8,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              PostCardFoterFeature(
+                                icon: post?.isLiked == true
+                                    ? Icons.favorite
+                                    : Icons.favorite_border,
+                                ontap: () {
+                                  post?.isLiked == true
+                                      ? disReactPost(
+                                          post?.contentMeta!.id ?? '')
+                                      : reactPost(post?.contentMeta!.id ?? '');
+                                },
+                                quantity:
+                                    post?.contentMeta?.like.toString() ?? '0',
+                              ),
+                              PostCardFoterFeature(
+                                icon: Icons.sms,
+                                ontap: () {
+                                  Get.to(CommentScreen(
+                                      postId: widget.contentId,
+                                      postType: widget.contentType));
+                                },
+                                quantity:
+                                    post?.contentMeta?.comment.toString() ??
+                                        '0',
+                              ),
+                            ],
+                          ),
                         ],
                       ),
                     ),
@@ -160,107 +187,147 @@ class _PostDetailsPageState extends State<PostDetailsPage> {
     );
   }
 
-  Future<void> followRequest(String friendId) async {
-    final bool isSuccess =
-        await followRequestController.followRequest(friendId);
-    if (isSuccess) {
-      allPostController.updateFollowStatus(friendId, true);
-      addChatFriend(
-          userId: StorageUtil.getData(StorageUtil.userId) ?? '',
-          friendId: friendId);
-      if (mounted) {
-        showSnackBarMessage(context, 'Follow successfully completed');
-      }
-    } else {
-      if (mounted) {
-        showSnackBarMessage(context,
-            followRequestController.errorMessage ?? 'Failed to follow', true);
-      }
-    }
-  }
+  // Future<void> savePost(String userId, String modelType, String contentId) async {
+  //   final bool isSuccess =
+  //       await savePostController.savePostF(userId, modelType, contentId);
+  //   if (isSuccess) {
+  //     saveAllPostController.getMySavePost();
+  //     allPostController.updatePostSave(contentId, true);
+  //     if (postDetailsController.postDetailsModel != null &&
+  //         postDetailsController.postData?.contentMeta?.id == contentId) {
+  //       // Create a new PostDetailsData object to avoid modifying `late` fields
+  //       postDetailsController.postDetailsModel = PostDetailsModel(
+  //         success: postDetailsController.postDetailsModel!.success,
+  //         message: postDetailsController.postDetailsModel!.message,
+  //         data: PostDetailsData(
+  //           id: postDetailsController.postData!.id,
+  //           author: postDetailsController.postData!.author,
+  //           description: postDetailsController.postData!.description,
+  //           content: postDetailsController.postData!.content,
+  //           audience: postDetailsController.postData!.audience,
+  //           hideBy: postDetailsController.postData!.hideBy,
+  //           contentMeta: postDetailsController.postData!.contentMeta,
+  //           isDeleted: postDetailsController.postData!.isDeleted,
+  //           createdAt: postDetailsController.postData!.createdAt,
+  //           updatedAt: postDetailsController.postData!.updatedAt,
+  //           v: postDetailsController.postData!.v,
+  //           isLiked: postDetailsController.postData!.isLiked,
+  //           isFollowing: postDetailsController.postData!.isFollowing,
+  //           isVisible: postDetailsController.postData!.isVisible,
+  //           isHide: postDetailsController.postData!.isHide,
+  //           isWatchLater: true,
+  //         ),
+  //       );
+  //       postDetailsController.update(); // Trigger UI update
+  //     }
+  //     if (mounted) {
+  //       showSnackBarMessage(context, 'Post saved successfully');
+  //     }
+  //   } else {
+  //     if (mounted) {
+  //       showSnackBarMessage(context,
+  //           savePostController.errorMessage ?? 'Failed to save post', true);
+  //     }
+  //   }
+  // }
 
-  Future<void> unFollowRequest(String friendId) async {
-    final bool isSuccess =
-        await unFollowRequestController.unfollowRequest(friendId);
-    if (isSuccess) {
-      allPostController.updateFollowStatus(friendId, false);
-      if (mounted) {
-        showSnackBarMessage(context, 'Unfollow successfully completed');
-      }
-    } else {
-      if (mounted) {
-        showSnackBarMessage(
-            context,
-            unFollowRequestController.errorMessage ?? 'Failed to unfollow',
-            true);
-      }
-    }
-  }
+  // Future<void> unSavePost(String postId) async {
+  //   final bool isSuccess =
+  //       await unSavedPostController.unSavePost(postId: postId);
 
-  Future<void> hidePost(String postId, String modelType) async {
-    final bool isSuccess = await hidePostController.hidePost(postId, modelType);
-    if (isSuccess) {
-      allPostController.updatePostHide(postId, true);
-      if (mounted) {
-        // showSnackBarMessage(context, 'Post hidden successfully');
-      }
-    } else {
-      if (mounted) {
-        showSnackBarMessage(context,
-            hidePostController.errorMessage ?? 'Failed to hide post', true);
-      }
-    }
-  }
-
-  Future<void> savePost(
-      String userId, String modelType, String contentId) async {
-    final bool isSuccess =
-        await savePostController.savePostF(userId, modelType, contentId);
-    if (isSuccess) {
-      saveAllPostController.getMySavePost();
-      allPostController.updatePostSave(contentId, true);
-      if (mounted) {
-        showSnackBarMessage(context, 'Post saved successfully');
-      }
-    } else {
-      if (mounted) {
-        showSnackBarMessage(context,
-            savePostController.errorMessage ?? 'Failed to save post', true);
-      }
-    }
-  }
-
-  Future<void> unSavePost(String postId) async {
-    final bool isSuccess =
-        await unSavedPostController.unSavePost(postId: postId);
-
-    if (isSuccess) {
-      saveAllPostController.getMySavePost();
-      allPostController.updatePostUnSave(postId, false);
-      showSnackBarMessage(context, 'unsaved successfully done');
-    } else {
-      Get.snackbar(
-        backgroundColor: Colors.red,
-        snackPosition: SnackPosition.TOP,
-        'Failed',
-        'Failed to delete account',
-      );
-    }
-  }
+  //   if (isSuccess) {
+  //     saveAllPostController.getMySavePost();
+  //     allPostController.updatePostUnSave(postId, false);
+  //     if (postDetailsController.postDetailsModel != null &&
+  //         postDetailsController.postData?.contentMeta?.id == postId) {
+  //       // Create a new PostDetailsData object to avoid modifying `late` fields
+  //       postDetailsController.postDetailsModel = PostDetailsModel(
+  //         success: postDetailsController.postDetailsModel!.success,
+  //         message: postDetailsController.postDetailsModel!.message,
+  //         data: PostDetailsData(
+  //           id: postDetailsController.postData!.id,
+  //           author: postDetailsController.postData!.author,
+  //           description: postDetailsController.postData!.description,
+  //           content: postDetailsController.postData!.content,
+  //           audience: postDetailsController.postData!.audience,
+  //           hideBy: postDetailsController.postData!.hideBy,
+  //           contentMeta: postDetailsController.postData!.contentMeta,
+  //           isDeleted: postDetailsController.postData!.isDeleted,
+  //           createdAt: postDetailsController.postData!.createdAt,
+  //           updatedAt: postDetailsController.postData!.updatedAt,
+  //           v: postDetailsController.postData!.v,
+  //           isLiked: postDetailsController.postData!.isLiked,
+  //           isFollowing: postDetailsController.postData!.isFollowing,
+  //           isVisible: postDetailsController.postData!.isVisible,
+  //           isHide: postDetailsController.postData!.isHide,
+  //           isWatchLater: false,
+  //         ),
+  //       );
+  //       postDetailsController.update(); // Trigger UI update
+  //     }
+  //     if (mounted) {
+  //       showSnackBarMessage(context, 'Unsaved successfully done');
+  //     }
+  //   } else {
+  //     Get.snackbar(
+  //       backgroundColor: Colors.red,
+  //       snackPosition: SnackPosition.TOP,
+  //       'Failed',
+  //       'Failed to unsave post',
+  //     );
+  //   }
+  // }
 
   Future<void> reactPost(String postId) async {
     final bool isSuccess = await reactPostController.reactPost(postId);
     if (isSuccess) {
+      // Update AllPostController
       int index = allPostController.postList
-              .indexWhere((post) => post.contentMeta?.id == postId) ??
-          -1;
+          .indexWhere((post) => post.contentMeta?.id == postId);
       if (index != -1) {
         int currentLikes =
-            allPostController.postList![index].contentMeta?.like ?? 0;
+            allPostController.postList[index].contentMeta?.like ?? 0;
         allPostController.updatePostLike(postId, true, currentLikes + 1);
       }
+
+      // Update PostDetailsController's postDetailsModel
+      if (postDetailsController.postDetailsModel != null &&
+          postDetailsController.postData?.contentMeta?.id == postId) {
+        // Create a new PostDetailsData object to avoid modifying `late` fields
+        postDetailsController.postDetailsModel = PostDetailsModel(
+          success: postDetailsController.postDetailsModel!.success,
+          message: postDetailsController.postDetailsModel!.message,
+          data: PostDetailsData(
+            id: postDetailsController.postData!.id,
+            author: postDetailsController.postData!.author,
+            description: postDetailsController.postData!.description,
+            content: postDetailsController.postData!.content,
+            audience: postDetailsController.postData!.audience,
+            hideBy: postDetailsController.postData!.hideBy,
+            contentMeta: ContentMeta(
+              id: postDetailsController.postData!.contentMeta?.id,
+              like:
+                  (postDetailsController.postData!.contentMeta?.like ?? 0) + 1,
+              likeBy: postDetailsController.postData!.contentMeta?.likeBy ?? [],
+              comment: postDetailsController.postData!.contentMeta?.comment,
+              share: postDetailsController.postData!.contentMeta?.share,
+            ),
+            isDeleted: postDetailsController.postData!.isDeleted,
+            createdAt: postDetailsController.postData!.createdAt,
+            updatedAt: postDetailsController.postData!.updatedAt,
+            v: postDetailsController.postData!.v,
+            isLiked: true,
+            isFollowing: postDetailsController.postData!.isFollowing,
+            isVisible: postDetailsController.postData!.isVisible,
+            isHide: postDetailsController.postData!.isHide,
+            isWatchLater: postDetailsController.postData!.isWatchLater,
+          ),
+        );
+        postDetailsController.update(); // Trigger UI update
+      }
+
       if (mounted) {
-        // showSnackBarMessage(context, 'Like successfully completed');
+        showSnackBarMessage(context, 'Like successfully completed');
       }
     } else {
       if (mounted) {
@@ -273,16 +340,55 @@ class _PostDetailsPageState extends State<PostDetailsPage> {
   Future<void> disReactPost(String postId) async {
     final bool isSuccess = await disReactPostController.disReactPost(postId);
     if (isSuccess) {
+      // Update AllPostController
       int index = allPostController.postList
           .indexWhere((post) => post.contentMeta?.id == postId);
       if (index != -1) {
         int currentLikes =
-            allPostController.postList![index].contentMeta?.like ?? 0;
+            allPostController.postList[index].contentMeta?.like ?? 0;
         allPostController.updatePostLike(
             postId, false, currentLikes > 0 ? currentLikes - 1 : 0);
       }
+
+      // Update PostDetailsController's postDetailsModel
+      if (postDetailsController.postDetailsModel != null &&
+          postDetailsController.postData?.contentMeta?.id == postId) {
+        // Create a new PostDetailsData object to avoid modifying `late` fields
+        postDetailsController.postDetailsModel = PostDetailsModel(
+          success: postDetailsController.postDetailsModel!.success,
+          message: postDetailsController.postDetailsModel!.message,
+          data: PostDetailsData(
+            id: postDetailsController.postData!.id,
+            author: postDetailsController.postData!.author,
+            description: postDetailsController.postData!.description,
+            content: postDetailsController.postData!.content,
+            audience: postDetailsController.postData!.audience,
+            hideBy: postDetailsController.postData!.hideBy,
+            contentMeta: ContentMeta(
+              id: postDetailsController.postData!.contentMeta?.id,
+              like: (postDetailsController.postData!.contentMeta?.like ?? 0) > 0
+                  ? postDetailsController.postData!.contentMeta!.like! - 1
+                  : 0,
+              likeBy: postDetailsController.postData!.contentMeta?.likeBy ?? [],
+              comment: postDetailsController.postData!.contentMeta?.comment,
+              share: postDetailsController.postData!.contentMeta?.share,
+            ),
+            isDeleted: postDetailsController.postData!.isDeleted,
+            createdAt: postDetailsController.postData!.createdAt,
+            updatedAt: postDetailsController.postData!.updatedAt,
+            v: postDetailsController.postData!.v,
+            isLiked: false,
+            isFollowing: postDetailsController.postData!.isFollowing,
+            isVisible: postDetailsController.postData!.isVisible,
+            isHide: postDetailsController.postData!.isHide,
+            isWatchLater: postDetailsController.postData!.isWatchLater,
+          ),
+        );
+        postDetailsController.update(); // Trigger UI update
+      }
+
       if (mounted) {
-        // showSnackBarMessage(context, 'Dislike successfully completed');
+        showSnackBarMessage(context, 'Dislike successfully completed');
       }
     } else {
       if (mounted) {
@@ -291,25 +397,4 @@ class _PostDetailsPageState extends State<PostDetailsPage> {
       }
     }
   }
-
-  Future<void> addChatFriend(
-      {required String userId, required String friendId}) async {
-    final bool isSuccess = await addChatController.addChat(userId, friendId);
-    if (isSuccess) {
-      if (mounted) {
-        // showSnackBarMessage(context, 'New chat added successfully');
-        print(
-            'Chat created successfully .............................................');
-        print('FriendId: $friendId');
-        print(
-            'Chat created successfully .............................................');
-      }
-    } else {
-      if (mounted) {
-        showSnackBarMessage(context,
-            addChatController.errorMessage ?? 'Failed to add chat', true);
-      }
-    }
-  }
 }
-

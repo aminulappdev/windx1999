@@ -10,6 +10,7 @@ import 'package:windx1999/app/res/common_widgets/custom_background.dart';
 import 'package:windx1999/app/res/common_widgets/custom_rectangle_buttom.dart';
 import 'package:windx1999/app/res/common_widgets/custom_snackbar.dart';
 import 'package:windx1999/app/res/custom_style/custom_size.dart';
+import 'package:windx1999/photo_view.dart';
 
 class FollowingScreen extends StatefulWidget {
   final bool isMyPage;
@@ -83,13 +84,23 @@ class _FollowingScreenState extends State<FollowingScreen> {
                               },
                               child: Row(
                                 children: [
-                                  CircleAvatar(
-                                    radius: 20.r,
-                                    backgroundImage: NetworkImage(controller
-                                            .allFollowersData![index]
-                                            .following
-                                            ?.photoUrl ??
-                                        'https://fastly.picsum.photos/id/51/200/300.jpg?hmac=w7933XDRbSqrql6BuyEfFBOeVsO60iU5N_OS5FbO6wQ'),
+                                  GestureDetector(
+                                    onTap: () {
+                                      Get.to(() => FullScreenImageViewer(
+                                          imageUrl: controller
+                                                  .allFollowersData![index]
+                                                  .following
+                                                  ?.photoUrl ??
+                                              'https://fastly.picsum.photos/id/51/200/300.jpg?hmac=w7933XDRbSqrql6BuyEfFBOeVsO60iU5N_OS5FbO6wQ'));
+                                    },
+                                    child: CircleAvatar(
+                                      radius: 20.r,
+                                      backgroundImage: NetworkImage(controller
+                                              .allFollowersData![index]
+                                              .following
+                                              ?.photoUrl ??
+                                          'https://fastly.picsum.photos/id/51/200/300.jpg?hmac=w7933XDRbSqrql6BuyEfFBOeVsO60iU5N_OS5FbO6wQ'),
+                                    ),
                                   ),
                                   widthBox8,
                                   Text(

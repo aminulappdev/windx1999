@@ -75,7 +75,7 @@ class _OthersProfileProductState extends State<OthersProfileProduct> {
                         iconData: Icons.token_rounded,
                         iconColor: Colors.white,
                         iconSize: 16,
-                        space: heightBox4,
+                       
                         ontap: () {},
                       ),
                     ),

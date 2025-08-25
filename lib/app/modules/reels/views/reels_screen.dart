@@ -124,7 +124,22 @@ class _ReelsScreenState extends State<ReelsScreen> {
                         SizedBox(
                           height: height,
                           width: width,
-                          child: VideoPlayer(videoController),
+                          child: Center(
+                            child: SizedBox(
+                              height: height * 0.8, // Reduce height to 80% of screen height
+                              child: AspectRatio(
+                                aspectRatio: videoController.value.aspectRatio, // Dynamic aspect ratio
+                                child: FittedBox(
+                                  fit: BoxFit.contain, // Show entire video, may add black bars
+                                  child: SizedBox(
+                                    width: videoController.value.size.width,
+                                    height: videoController.value.size.height,
+                                    child: VideoPlayer(videoController),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
 
                         // Close & Title
@@ -228,8 +243,8 @@ class _ReelsScreenState extends State<ReelsScreen> {
                         // Play/pause button
                         if (showControls)
                           Positioned(
-                            bottom: 400.h,
-                            left: 160.w,
+                            bottom: height * 0.4, // Adjusted to align with smaller video height
+                            left: width * 0.5 - 28.w, // Center horizontally
                             child: InkWell(
                               onTap: () {
                                 setState(() {
@@ -255,8 +270,8 @@ class _ReelsScreenState extends State<ReelsScreen> {
                         // Volume toggle
                         if (showControls)
                           Positioned(
-                            bottom: 325.h,
-                            left: 160.w,
+                            bottom: height * 0.30, // Adjusted to align with smaller video height
+                            left: width * 0.5 - 28.w, // Center horizontally
                             child: InkWell(
                               onTap: () {
                                 setState(() {
@@ -319,9 +334,7 @@ class _ReelsScreenState extends State<ReelsScreen> {
   Future<void> followRequest(String friendId) async {
     final bool isSuccess = await followRequestController.followRequest(friendId);
     if (isSuccess) {
-      // Update follow status locally for immediate UI feedback
       allReelsController.updateFollowStatus(friendId, true);
-      // Re-fetch reels to sync with server
       await allReelsController.getAllReels();
       await addChatFriend(
         userId: StorageUtil.getData(StorageUtil.userId) ?? '',
@@ -340,9 +353,7 @@ class _ReelsScreenState extends State<ReelsScreen> {
   Future<void> unFollowRequest(String friendId) async {
     final bool isSuccess = await unFollowRequestController.unfollowRequest(friendId);
     if (isSuccess) {
-      // Update follow status locally for immediate UI feedback
       allReelsController.updateFollowStatus(friendId, false);
-      // Re-fetch reels to sync with server
       await allReelsController.getAllReels();
       if (mounted) {
         showSnackBarMessage(context, 'Unfollow successfully completed');

@@ -11,7 +11,7 @@ subprojects {
 }
 
 subprojects {
-
+ 
     project.buildDir = "${rootProject.buildDir}/${project.name}"
 
     afterEvaluate { project ->

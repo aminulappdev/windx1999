@@ -35,6 +35,7 @@ class Urls {
   static const String allUserssUrl = '$_baseUrl/users/public';
   static const String sendCommentUrl = '$_baseUrl/comments';
   static const String contentUrl = '$_baseUrl/contents';
+  static const String refundWishlistUrl = '$_baseUrl/refund-requests';
 
   static String updateUserByUrl(
     String id,
@@ -136,6 +137,12 @@ class Urls {
     String id,
   ) {
     return '$_baseUrl/users/$id';
+  }
+
+  static String deleteWishlistById(
+    String id,
+  ) {
+    return '$_baseUrl/wishlists/$id';
   }
 
   static String deleteSavePostById(

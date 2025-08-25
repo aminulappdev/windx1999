@@ -58,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final SaveAllPostController saveAllPostController =
       Get.put(SaveAllPostController());
 
-  // New: Added ScrollController
+  // ScrollController for infinite scrolling
   final ScrollController scrollController = ScrollController();
 
   @override
@@ -77,9 +77,6 @@ class _HomeScreenState extends State<HomeScreen> {
       print('Load more data');
       allPostController.getAllPost();
     }
-    {
-      allPostController.getAllPost();
-    }
   }
 
   @override
@@ -88,287 +85,307 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
+  // Function to refresh data
+  Future<void> _refreshData() async {
+    await Future.wait([
+      allPostController.getAllPost(),
+    ]);
+  }
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder<ThemeController>(builder: (controller) {
       return Scaffold(
-        body: CustomBackground(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 18.0.h, vertical: 20),
-            child: Column(
-              children: [
-                heightBox20,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Container(
-                      height: 40.h,
-                      width: 80.w,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50),
-                        color: Color.fromARGB(116, 255, 255, 255),
-                      ),
-                      child:
-                          GetBuilder<ProfileController>(builder: (pController) {
-                        if (pController.inProgress) {
-                          return Center(
-                            child: SizedBox(
-                              height: 20,
-                              width: 20,
-                              child: CircularProgressIndicator(),
-                            ),
-                          );
-                        }
-                        return InkWell(
-                          onTap: () {
-                            Get.to(TokenBar());
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.token_rounded,
-                                size: 26.h,
-                                color: controller.isDarkMode
-                                    ? Colors.white
-                                    : Colors.black,
+        body: RefreshIndicator(
+          onRefresh: _refreshData, // Called on pull-down
+          child: CustomBackground(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 18.0.h, vertical: 20),
+              child: Column(
+                children: [
+                  heightBox20,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Container(
+                        height: 40.h,
+                        width: 80.w,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(50),
+                          color: Color.fromARGB(116, 255, 255, 255),
+                        ),
+                        child: GetBuilder<ProfileController>(
+                            builder: (pController) {
+                          if (pController.inProgress) {
+                            return Center(
+                              child: SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: CircularProgressIndicator(),
                               ),
-                              Text(
-                                pController.profileData?.tokenAmount
-                                        .toString() ??
-                                    '0',
-                                style: TextStyle(
+                            );
+                          }
+                          return InkWell(
+                            onTap: () {
+                              Get.to(TokenBar());
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.token_rounded,
+                                  size: 26.h,
                                   color: controller.isDarkMode
                                       ? Colors.white
                                       : Colors.black,
                                 ),
-                              ),
-                            ],
-                          ),
-                        );
-                      }),
-                    ),
-                    widthBox10,
-                    CircleIconTransparent(
-                      icon: Icons.notifications,
-                      fillColor: Color.fromARGB(116, 255, 255, 255),
-                      iconColor: Colors.white,
-                      iconSize: 30.h,
-                      ontap: () {
-                        Get.to(NotificationScreen());
-                      },
-                      radius: 40.r,
-                    ),
-                    widthBox10,
-                    CircleIconTransparent(
-                      icon: Icons.search,
-                      fillColor: Color.fromARGB(116, 255, 255, 255),
-                      iconColor: Colors.white,
-                      iconSize: 30.h,
-                      ontap: () {
-                        Get.to(SearchScreen());
-                      },
-                      radius: 40.r,
-                    ),
-                  ],
-                ),
-                heightBox12,
-                Expanded(
-                  child: GetBuilder<AllPostController>(
-                    builder: (allPostController) {
-                      if (allPostController.inProgress &&
-                          allPostController.page == 1) {
-                        return Center(child: CircularProgressIndicator());
-                      }
+                                Text(
+                                  pController.profileData?.tokenAmount
+                                          .toString() ??
+                                      '0',
+                                  style: TextStyle(
+                                    color: controller.isDarkMode
+                                        ? Colors.white
+                                        : Colors.black,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        }),
+                      ),
+                      widthBox10,
+                      CircleIconTransparent(
+                        icon: Icons.notifications,
+                        fillColor: Color.fromARGB(116, 255, 255, 255),
+                        iconColor: Colors.white,
+                        iconSize: 30.h,
+                        ontap: () {
+                          Get.to(NotificationScreen());
+                        },
+                        radius: 40.r,
+                      ),
+                      widthBox10,
+                      CircleIconTransparent(
+                        icon: Icons.search,
+                        fillColor: Color.fromARGB(116, 255, 255, 255),
+                        iconColor: Colors.white,
+                        iconSize: 30.h,
+                        ontap: () {
+                          Get.to(SearchScreen());
+                        },
+                        radius: 40.r,
+                      ),
+                    ],
+                  ),
+                  heightBox12,
+                  Expanded(
+                    child: GetBuilder<AllPostController>(
+                      builder: (allPostController) {
+                        if (allPostController.inProgress &&
+                            allPostController.page == 1) {
+                          return Center(child: CircularProgressIndicator());
+                        }
 
-                      if (allPostController.postList.isEmpty) {
-                        return Center(child: Text('No posts available'));
-                      }
-                      return ListView.builder(
-                        controller: scrollController,
-                        padding: EdgeInsets.zero,
-                        itemCount: allPostController.postList.length,
-                        itemBuilder: (context, index) { 
-                          final post = allPostController.postList[index];
-                          final dateFormatter =
-                              DateFormatter(post.createdAt ?? DateTime.now());
-                          return post.isHide == false
-                              ? Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 4),
-                                  child: PostCard(
-                                    isLiked:
-                                        post.isLiked == true ? true : false,
-                                    aboutProfileTap: () {
-                                      Get.to(post.author?.id ==
-                                              StorageUtil.getData(
-                                                  StorageUtil.userId)
-                                          ? ProfileScreen()
-                                          : OthersProfileScreen(
-                                              userId: post.author?.id ?? ''));
-                                    },
-                                    reactOntap: () {
-                                      post.isLiked == true
-                                          ? disReactPost(post.contentMeta!.id!)
-                                          : reactPost(post.contentMeta!.id!);
-                                    },
-                                    iSVisibleWishlist:
-                                        post.contentType == 'wishlist',
-                                    bgColor: controller.isDarkMode
-                                        ? Color(0xffAFAFAF)
-                                        : Color(0xffAF7CF8),
-                                    name: post.author?.name ?? 'Unknown',
-                                    profilePath: post.author?.photoUrl ??
-                                        'https://fastly.picsum.photos/id/1/200/300.jpg',
-                                    activeStatus:
-                                        dateFormatter.getRelativeTimeFormat(),
-                                    addFriendOnTap: () {},
-                                    wishListOnTap: () {
-                                      Get.to(ShowWishlistScreen(
-                                          wishlistId: post.id ?? ''));
-                                    },
-                                    moreVertOntap: () {
-                                      showModalBottomSheet(
-                                        scrollControlDisabledMaxHeightRatio:
-                                            0.6,
-                                        context: context,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.vertical(
-                                              top: Radius.circular(20)),
-                                        ),
-                                        backgroundColor: Color(0xffA96CFF),
-                                        builder: (context) {
-                                          return Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              ButtonSheetDetailsScreen(
-                                                buttonSheetDetailsList: [
-                                                  {
-                                                    'icon':
-                                                        Icons.visibility_off,
-                                                    'name': 'Hide post',
-                                                    'ontap': () {
-                                                      hidePost(
-                                                          post.id ?? '',
-                                                          post.contentType ??
-                                                              '');
-                                                    }
-                                                  },
-                                                  {
-                                                    'icon': post.isFollowing ==
-                                                            true
-                                                        ? Icons.person_remove
-                                                        : Icons.person_add,
-                                                    'name':
-                                                        post.isFollowing == true
-                                                            ? 'Unfollow'
-                                                            : 'Follow',
-                                                    'ontap': () {
-                                                      if (post.isFollowing ==
-                                                          true) {
-                                                        unFollowRequest(
-                                                            post.author?.id ??
-                                                                '');
-                                                      } else {
-                                                        followRequest(
-                                                            post.author?.id ??
+                        if (allPostController.postList.isEmpty) {
+                          return Center(child: Text('No posts available'));
+                        }
+                        return ListView.builder(
+                          controller: scrollController,
+                          padding: EdgeInsets.zero,
+                          physics:
+                              AlwaysScrollableScrollPhysics(), // Ensure pull-to-refresh works
+                          itemCount: allPostController.postList.length,
+                          itemBuilder: (context, index) {
+                            final post = allPostController.postList[index];
+                            final dateFormatter =
+                                DateFormatter(post.createdAt ?? DateTime.now());
+                            return post.isHide == false
+                                ? Padding(
+                                    padding:
+                                        const EdgeInsets.symmetric(vertical: 4),
+                                    child: PostCard(
+                                      isLiked:
+                                          post.isLiked == true ? true : false,
+                                      aboutProfileTap: () {
+                                        Get.to(post.author?.id ==
+                                                StorageUtil.getData(
+                                                    StorageUtil.userId)
+                                            ? ProfileScreen()
+                                            : OthersProfileScreen(
+                                                userId: post.author?.id ?? ''));
+                                      },
+                                      reactOntap: () {
+                                        post.isLiked == true
+                                            ? disReactPost(
+                                                post.contentMeta!.id!)
+                                            : reactPost(post.contentMeta!.id!);
+                                      },
+                                      iSVisibleWishlist:
+                                          post.contentType == 'wishlist',
+                                      bgColor: controller.isDarkMode
+                                          ? Color(0xff545458)
+                                          : Color(0xffAF7CF8),
+                                      name: post.author?.name ?? 'Unknown',
+                                      profilePath: post.author?.photoUrl ??
+                                          'https://fastly.picsum.photos/id/1/200/300.jpg',
+                                      activeStatus:
+                                          dateFormatter.getRelativeTimeFormat(),
+                                      addFriendOnTap: () {},
+                                      wishListOnTap: () {
+                                        Get.to(ShowWishlistScreen(
+                                            wishlistId: post.id ?? ''));
+                                      },
+                                      moreVertOntap: () {
+                                        showModalBottomSheet(
+                                          scrollControlDisabledMaxHeightRatio:
+                                              0.6,
+                                          context: context,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.vertical(
+                                                top: Radius.circular(20)),
+                                          ),
+                                          backgroundColor: Color(0xffA96CFF),
+                                          builder: (context) {
+                                            return Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                ButtonSheetDetailsScreen(
+                                                  buttonSheetDetailsList: [
+                                                    {
+                                                      'icon':
+                                                          Icons.visibility_off,
+                                                      'name': 'Hide post',
+                                                      'ontap': () {
+                                                        hidePost(
+                                                            post.id ?? '',
+                                                            post.contentType ??
                                                                 '');
                                                       }
-                                                    }
-                                                  },
-                                                  {
-                                                    'icon': Icons.person_off,
-                                                    'name': 'Block',
-                                                    'ontap': () {
-                                                      Get.to(
-                                                          () => BlockUserScreen(
-                                                                userId: post
-                                                                        .author
-                                                                        ?.id ??
-                                                                    '',
-                                                                userName: post
-                                                                        .author
-                                                                        ?.name ??
-                                                                    '',
-                                                                userImage: post
-                                                                        .author
-                                                                        ?.photoUrl ??
-                                                                    '',
-                                                              ));
-                                                    }
-                                                  },
-                                                  {
-                                                    'icon': Icons
-                                                        .smart_display_outlined,
-                                                    'name': 'Report Post',
-                                                    'ontap': () {
-                                                      Get.to(ReportScreen(
-                                                          reportType: post
-                                                                      .contentType ==
-                                                                  'feed'
-                                                              ? 'Feed'
-                                                              : post.contentType ==
-                                                                      'wishlist'
-                                                                  ? 'Wishlist'
-                                                                  : '',
-                                                          reportId:
-                                                              post.id ?? ''));
-                                                    }
-                                                  },
-                                                  {
-                                                    'icon': Icons.person,
-                                                    'name': 'Report profile',
-                                                    'ontap': () {
-                                                      Get.to(ReportScreen(
-                                                          reportType: 'User',
-                                                          reportId:
+                                                    },
+                                                    {
+                                                      'icon':
+                                                          post.isFollowing ==
+                                                                  true
+                                                              ? Icons
+                                                                  .person_remove
+                                                              : Icons
+                                                                  .person_add,
+                                                      'name':
+                                                          post.isFollowing ==
+                                                                  true
+                                                              ? 'Unfollow'
+                                                              : 'Follow',
+                                                      'ontap': () {
+                                                        if (post.isFollowing ==
+                                                            true) {
+                                                          unFollowRequest(
                                                               post.author?.id ??
-                                                                  ''));
-                                                    }
-                                                  },
-                                                ],
-                                              )
-                                            ],
-                                          );
-                                        },
-                                      );
-                                    },
-                                    text: post.description ?? '',
-                                    comment:
-                                        post.contentMeta?.comment.toString() ??
-                                            '0',
-                                    react: post.contentMeta?.like.toString() ??
-                                        '0',
-                                    share: post.contentMeta?.share.toString() ??
-                                        '0',
-                                    isSaved: post.isWatchLater ?? false,
-                                    imagePath: post.content.isNotEmpty == true
-                                        ? post.content[0]
-                                        : null,
-                                    bookmarkOntap: () {
-                                      post.isWatchLater == true
-                                          ? unSavePost(post.id ?? '')
-                                          : savePost(
-                                              StorageUtil.getData(
-                                                      StorageUtil.userId) ??
-                                                  '',
-                                              post.contentType ?? '',
-                                              post.id ?? '');
-                                    },
-                                    commentOnTap: () {
-                                      Get.to(CommentScreen(
-                                          postId: post.id ?? '',
-                                          postType: post.contentType ?? ''));
-                                    },
-                                  ),
-                                )
-                              : Container();
-                        },
-                      );
-                    },
+                                                                  '');
+                                                        } else {
+                                                          followRequest(
+                                                              post.author?.id ??
+                                                                  '');
+                                                        }
+                                                      }
+                                                    },
+                                                    {
+                                                      'icon': Icons.person_off,
+                                                      'name': 'Block',
+                                                      'ontap': () {
+                                                        Get.to(() =>
+                                                            BlockUserScreen(
+                                                              userId: post
+                                                                      .author
+                                                                      ?.id ??
+                                                                  '',
+                                                              userName: post
+                                                                      .author
+                                                                      ?.name ??
+                                                                  '',
+                                                              userImage: post
+                                                                      .author
+                                                                      ?.photoUrl ??
+                                                                  '',
+                                                            ));
+                                                      }
+                                                    },
+                                                    {
+                                                      'icon': Icons
+                                                          .smart_display_outlined,
+                                                      'name': 'Report Post',
+                                                      'ontap': () {
+                                                        Get.to(ReportScreen(
+                                                            reportType: post
+                                                                        .contentType ==
+                                                                    'feed'
+                                                                ? 'Feed'
+                                                                : post.contentType ==
+                                                                        'wishlist'
+                                                                    ? 'Wishlist'
+                                                                    : '',
+                                                            reportId:
+                                                                post.id ?? ''));
+                                                      }
+                                                    },
+                                                    {
+                                                      'icon': Icons.person,
+                                                      'name': 'Report profile',
+                                                      'ontap': () {
+                                                        Get.to(ReportScreen(
+                                                            reportType: 'User',
+                                                            reportId: post
+                                                                    .author
+                                                                    ?.id ??
+                                                                ''));
+                                                      }
+                                                    },
+                                                  ],
+                                                )
+                                              ],
+                                            );
+                                          },
+                                        );
+                                      },
+                                      text: post.description ?? '',
+                                      comment: post.contentMeta?.comment
+                                              .toString() ??
+                                          '0',
+                                      react:
+                                          post.contentMeta?.like.toString() ??
+                                              '0',
+                                      share:
+                                          post.contentMeta?.share.toString() ??
+                                              '0',
+                                      isSaved: post.isWatchLater ?? false,
+                                      imagePath: post.content.isNotEmpty == true
+                                          ? post.content[0]
+                                          : null,
+                                      bookmarkOntap: () {
+                                        post.isWatchLater == true
+                                            ? unSavePost(post.id ?? '')
+                                            : savePost(
+                                                StorageUtil.getData(
+                                                        StorageUtil.userId) ??
+                                                    '',
+                                                post.contentType ?? '',
+                                                post.id ?? '');
+                                      },
+                                      commentOnTap: () {
+                                        Get.to(CommentScreen(
+                                            postId: post.id ?? '',
+                                            postType: post.contentType ?? ''));
+                                      },
+                                    ),
+                                  )
+                                : Container();
+                          },
+                        );
+                      },
+                    ),
                   ),
-                )
-              ],
+                ],
+              ),
             ),
           ),
         ),
@@ -418,7 +435,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if (isSuccess) {
       allPostController.updatePostHide(postId, true);
       if (mounted) {
-        // showSnackBarMessage(context, 'Post hidden successfully');
+        showSnackBarMessage(context, 'Post hidden successfully');
       }
     } else {
       if (mounted) {
@@ -453,7 +470,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if (isSuccess) {
       saveAllPostController.getMySavePost();
       allPostController.updatePostUnSave(postId, false);
-      showSnackBarMessage(context, 'unsaved successfully done');
+      showSnackBarMessage(context, 'Unsaved successfully done');
     } else {
       Get.snackbar(
         backgroundColor: Colors.red,
@@ -476,7 +493,7 @@ class _HomeScreenState extends State<HomeScreen> {
         allPostController.updatePostLike(postId, true, currentLikes + 1);
       }
       if (mounted) {
-        // showSnackBarMessage(context, 'Like successfully completed');
+        showSnackBarMessage(context, 'Like successfully completed');
       }
     } else {
       if (mounted) {
@@ -498,7 +515,7 @@ class _HomeScreenState extends State<HomeScreen> {
             postId, false, currentLikes > 0 ? currentLikes - 1 : 0);
       }
       if (mounted) {
-        // showSnackBarMessage(context, 'Dislike successfully completed');
+        showSnackBarMessage(context, 'Dislike successfully completed');
       }
     } else {
       if (mounted) {
@@ -513,7 +530,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final bool isSuccess = await addChatController.addChat(userId, friendId);
     if (isSuccess) {
       if (mounted) {
-        // showSnackBarMessage(context, 'New chat added successfully');
+        showSnackBarMessage(context, 'New chat added successfully');
         print(
             'Chat created successfully .............................................');
         print('FriendId: $friendId');
@@ -528,3 +545,5 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 }
+
+void main() => runApp(MaterialApp(home: HomeScreen()));

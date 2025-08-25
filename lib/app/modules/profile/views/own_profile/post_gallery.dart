@@ -5,6 +5,7 @@ import 'package:windx1999/app/modules/homepage/widgets/image_container.dart';
 import 'package:windx1999/app/modules/profile/controllers/all_feed_controller.dart';
 import 'package:windx1999/app/res/custom_style/custom_size.dart';
 import 'package:windx1999/get_storage.dart';
+import 'package:windx1999/photo_view.dart';
 
 class PostGallery extends StatefulWidget {
   const PostGallery({super.key});
@@ -86,14 +87,19 @@ class _PostGalleryState extends State<PostGallery> {
 
                     // Optional: check if mediaUrl is valid
                     if (mediaUrl.isNotEmpty) {
-                      return MediaContainer(
-                        mediaPath: mediaUrl,
-                        height: 100.h,
-                        width: 100.w,
-                        borderRadius: 0,
-                        borderColor: Colors.transparent,
-                        child: const Align(
-                          alignment: Alignment.topRight,
+                      return GestureDetector(
+                        onTap: () {
+                          Get.to(() => FullScreenImageViewer(imageUrl: mediaUrl!));
+                        },
+                        child: MediaContainer(
+                          mediaPath: mediaUrl,
+                          height: 100.h,
+                          width: 100.w,
+                          borderRadius: 0,
+                          borderColor: Colors.transparent,
+                          child: const Align(
+                            alignment: Alignment.topRight,
+                          ),
                         ),
                       );
                     }
