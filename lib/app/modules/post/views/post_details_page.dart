@@ -33,7 +33,7 @@ class PostDetailsPage extends StatefulWidget {
   final String contentType;
   final String contentId;
   const PostDetailsPage(
-      {super.key, required this.contentId, required this.contentType});
+      {super.key, required this.contentId, required this.contentType}); 
 
   @override
   State<PostDetailsPage> createState() => _PostDetailsPageState();
@@ -327,7 +327,7 @@ class _PostDetailsPageState extends State<PostDetailsPage> {
       }
 
       if (mounted) {
-        showSnackBarMessage(context, 'Like successfully completed');
+      //  showSnackBarMessage(context, 'Like successfully completed');
       }
     } else {
       if (mounted) {
@@ -388,7 +388,7 @@ class _PostDetailsPageState extends State<PostDetailsPage> {
       }
 
       if (mounted) {
-        showSnackBarMessage(context, 'Dislike successfully completed');
+       // showSnackBarMessage(context, 'Dislike successfully completed');
       }
     } else {
       if (mounted) {

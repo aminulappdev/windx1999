@@ -162,7 +162,7 @@ class _ReelsScreenState extends State<ReelsScreen> {
 
                         // Right-side icons
                         Positioned(
-                          bottom: 60.h,
+                          bottom: 20.h,
                           right: 20.w,
                           child: Column(
                             children: [
@@ -212,7 +212,7 @@ class _ReelsScreenState extends State<ReelsScreen> {
 
                         // Bottom left details
                         Positioned(
-                          bottom: 30.h,
+                          bottom: -10.h,
                           left: 10.h,
                           child: ReelsDetails(
                             follow: allReelsController.allReelsData?[index].isFollowing == true

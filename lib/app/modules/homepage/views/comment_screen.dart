@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -33,6 +31,7 @@ class _CommentScreenState extends State<CommentScreen> {
   final SendCommentController sendCommentController =
       Get.put(SendCommentController());
   final TextEditingController commentCtrl = TextEditingController();
+  FocusNode replyFocusNode = FocusNode(); // FocusNode for the reply TextField
   int? selectedCommentIndex; // Tracks which comment is being replied to
   String? replyRef; // Stores the ID of the comment being replied to
 
@@ -44,7 +43,6 @@ class _CommentScreenState extends State<CommentScreen> {
       print('PostId: ${widget.postId}');
       print('PostType: ${widget.postType}');
     });
-
     super.initState();
   }
 
@@ -62,8 +60,7 @@ class _CommentScreenState extends State<CommentScreen> {
                 const CustomAppBar(title: 'Comments'),
                 Expanded(
                   child: GetBuilder<CommentController>(builder: (cController) {
-                    print(
-                        "Comment Data: ${cController.commentData?.length}"); // Debug
+                    print("Comment Data: ${cController.commentData?.length}"); // Debug
                     if (cController.inProgress) {
                       return const Center(
                         child: CircularProgressIndicator(),
@@ -173,8 +170,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                                                         .w600),
                                                           ),
                                                           Text(
-                                                              reply.comment ??
-                                                                  '',
+                                                              reply.comment ?? '',
                                                               style: GoogleFonts
                                                                   .poppins(
                                                                 color: Colors
@@ -198,6 +194,8 @@ class _CommentScreenState extends State<CommentScreen> {
                                               selectedCommentIndex = index;
                                               replyRef = comment.id;
                                               commentCtrl.text = '';
+                                              FocusScope.of(context)
+                                                  .requestFocus(replyFocusNode); // Trigger keyboard
                                             });
                                           },
                                           child: Text(
@@ -237,20 +235,19 @@ class _CommentScreenState extends State<CommentScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            GetBuilder<ProfileController>(
-                              builder: (pController) {
-                                return CircleAvatar(
-                                  radius: 18.r,
-                                  backgroundImage: NetworkImage(pController
-                                          .profileData?.photoUrl ??
-                                      'https://fastly.picsum.photos/id/471/200/300.jpg?hmac=N_ZXTRU2OGQ7b_1b8Pz2X8e6Qyd84Q7xAqJ90bju2WU'),
-                                );
-                              },
-                            ),
+                            GetBuilder<ProfileController>(builder: (pController) {
+                              return CircleAvatar(
+                                radius: 18.r,
+                                backgroundImage: NetworkImage(pController
+                                        .profileData?.photoUrl ??
+                                    'https://fastly.picsum.photos/id/471/200/300.jpg?hmac=N_ZXTRU2OGQ7b_1b8Pz2X8e6Qyd84Q7xAqJ90bju2WU'),
+                              );
+                            }),
                             SizedBox(
                               width: 250.w,
                               child: TextFormField(
                                 controller: commentCtrl,
+                                focusNode: replyFocusNode, // Attach FocusNode
                                 style: TextStyle(
                                     color: controller.isDarkMode == true
                                         ? Colors.white

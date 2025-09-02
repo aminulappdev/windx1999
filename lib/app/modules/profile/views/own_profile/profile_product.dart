@@ -228,7 +228,7 @@ class _ProfileProductState extends State<ProfileProduct> {
                   maxLines: 3,
                   controller: reasonCtrl,
                   decoration: InputDecoration(
-                    hintText: 'Enter your name',
+                    hintText: 'Enter reason',
                     errorStyle: TextStyle(
                         color: const Color.fromARGB(255, 237, 82, 82)),
                   ),
