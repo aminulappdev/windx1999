@@ -42,7 +42,7 @@ class _PostGalleryState extends State<PostGallery> {
                 item.content[0].toString().toLowerCase().contains('/videos/'))
             .toList();
       case 'All':
-      default:
+      default: 
         return feedData;
     }
   }
