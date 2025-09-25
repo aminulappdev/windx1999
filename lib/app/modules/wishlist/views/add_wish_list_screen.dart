@@ -112,48 +112,9 @@ class _CreateWishlistScreenState extends State<CreateWishlistScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Title',
-                              style:
-                                  TextStyle(fontSize: 16.sp, color: Colors.white),
-                            ),
-                            heightBox10,
-                            TextFormField(
-                              controller: titleCtrl,
-                              decoration: const InputDecoration(
-                                hintText: 'Enter title your product',
-                                errorStyle: TextStyle(
-                                    color: Color.fromARGB(255, 237, 82, 82)),
-                              ),
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              validator: (value) => null,
-                            ),
-                            heightBox20,
-                            Text(
-                              'Description',
-                              style:
-                                  TextStyle(fontSize: 16.sp, color: Colors.white),
-                            ),
-                            heightBox10,
-                            TextFormField(
-                              controller: descriptionCtrl,
-                              decoration: const InputDecoration(
-                                hintText: 'Enter description of your product',
-                                errorStyle: TextStyle(
-                                    color: Color.fromARGB(255, 237, 82, 82)),
-                              ),
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              validator: (value) => null,
-                              onChanged: (value) {
-                                setState(() {}); // Update UI when text changes
-                              },
-                            ),
-                            heightBox20,
-                            Text(
                               'Product link',
-                              style:
-                                  TextStyle(fontSize: 16.sp, color: Colors.white),
+                              style: TextStyle(
+                                  fontSize: 16.sp, color: Colors.white),
                             ),
                             heightBox10,
                             TextFormField(
@@ -167,106 +128,48 @@ class _CreateWishlistScreenState extends State<CreateWishlistScreen> {
                                   AutovalidateMode.onUserInteraction,
                               validator: (value) => null,
                             ),
-                            heightBox20,
-                            Text(
-                              'Product price',
-                              style:
-                                  TextStyle(fontSize: 16.sp, color: Colors.white),
-                            ),
                             heightBox10,
-                            TextFormField(
-                              controller: priceCtrl,
-                              decoration: const InputDecoration(
-                                prefixIcon: Icon(Icons.money),
-                                hintText: 'Enter product price',
-                                errorStyle: TextStyle(
-                                    color: Color.fromARGB(255, 237, 82, 82)),
-                              ),
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              validator: (value) {
-                                if (value == null || value.trim().isEmpty) {
-                                  return null; // Price is optional
-                                }
-                                if (double.tryParse(value) == null) {
-                                  return 'Please enter a valid number';
-                                }
-                                return null;
-                              },
-                              keyboardType: TextInputType.number,
+                            SizedBox(
+                              width: 200.w,
+                              height: 40,
+                              child: ElevatedButton(
+                                  onPressed: pickFile, child: Text('Generate')),
                             ),
                             heightBox20,
-                            Text(
-                              'Total Token',
-                              style:
-                                  TextStyle(fontSize: 16.sp, color: Colors.white),
+                            InfoBox(
+                              title: 'Title',
+                              data: 'Apple Macbook Pro 2021',
                             ),
                             heightBox10,
-                            TextField(
-                              enabled: false,
-                              controller:
-                                  TextEditingController(text: getTotalTokens()),
-                              decoration: const InputDecoration(
-                                prefixIcon: Icon(Icons.money),
-                                errorStyle: TextStyle(
-                                    color: Color.fromARGB(255, 237, 82, 82)),
-                              ),
-                            ),
-                            heightBox20,
-                            Text(
-                              'Upload image or video',
-                              style:
-                                  TextStyle(fontSize: 16.sp, color: Colors.white),
+                            InfoBox(
+                              title: 'Description',
+                              data: 'Apple Macbook Pro 2021',
                             ),
                             heightBox10,
-                            Center(
-                              child: Column(
-                                children: [
-                                  SizedBox(
-                                    width:
-                                        selectedFile != null ? 200.w : 150.w,
-                                    height:
-                                        selectedFile != null ? 80.h : 80.h,
-                                    child: FilePickerBrowse(
-                                      icon: Icons.upload_file,
-                                      mediaName: 'Browse',
-                                      ontap: pickFile,
-                                    ),
-                                  ),
-                                  heightBox12,
-                                  selectedFile != null
-                                      ? Container(
-                                          width: 250.w,
-                                          height: 200.h,
-                                          decoration: BoxDecoration(
-                                            border:
-                                                Border.all(color: Colors.white),
-                                            borderRadius:
-                                                BorderRadius.circular(12.r),
-                                          ),
-                                          child: selectedFile!.extension ==
-                                                      'mp4' ||
-                                                  selectedFile!.extension ==
-                                                      'mov'
-                                              ? const Icon(
-                                                  Icons.videocam,
-                                                  size: 50,
-                                                  color: Colors.white,
-                                                )
-                                              : ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          12.r),
-                                                  child: Image.file(
-                                                    File(selectedFile!.path!),
-                                                    fit: BoxFit.cover,
-                                                  ),
-                                                ),
-                                        )
-                                      : Container(),
-                                ],
-                              ),
+                            InfoBox(
+                              title: 'Price',
+                              data: 'Apple Macbook Pro 2021',
                             ),
+                            heightBox10,
+                            InfoBox(
+                              title: 'Us Dollars',
+                              data: 'Apple Macbook Pro 2021',
+                            ),
+                            heightBox10,
+                            InfoBox(
+                              title: 'Token',
+                              data: 'Apple Macbook Pro 2021',
+                            ),
+                            heightBox10,
+                           Container(
+                             width: double.infinity,
+                             decoration: BoxDecoration(
+                              color: Colors.black,
+                                borderRadius: BorderRadius.circular(20),
+                             ),
+                             height: 200,
+                             
+                           )
                           ],
                         ),
                       ),
@@ -274,9 +177,10 @@ class _CreateWishlistScreenState extends State<CreateWishlistScreen> {
                       GetBuilder<CreateWishListController>(
                         builder: (controller) {
                           return Opacity(
-                            opacity: _isCreateButtonEnabled && !controller.inProgress
-                                ? 1.0
-                                : 0.3,
+                            opacity:
+                                _isCreateButtonEnabled && !controller.inProgress
+                                    ? 1.0
+                                    : 0.3,
                             child: ElevatedButton(
                               onPressed: _isCreateButtonEnabled &&
                                       !controller.inProgress
@@ -382,5 +286,46 @@ class _CreateWishlistScreenState extends State<CreateWishlistScreen> {
             true);
       }
     }
+  }
+}
+
+class InfoBox extends StatelessWidget {
+  final String title;
+  final String data;
+
+  const InfoBox({
+    super.key,
+    required this.title,
+    required this.data,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12.0),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(title,
+                style: TextStyle(
+                    fontSize: 16.sp,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w600)),
+            heightBox4,
+            Text(data,
+                style: TextStyle(
+                    fontSize: 16.sp,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w400)),
+          ],
+        ),
+      ),
+    );
   }
 }
