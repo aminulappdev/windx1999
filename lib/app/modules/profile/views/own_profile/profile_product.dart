@@ -47,8 +47,17 @@ class ProductListTile extends StatelessWidget {
                   ))),
         ),
       ),
-      title: Text(title, style: TextStyle(color: Colors.white)),
-      subtitle: Text(subtitle, style: TextStyle(color: Colors.grey)),
+      title: Text(
+        title,
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 12,
+        ),
+        maxLines: 3,
+        overflow: TextOverflow.ellipsis,
+      ),
+      // subtitle: Text(subtitle, style: TextStyle(color: Colors.grey)),
+      subtitle: Text(''),
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -147,7 +156,7 @@ class _ProfileProductState extends State<ProfileProduct> {
                         width: 70,
                         bgColor: Color(0xff6CC7FE),
                         borderRadius: 8,
-                        title: controller.allWishlistData?[index].price
+                        title: controller.allWishlistData?[index].token
                                 .toString() ??
                             'no price',
                         titleColor: Colors.white,

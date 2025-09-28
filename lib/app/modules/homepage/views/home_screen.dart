@@ -109,7 +109,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       Container(
                         height: 40.h,
-                        width: 80.w,
+                        
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(50),
                           color: Color.fromARGB(116, 255, 255, 255),
@@ -129,27 +129,30 @@ class _HomeScreenState extends State<HomeScreen> {
                             onTap: () {
                               Get.to(TokenBar());
                             },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.token_rounded,
-                                  size: 26.h,
-                                  color: controller.isDarkMode
-                                      ? Colors.white
-                                      : Colors.black,
-                                ),
-                                Text(
-                                  pController.profileData?.tokenAmount
-                                          .toString() ??
-                                      '0',
-                                  style: TextStyle(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 8),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.token_rounded,
+                                    size: 26.h,
                                     color: controller.isDarkMode
                                         ? Colors.white
                                         : Colors.black,
                                   ),
-                                ),
-                              ],
+                                  Text(
+                                    pController.profileData?.tokenAmount
+                                            .toString() ??
+                                        '0',
+                                    style: TextStyle(
+                                      color: controller.isDarkMode
+                                          ? Colors.white
+                                          : Colors.black,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           );
                         }),

@@ -36,6 +36,7 @@ class Urls {
   static const String sendCommentUrl = '$_baseUrl/comments';
   static const String contentUrl = '$_baseUrl/contents';
   static const String refundWishlistUrl = '$_baseUrl/refund-requests';
+  static const String scrapingUrl = '$_baseUrl/wishlists/scrap-link';
 
   static String updateUserByUrl(
     String id,

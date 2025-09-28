@@ -20,8 +20,7 @@ class CreateWishListController extends GetxController {
 
   /// 🔁 Create Post Function (with optional contentFile)
   Future<bool> createWishList(String authorId, String title, String description,
-      String link, dynamic price, dynamic token,
-      {PlatformFile? contentFile}) async {
+      String link, dynamic price, dynamic token, String contentFile) async {
     bool isSuccess = false;
     _inProgress = true;
     update();
@@ -42,31 +41,35 @@ class CreateWishListController extends GetxController {
       // ✅ Authorization header
       request.headers['Authorization'] = accessToken;
 
+      print(
+          'Author Id is : $authorId, Title is : $title, Description is : $description, Link is : $link, Price is : $price, Token is : $token and Content File is : $contentFile');
+
       // ✅ Set request fields
       Map<String, dynamic> jsonFields = {
         "author": authorId,
         "title": title,
-        "description": description,
+        "description": 'description',
         "link": link,
-        "price": price.isNotEmpty ? int.tryParse(price) ?? 0 : 0, // Handle price safely
+        "price": price, // Handle price safely
         "token": token, // Include totalTokens in the request
+        "content": contentFile
       };
 
       request.fields['data'] = jsonEncode(jsonFields);
 
       // ✅ Add content file (image or video)
-      if (contentFile != null && contentFile.path != null) {
-        String filePath = contentFile.path!;
-        String? mimeType = lookupMimeType(filePath) ?? 'application/octet-stream';
+      // if (contentFile != null && contentFile.path != null) {
+      //   String filePath = contentFile.path!;
+      //   String? mimeType = lookupMimeType(filePath) ?? 'application/octet-stream';
 
-        request.files.add(
-          await http.MultipartFile.fromPath(
-            'content', // 🔑 Backend expects 'content' as key
-            filePath,
-            contentType: MediaType.parse(mimeType),
-          ),
-        );
-      }
+      //   request.files.add(
+      //     await http.MultipartFile.fromPath(
+      //       'content', // 🔑 Backend expects 'content' as key
+      //       filePath,
+      //       contentType: MediaType.parse(mimeType),
+      //     ),
+      //   );
+      // }
 
       // 📡 Send request
       var streamedResponse = await request.send();

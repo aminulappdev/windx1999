@@ -12,7 +12,7 @@ class FeatureRow extends StatelessWidget {
     required this.isToggled,
     required this.onToggle,
   });
-
+ 
   final String title;
   final bool isToggled;
   final ValueChanged<bool> onToggle;

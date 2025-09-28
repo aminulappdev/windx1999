@@ -4,7 +4,7 @@ class WishlistDetailsModel {
         required this.message,
         required this.data,
     });
-
+ 
     final bool? success;
     final String? message;
     final WishListData? data;

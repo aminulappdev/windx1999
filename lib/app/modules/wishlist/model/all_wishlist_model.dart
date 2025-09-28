@@ -54,7 +54,7 @@ class AllWishlistItemModel {
   final String? title;
   final String? description;
   final String? link;
-  final int? price;
+  final dynamic price;
   final List<String> content;
   final int? token;
   final String? status;
