@@ -47,15 +47,15 @@ class _LogInScreenState extends State<LogInScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                heightBox20,
+                heightBox30,
                 CustomAppBar(title: 'Log in'),
                 heightBox20,
-                SvgPicture.asset(
-                  AssetsPath.updateMainLogo,
+                Image.asset(
+                  AssetsPath.updateLogo,
                   height: 160.h,
                   width: 195.w,
                 ),
-                heightBox8,
+                heightBox20,
                 Form(
                   key: _formKey,
                   child: Column(
@@ -196,7 +196,10 @@ class _LogInScreenState extends State<LogInScreen> {
       final bool isSuccess = await resendOtpController.resendOtp(email);
       var token = resendOtpController.resendOtpData?.token ?? 'Empty';
       print('ResendOtp: $token');
-      Get.to(() => EmailVerificationScreen(accessToken: token,email: email,));
+      Get.to(() => EmailVerificationScreen(
+            accessToken: token,
+            email: email,
+          ));
     } else if (isSuccess) {
       await profileController.getMyProfile();
       print('User verified');

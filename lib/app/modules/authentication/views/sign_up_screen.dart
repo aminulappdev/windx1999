@@ -44,14 +44,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                heightBox20,
+                heightBox30,
                 CustomAppBar(title: 'Create Account'),
                 heightBox40,
-                SvgPicture.asset(
-                  AssetsPath.updateMainLogo,
-                  height: 120.h,
-                  width: 155.w,
+                 Image.asset(
+                  AssetsPath.updateLogo,
+                  height: 180.h,
+                  width: 170.w,
+                  fit: BoxFit.fill,
                 ),
+                // SvgPicture.asset(
+                //   AssetsPath.updateMainLogo,
+                //   height: 120.h,
+                //   width: 155.w,
+                // ),
                 heightBox16,
                 Form(
                   key: _formKey,

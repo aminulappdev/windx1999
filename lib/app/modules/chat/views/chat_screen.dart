@@ -191,7 +191,7 @@ class _ChatScreenState extends State<ChatScreen> {
           isSending = false;
         });
       }
-    } else if (text.trim().isEmpty) {
+    } else if (text.trim().isEmpty) {  
       Get.snackbar('Error', 'Message cannot be empty');
     }
   }

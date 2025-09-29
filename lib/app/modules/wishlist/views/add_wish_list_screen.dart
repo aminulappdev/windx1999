@@ -410,7 +410,7 @@ class _CreateWishlistScreenState extends State<CreateWishlistScreen> {
   }
 }
 
-// InfoBox widget to display title and data
+// InfoBox widget to display title and data 
 class InfoBox extends StatelessWidget {
   final String title;
   final String data;

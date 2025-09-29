@@ -2,6 +2,7 @@ class AssetsPath {
   static const String imagePath = 'assets/images'; 
   static const String mainLogo = '$imagePath/main_logo.svg';
   static const String updateMainLogo = '$imagePath/update_mainLogo.svg';
+  static const String updateLogo = '$imagePath/update_logo.png';
   static const String updateMainLogo2 = '$imagePath/update_mainLogo.svg';
   static const String onBoarding01 = '$imagePath/onBoarding01.svg';
   static const String onBoarding02 = '$imagePath/onBoarding02.svg';

@@ -37,12 +37,13 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       body: CustomBackground(
         child: Center(
-            child: SvgPicture.asset(
-          AssetsPath.updateMainLogo,
-          height: 324.h,
-          width: 253.w,
-          fit: BoxFit.fill,
-        )),
+          child: Image.asset(
+            AssetsPath.updateLogo,
+            height: 256.h,
+            width: 199.w,
+            fit: BoxFit.fill,
+          ),
+        ),
       ),
     );
   }

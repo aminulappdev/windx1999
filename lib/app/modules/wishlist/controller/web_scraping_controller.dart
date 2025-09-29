@@ -32,7 +32,7 @@ class WebScrappingController extends GetxController {
       Urls.scrapingUrl,
       {
         "link": link,
-        "platform": type, // amazon | emag | jumia
+        // "platform": type, // amazon | emag | jumia
       },
       accesToken: StorageUtil.getData(StorageUtil.userAccessToken),
     );
