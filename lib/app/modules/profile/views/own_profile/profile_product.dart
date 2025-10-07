@@ -145,11 +145,10 @@ class _ProfileProductState extends State<ProfileProduct> {
                   return Padding(
                     padding: const EdgeInsets.symmetric(vertical: 0),
                     child: ProductListTile(
-                      imagePath: wishlist!.content.isNotEmpty
-                          ? wishlist.content[0]
-                          : 'https://fastly.picsum.photos/id/376/200/300.jpg?hmac=gH_OWo7cSHKwU34tPONXdcjJuObIx0_5IswQHBjTXxg',
-                      title: wishlist.title ?? 'no title',
-                      subtitle: wishlist.description ?? 'no description',
+                      imagePath: wishlist?.content ??
+                        'https://fastly.picsum.photos/id/376/200/300.jpg?hmac=gH_OWo7cSHKwU34tPONXdcjJuObIx0_5IswQHBjTXxg',
+                      title: wishlist?.title ?? 'no title',
+                      subtitle: wishlist?.description ?? 'no description',
                       category: 'Wishlist',
                       trailingIcon: RectangleButtonWithIcon(
                         height: 30,

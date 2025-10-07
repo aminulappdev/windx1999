@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:windx1999/app/modules/profile/controllers/content_controller.dart';
 import 'package:windx1999/app/modules/wishlist/controller/create_wishList_controller.dart';
 import 'package:windx1999/app/modules/wishlist/controller/web_scraping_controller.dart';
+import 'package:windx1999/app/modules/wishlist/widget/info_card.dart';
 import 'package:windx1999/app/res/common_widgets/custom_app_bar.dart';
 import 'package:windx1999/app/res/common_widgets/custom_background.dart';
 import 'package:windx1999/app/res/common_widgets/custom_snackbar.dart';
@@ -18,7 +19,7 @@ class CreateWishlistScreen extends StatefulWidget {
   State<CreateWishlistScreen> createState() => _CreateWishlistScreenState();
 }
 
-class _CreateWishlistScreenState extends State<CreateWishlistScreen> {
+class _CreateWishlistScreenState extends State<CreateWishlistScreen> { 
   PlatformFile? selectedFile;
   final TextEditingController productUrlCtrl = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -410,46 +411,3 @@ class _CreateWishlistScreenState extends State<CreateWishlistScreen> {
   }
 }
 
-// InfoBox widget to display title and data 
-class InfoBox extends StatelessWidget {
-  final String title;
-  final String data;
-
-  const InfoBox({super.key, required this.title, required this.data});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12.0),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              title,
-              style: TextStyle(
-                fontSize: 16.sp,
-                color: Colors.black,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            heightBox4,
-            Text(
-              data.isEmpty ? 'Not available' : data,
-              style: TextStyle(
-                fontSize: 16.sp,
-                color: Colors.black,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
