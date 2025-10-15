@@ -49,7 +49,7 @@ class _FinalReportScreenState extends State<FinalReportScreen> {
               ),
               heightBox30,
               Text(
-                'Thanks for taking the time to let us know whats going on. Reports like yours are an important part of keeping the Zheto community safe and secure. ',
+                'Thanks for taking the time to let us know whats going on. Reports like yours are an important part of keeping the wishroot community safe and secure. ',
                 style: TextStyle(
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w400,
@@ -57,7 +57,7 @@ class _FinalReportScreenState extends State<FinalReportScreen> {
               ),
               heightBox30,
               Text(
-                'Thanks for taking the time to let us know whats going on. Reports like yours are an important part of keeping the Zheto community safe and secure. ',
+                'Thanks for taking the time to let us know whats going on. Reports like yours are an important part of keeping the wishroot community safe and secure. ',
                 style: TextStyle(
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w400,

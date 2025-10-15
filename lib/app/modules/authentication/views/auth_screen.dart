@@ -29,7 +29,7 @@ class _AuthScreenState extends State<AuthScreen> {
               children: [
                 heightBox100,
                 Text(
-                  'Welcome to Zheto',
+                  'Welcome to wishroot',
                   style: TextStyle(
                       fontFamily: 'OpenSans',
                       fontSize: 24.sp,

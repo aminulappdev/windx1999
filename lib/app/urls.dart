@@ -1,7 +1,7 @@
 class Urls {
-  static const String _baseUrl = 'http://206.162.244.133:5101/api/v1';
+  static const String _baseUrl = 'http://74.118.168.203:5011/api/v1';
   //static const String _baseUrl = 'http://10.10.10.16:5011/api/v1';
-  static const String socketUrl = 'http://206.162.244.133:4101/';
+  static const String socketUrl = 'http://74.118.168.203:4011/';
   // static const String socketUrl = 'http://192.168.10.144:4001/';
   static const String createUserUrl = '$_baseUrl/users/register';
   static const String otpVerifyUrl = '$_baseUrl/otp/verify-otp';

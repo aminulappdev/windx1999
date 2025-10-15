@@ -71,7 +71,7 @@ class _PostAudiencesScreenState extends State<PostAudiencesScreen> {
               PrivacyOption(
                 icon: Icons.group,
                 value: 'friends',
-                description: 'Your friends on Zheto',
+                description: 'Your friends on wishroot',
                 groupValue: selectedOption,
                 onChanged: (value) {
                   setState(() {

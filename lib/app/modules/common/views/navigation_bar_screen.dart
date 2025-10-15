@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:windx1999/app/modules/chat/views/chat_list_screen.dart';
 import 'package:windx1999/app/modules/common/controllers/theme_controller.dart';
-import 'package:windx1999/app/modules/homepage/views/home_screen.dart';
+import 'package:windx1999/app/modules/homepage/views/home_screen.dart'; 
 import 'package:windx1999/app/modules/post/views/post_screen.dart';
 import 'package:windx1999/app/modules/profile/views/profile_screen.dart';
 import 'package:windx1999/app/modules/reels/views/reels_screen.dart';
